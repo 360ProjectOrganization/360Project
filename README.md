@@ -26,6 +26,7 @@ calls `applicantService.gerApplicantById('123')`. Service receives the request b
 ## Setup
 
 1. **Add you env**
+   
    Create a .env file inside `/server/` and paste the reguired text shared with you. 
 
 2. **Set up the server**
