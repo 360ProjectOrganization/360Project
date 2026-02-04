@@ -1,1 +1,5 @@
 # 360Project
+
+Our project is a Job Board and Career Portal that allows employers to post available jobs and for applicants to search and apply for jobs/positions. The platform supports multiple user roles including unregistered visitors, registered users (both employers and applicants), and administrators.
+Unregistered users can browse and search job postings without creating an account. Registered users must create a profile by signing up, and they must declare themselves to be either an employer or an applicant. Employers can post, edit, and manage their own job listings. Applicants can apply to jobs, upload their resume, and manage their personal profiles. Administrators oversee the platform by moderating content, managing user accounts, and viewing data analytics (e.g., user activity, number of job postings, number of users, number of employers).
+The goal of the system is to provide a structured, searchable job platform that demonstrates full-stack development using the MERN stack including authentication, role-based permissions, database-driven content, and responsive frontend design.
