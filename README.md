@@ -16,9 +16,9 @@ We use a 3 layered architecture to keep our software and data secure while impro
                also be responsible for operations of data such as hashing passwords when doing authentication. 
 - **Repository:**  Handles the database operations, models and mock data.
 
-**Flow Example (get one apjnplicant):** The controller receives `GET /api/applicants/123` from the frontend, reads `req.params.id` and 
-calls `applicantService.gerApplicantById('123')`. Service receives the request by the controller and passes the id into 
-`applicantReposiroty.findById(id)`. The repository receives this request and runs the MongoDB query which returns the document to the service. The service sends the document to the controller which will transform it to JSON and sends it to frontend. 
+**Flow Example (get one applicant):** The controller receives `GET /api/applicants/123` from the frontend, reads `req.params.id` and 
+calls `applicantService.getApplicantById('123')`. Service receives the request by the controller and passes the id into 
+`applicantRepository.findById(id)`. The repository receives this request and runs the MongoDB query which returns the document to the service. The service sends the document to the controller which will transform it to JSON and sends it to frontend. 
 
 ## Schema
 ![Image of the Schema](docs/images/schema.png)
