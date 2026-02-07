@@ -1,0 +1,6 @@
+{
+  "watch": ["controller", "repository", "service", "scripts", "server.js"],
+  "ext": "js,json",
+  "ignore": ["node_modules"],
+  "delay": "500"
+}
