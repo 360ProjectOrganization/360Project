@@ -69,6 +69,15 @@ npm run seed
 | GET | `/api/health` | Health check |
 | GET | `/api/applicants` | Get all applicants |
 | GET | `/api/applicants/:id` | Get applicant by ID |
+| GET | `/api/applicants/:id/pfp` | Get applicant profile picture |
+| GET | `/api/applicants/:id/resume` | Get applicant resume |
+| PUT | `/api/applicants/:id/pfp` | Upload profile picture |
+| POST | `/api/applicants/:id/resume` | Upload resume |
+
+## Working with files (image or pdf):
+**Uploading a file:** When a file is uploaded on the frontend it is sent to the backend as a `multipart/form-data`.
+On the backend it gets parsed by Multer to be held by in memory as a Buffer. The controller passes that Buffer down to service, then to the repository where it gets stored in the DB.
+**Downloading a file:** The repository loads the file from the DB. The service returns the file and content type. The controller sends the buffer to the browser.
 
 ## Developing on the backend
 

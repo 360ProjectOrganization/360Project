@@ -3,15 +3,15 @@ const API_BASE = '/api';
 
 async function apiRequest(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
-
+  const isFormData = options.body instanceof FormData;
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...options.headers,
     },
     ...options,
   };
-  if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
+  if (config.body && typeof config.body === 'object' && !isFormData) {
     config.body = JSON.stringify(config.body);
   }
 
@@ -38,6 +38,26 @@ export const applicantApi = {
 
   getById: (id) =>
     apiRequest(`/applicants/${id}`),
+  
+  getPfpUrl: (id) => `${API_BASE}/applicants/${id}/pfp`,
+
+  // resume for download
+  getResumeUrl: (id) => `${API_BASE}/applicants/${id}/resume`,
+
+  // resume for viewing in browser
+  getResumeViewUrl: (id) => `${API_BASE}/applicants/${id}/resume?inline=1`,
+
+  uploadPfp: (id, file) => {
+    const form = new FormData();
+    form.append('file', file);
+    return apiRequest(`/applicants/${id}/pfp`, { method: 'PUT', body: form });
+  },
+
+  uploadResume: (id, file) => {
+    const form = new FormData();
+    form.append('file', file);
+    return apiRequest(`/applicants/${id}/resume`, { method: 'POST', body: form });
+  },
 };
 
 // company API methods

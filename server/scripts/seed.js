@@ -5,9 +5,25 @@ const Applicant = require('../repository/models/applicant.model');
 const Company = require('../repository/models/company.model');
 const JobPosting = require('../repository/models/jobPosting.model');
 const Administrator = require('../repository/models/administrator.model');
+const fs = require('fs');
+const path = require('path');
+
+const MOCKFILES_DIR = path.join(__dirname, '../repository/models/mockfiles');
 
 async function seed() {
   await connectDB();
+
+  // load default pfp
+  let defaultPfp;
+  try {
+    defaultPfp = fs.readFileSync(path.join(MOCKFILES_DIR, 'default_pfp.jpg'));
+  } catch (err) {
+    console.warn('Default pfp not found, seeding without pfp:', err.message);
+  }
+
+  const defaultApplicantFields = defaultPfp
+    ? { pfp: defaultPfp, pfpContentType: 'image/jpeg' }
+    : {};
 
   // clear existing collections
   await Applicant.deleteMany({});
@@ -17,9 +33,9 @@ async function seed() {
 
   // create applicants 
   const applicants = await Applicant.insertMany([
-    { email: 'alice@example.com', name: 'Alice Chen', password: 'mock123' },
-    { email: 'bob@example.com', name: 'Bob Smith', password: 'mock123' },
-    { email: 'carol@example.com', name: 'Carol Davis', password: 'mock123' },
+    { email: 'alice@example.com', name: 'Alice Chen', password: 'mock123', ...defaultApplicantFields },
+    { email: 'bob@example.com', name: 'Bob Smith', password: 'mock123', ...defaultApplicantFields },
+    { email: 'carol@example.com', name: 'Carol Davis', password: 'mock123', ...defaultApplicantFields },
   ]);
 
   // create companies
