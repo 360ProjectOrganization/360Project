@@ -71,6 +71,7 @@ npm run seed
 | GET | `/api/applicants/:id` | Get applicant by ID |
 | GET | `/api/applicants/:id/pfp` | Get applicant profile picture |
 | GET | `/api/applicants/:id/resume` | Get applicant resume |
+| POST | `/api/applicants/:id/delete` | Delete account |
 | PUT | `/api/applicants/:id/pfp` | Upload profile picture |
 | POST | `/api/applicants/:id/resume` | Upload resume |
 

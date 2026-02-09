@@ -16,6 +16,11 @@ const applicantRepository = {
     return await Applicant.findById(id).select('-password -pfp -resume').lean();
   },
 
+  async deleteById(id) {
+    const result = await Applicant.findByIdAndDelete(id);
+    return result != null;
+  },
+
   async findByIdForAsset(id, field) {
     const key = field === 'pfp' ? 'pfp pfpContentType' : 'resume resumeContentType';
     return await Applicant.findById(id).select(key);

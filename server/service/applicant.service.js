@@ -53,11 +53,13 @@ class ApplicantService {
     return await applicantRepository.updateAsset(id, 'resume', buffer, contentType);
   }
 
-  // TODO:
-  // register
-  // delete account
-  // apply to job
-  // view applied jobs
+  async deleteApplicant(id) {
+    const applicant = await applicantRepository.findById(id);
+    if (!applicant) throw new Error('Applicant not found');
+    const deleted = await applicantRepository.deleteById(id);
+    if (!deleted) throw new Error('Applicant not found');
+    return { deleted: true };
+  }
 }
 
 module.exports = new ApplicantService();

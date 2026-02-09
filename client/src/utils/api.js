@@ -38,7 +38,10 @@ export const applicantApi = {
 
   getById: (id) =>
     apiRequest(`/applicants/${id}`),
-  
+
+  deleteAccount: (id) =>
+    apiRequest(`/applicants/${id}/delete`, { method: 'POST' }),
+
   getPfpUrl: (id) => `${API_BASE}/applicants/${id}/pfp`,
 
   // resume for download

@@ -78,9 +78,15 @@ router.post('/:id/resume', upload.single('file'), async (req, res) => {
   }
 });
 
-
-// TODO:
-// register
-// delete account
+// POST: api/applicants/:id/delete
+router.post('/:id/delete', async (req, res) => {
+  try {
+    await applicantService.deleteApplicant(req.params.id);
+    res.json({ deleted: true });
+  } catch (err) {
+    if (err.message === 'Applicant not found') return res.status(404).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to delete account' });
+  }
+});
 
 module.exports = router;
