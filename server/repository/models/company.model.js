@@ -1,5 +1,6 @@
 // Mongoose model for companies
 const mongoose = require('mongoose');
+const passwordHashPlugin = require("./plugins/passwordHash.plugin.js");
 
 const companySchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
@@ -8,5 +9,7 @@ const companySchema = new mongoose.Schema({
   pfp: { type: Buffer }, // binary image jpeg or a png
   jobPostings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'JobPosting' }],
 }, { timestamps: true });
+
+companySchema.plugin(passwordHashPlugin);
 
 module.exports = mongoose.model('Company', companySchema);
