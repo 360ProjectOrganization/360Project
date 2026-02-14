@@ -31,9 +31,9 @@ export default function RegisterForm({ role }) {
                 <button type="submit">Register</button>
             </form>
 
-            <Link to={isEmployer ? "/register-applicant" : "/register-employer"}>
-                Register as {isEmployer ? "applicant" : "employer"} here
-            </Link>
+            <p>                
+                Register as {isEmployer ? "applicant" : "employer"} <Link to={isEmployer ? "/register-applicant" : "/register-employer"}>here</Link> 
+            </p>
         </section>
     );
 }
