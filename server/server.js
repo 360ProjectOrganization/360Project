@@ -5,6 +5,7 @@ const { connectDB, closeDB } = require('./repository/connection');
 
 // import route modules
 const applicantRoutes = require('./controller/applicant.controller');
+const authRoutes = require('./controller/auth.controller');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -32,6 +33,7 @@ app.get('/api/health', (req, res) => {
 
 // mount route modules (this is where we define the routes for the application)
 app.use('/api/applicants', applicantRoutes);
+app.use('/api/auth', authRoutes);
 
 // start server
 async function startServer() {
