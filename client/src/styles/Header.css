@@ -1,14 +1,44 @@
-#header-nav {
+#header-container {
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    padding: 10px;
     border: solid 2px black;
-    padding: 1em 0.5em 1em 0.5em;
+    background-color: gray;
+    border-radius: 10px;
 }
 
-#jobly {
-    font-size: 3em;
+#jobly-container {
+    width: 10%;
+    padding: 10px;
 }
 
-#company-portal, #admin-portal, #profile {
-    margin: 0em 2em 0em 2em;
+#jobly-container a {
+    font-size: 30px;
+}
+
+#navigation-container {
+    width: 70%;
+    margin-left: 1em;
+    padding: 1em;
+}
+
+#navigation-container a {
+    padding: 0.5em;
+    margin: 0.5em;
+    font-size: 20px;
+    border: solid 2px black;
+    border-radius: 10px;
+}
+
+#user-profile {
+    text-align: center;
+    width: 10%;
+    margin-left: 1em;
+    padding: 1em;
+}
+
+#user-profile a {
+    font-size: 20px;
 }
 
 a:link {
@@ -18,4 +48,8 @@ a:link {
 
 a:visited {
     color: black;
+}
+
+a:hover {
+    cursor: pointer;
 }

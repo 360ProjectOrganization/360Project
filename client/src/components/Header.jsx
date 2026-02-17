@@ -3,12 +3,22 @@ import "../styles/Header.css"
 function Header() {
 
     return (
-        <nav id="header-nav">
-            <a href="/" id="jobly">JobLy</a>
-            <a id="company-portal">Company Portal</a>
-            <a id="admin-portal">Admin Portal</a>
-            <a id="profile">Profile</a>
-        </nav>
+        <>
+            <section id="header-container">
+                <section id="jobly-container">
+                    <a href="/">JobLy</a>
+                </section>
+
+                <section id="navigation-container">
+                    <a>Company Portal</a>
+                    <a>Admin Portal</a>
+                </section>
+
+                <section id="user-profile">
+                    <a>Profile</a>
+                </section>
+            </section>
+        </>
     );
 };
 
