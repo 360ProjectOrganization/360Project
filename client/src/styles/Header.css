@@ -1,0 +1,21 @@
+#header-nav {
+    border: solid 2px black;
+    padding: 1em 0.5em 1em 0.5em;
+}
+
+#jobly {
+    font-size: 3em;
+}
+
+#company-portal, #admin-portal, #profile {
+    margin: 0em 2em 0em 2em;
+}
+
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
