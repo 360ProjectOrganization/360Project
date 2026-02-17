@@ -20,6 +20,12 @@ module.exports = function passwordHashPlugin(schema) {
     });
 
     schema.methods.comparePassword = function (plainPassword) {
+        if (!this.password) return Promise.resolve(false);
+
+        if (!this.password.startsWith('$2')) {
+            return Promise.resolve(plainPassword === this.password);
+        }
+        
         return bcrypt.compare(plainPassword, this.password);
     };
 };

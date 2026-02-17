@@ -64,16 +64,26 @@ npm run seed
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| GET | `/api/applicants` | Get all applicants |
-| GET | `/api/applicants/:id` | Get applicant by ID |
-| GET | `/api/applicants/:id/pfp` | Get applicant profile picture |
-| GET | `/api/applicants/:id/resume` | Get applicant resume |
-| POST | `/api/applicants/:id/delete` | Delete account |
-| PUT | `/api/applicants/:id/pfp` | Upload profile picture |
-| POST | `/api/applicants/:id/resume` | Upload resume |
+| Method | Endpoint | Description | Request | Response |
+|--------|----------|-------------|---------|----------|
+| GET | `/api/health` | Health check | — | `{ status, timestamp }` |
+| POST | `/api/auth/register` | Register a new user | Body: `role`, `email`, `password`, `name` | `{ user, token }` |
+| POST | `/api/auth/login` | Log in and get a user + JWT | Body: `email`, `password`, `role` | `{ user, token }` |
+| PUT | `/api/auth/changepassword` | Change user's password | Header: `Authorization: Bearer <token>`. Body: `currentPassword`, `newPassword` | `{ _id, email, name?, role, ... }` |
+| PUT | `/api/auth/changeemail` | Change user's email | Header: `Authorization: Bearer <token>`. Body: `newEmail`, `password` | `{ _id, email, name?, role, ... }` |
+| GET | `/api/applicants` | List all applicants | — | Array of applicants (no password, pfp, or resume) |
+| GET | `/api/applicants/:id` | Get one applicant by ID | — | Single applicant (no password, pfp, or resume) |
+| GET | `/api/applicants/:id/pfp` | Get applicant's profile picture (or default) | — | Image body; `Content-Type` set |
+| GET | `/api/applicants/:id/resume` | Get applicant's resume (download or view) | Optional: `?inline=1` to view in browser | PDF body; `Content-Disposition` attachment or inline |
+| POST | `/api/applicants/:id/delete` | Delete an applicant account | — | `{ deleted: true }` |
+| PUT | `/api/applicants/:id/pfp` | Upload or replace applicant's profile picture | `multipart/form-data` with `file` | Updated applicant object |
+| POST | `/api/applicants/:id/resume` | Upload or replace applicant's resume | `multipart/form-data` with `file` | Updated applicant object |
+
+## Authentication
+
+- **JWT:** Login and register returns a `token`, the client sends it as `Authorization: Bearer <token>` on protected requests.
+- **Protected routes** require a valid JWT. The user’s id and role are taken from the token, not the request body for security.
+- **Change password/email** require the current password and a valid JWT.
 
 ## Working with files (image or pdf):
 **Uploading a file:** When a file is uploaded on the frontend it is sent to the backend as a `multipart/form-data`.

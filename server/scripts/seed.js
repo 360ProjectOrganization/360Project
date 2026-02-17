@@ -32,17 +32,23 @@ async function seed() {
   await Administrator.deleteMany({});
 
   // create applicants 
-  const applicants = await Applicant.insertMany([
+  const applicants = [];
+  for (const data of [
     { email: 'alice@example.com', name: 'Alice Chen', password: 'mock123', ...defaultApplicantFields },
     { email: 'bob@example.com', name: 'Bob Smith', password: 'mock123', ...defaultApplicantFields },
     { email: 'carol@example.com', name: 'Carol Davis', password: 'mock123', ...defaultApplicantFields },
-  ]);
+  ]) {
+    applicants.push(await Applicant.create(data));
+  }
 
   // create companies
-  const companies = await Company.insertMany([
+  const companies = [];
+  for (const data of [
     { name: 'TechCorp', email: 'hr@techcorp.com', password: 'mock123' },
     { name: 'StartupXYZ', email: 'jobs@startupxyz.com', password: 'mock123' },
-  ]);
+  ]) {
+    companies.push(await Company.create(data));
+  }
 
   // create job postings
   const jobPostings = await JobPosting.insertMany([
