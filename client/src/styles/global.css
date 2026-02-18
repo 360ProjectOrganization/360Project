@@ -7,22 +7,26 @@
     --color-body: #5d5750;
     --color-card-bg: #faf5eb;
     --color-card-bg-alt: #f5eddb;
+    --color-card-shadow: #f2dcc3;
     --color-page-bg: #fefdfb;
     --color-page-bg-alt: #fdfaf5;
     --color-icon-dark: #383533;
     --color-icon-darker: #1c1a19;
     --color-divider: #f2dcc3;
     --color-text-on-dark: #fefdfb;
+    --color-text-placeholder: #8f857a;
 }
 
 body {
     margin: 0;
     background: var(--color-page-bg);
     color: var(--color-body);
+    font-family: "Source Serif Pro", Georgia, serif;
 }
 
 button {
     border: none;
     cursor: pointer;
     border-radius: 14px;
+    font:inherit;
 }

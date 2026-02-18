@@ -67,13 +67,13 @@ export default function RegisterForm({ role }) {
                 <form onSubmit={handleSubmit}> {/*only inputs and button */}
                     <section className="nameInputSection">
                         <label>{isEmployer ? "Company Name" : "Full Name"}</label>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)}  />
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={isEmployer ? "Carson versus The Computer" : "Alice Chains"} />
                         {errors.name && <p className="error">{errors.name}</p>}
                     </section>
 
                     <section className="emailInputSection">
                         <label>Email</label>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="carson@thecomputer.com" />
                         {errors.email && <p className="error">{errors.email}</p>}
                     </section>
 
