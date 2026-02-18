@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { validateRegisterForm } from "../../utils/validation/validateRegisterForm";
 import { authApi, setToken, setAuthUser } from "../../utils/api.js";
+import "./RegisterForm.css";
 
 export default function RegisterForm({ role }) {
     const isEmployer = role === "employer";
