@@ -14,3 +14,15 @@
     --color-divider: #f2dcc3;
     --color-text-on-dark: #fefdfb;
 }
+
+body {
+    margin: 0;
+    background: var(--color-page-bg);
+    color: var(--color-body);
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    border-radius: 14px;
+}

@@ -1,0 +1,76 @@
+.registerPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background: var(--color-card-bg);
+}
+
+.registerCard {
+    width: min(440px, 90vw);
+    background: var(--color-card-bg);
+    border-radius: 16px;
+    padding: 32px 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.registerCard h2 {
+    text-align: center;
+    width: auto;
+}
+
+.registerCard form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.registerCard form section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.registerCard label {
+    font-size: 18px;
+    justify-content: center;
+}
+
+.registerCard input {
+    box-sizing: border-box;
+    width: 100%;
+    height:32px;
+    padding: 0 5px;
+    border: 1px solid var(--color-icon-dark);
+    background: var(--color-card-bg);
+}
+
+.registerCard button {
+    width: 60%;
+    height: 48px;
+    background: var(--color-cta-primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.registerCard p {
+    margin: 0;
+    text-align: center;
+    font-size: 15px;
+}
+
+.registerCard .error {
+    margin: 0;
+    font-size: 15px;
+    color: #c0392b;
+}

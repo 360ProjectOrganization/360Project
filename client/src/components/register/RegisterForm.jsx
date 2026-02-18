@@ -53,42 +53,47 @@ export default function RegisterForm({ role }) {
     }
 
     return (
-        <section className="registerCard">
-            <h2>You are registering as an {isEmployer ? "employer" : "applicant"}</h2>
+        <section className="registerPage">
 
-            <form onSubmit={handleSubmit}> {/*only inputs and button */}
-                <section className="nameInputSection">
-                    <label>{isEmployer ? "Company Name" : "Full Name"}</label>
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                    {errors.name && <p className="error">{errors.name}</p>}
-                </section>
+            {/* TODO: header will go here if we want it on the registration page (can be added when its implemented) */}
 
-                <section className="emailInputSection">
-                    <label>Email</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    {errors.email && <p className="error">{errors.email}</p>}
-                </section>
+            <section className="registerCard">
+                <h2>You are registering as an {isEmployer ? "employer" : "applicant"}</h2>
 
-                <section className="passwordInputSection">
-                    <label>Password</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    {errors.password && <p className="error">{errors.password}</p>}
-                </section>
+                <form onSubmit={handleSubmit}> {/*only inputs and button */}
+                    <section className="nameInputSection">
+                        <label>{isEmployer ? "Company Name" : "Full Name"}</label>
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                        {errors.name && <p className="error">{errors.name}</p>}
+                    </section>
 
-                <section className="confirmPasswordInputSection">
-                    <label>Confirm Password</label>
-                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                    {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-                </section>
+                    <section className="emailInputSection">
+                        <label>Email</label>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        {errors.email && <p className="error">{errors.email}</p>}
+                    </section>
 
-                {submitError && <p className="error">{submitError}</p>}
-                
-                <button type="submit" disabled={loading}>{loading ? "Registering…" : "Register"}</button>
-            </form>
+                    <section className="passwordInputSection">
+                        <label>Password</label>
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        {errors.password && <p className="error">{errors.password}</p>}
+                    </section>
 
-            <p>                
-                Register as {isEmployer ? "applicant" : "employer"} <Link to={isEmployer ? "/register-applicant" : "/register-employer"}>here</Link> 
-            </p>
+                    <section className="confirmPasswordInputSection">
+                        <label>Confirm Password</label>
+                        <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+                    </section>
+
+                    {submitError && <p className="error">{submitError}</p>}
+                    
+                    <button type="submit" disabled={loading}>{loading ? "Registering…" : "Register"}</button>
+                </form>
+
+                <p>                
+                    Register as {isEmployer ? "applicant" : "employer"} <Link to={isEmployer ? "/register-applicant" : "/register-employer"}>here</Link> 
+                </p>
+            </section>
         </section>
     );
 }
