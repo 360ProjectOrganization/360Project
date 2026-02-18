@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form"
-import { useCookies } from 'react-cookie';
 import BackButton from "./BackButton";
 
 export default function LoginForm({typeOfUser, setOnLoginScreen, setLoginType}){
