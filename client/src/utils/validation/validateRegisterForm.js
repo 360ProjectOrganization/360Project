@@ -41,7 +41,10 @@ export function validateRegisterForm({name, email, password, confirmPassword}, r
     }
 
     //confirm password stuff
-    if (!confirmPassword && confirmPassword !== password) {
+    if (!confirmPassword) {
+        errors.confirmPassword = "Please confirm your password";
+    }
+    else if (confirmPassword !== password) {
         errors.confirmPassword = "Passwords do not match";
     }
 

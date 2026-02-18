@@ -1,26 +1,54 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { validateRegisterForm } from "../../utils/validation/validateRegisterForm";
+import { authApi, setToken, setAuthUser } from "../../utils/api.js";
 
 export default function RegisterForm({ role }) {
     const isEmployer = role === "employer";
 
     const [errors, setErrors] = useState({});
+    const [submitError, setSubmitError] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    function handleSubmit(e) {
+    const navigate = useNavigate();
+
+    async function handleSubmit(e) {
         e.preventDefault();
-        
+        setSubmitError("");
+
         const inputErrors = validateRegisterForm({ name, email, password, confirmPassword }, role);
         setErrors(inputErrors);
 
         //if errors is oempty then input is valid
         if (Object.keys(inputErrors).length > 0) {
             return;
+        }
+
+        setLoading(true); // in case user presses Reguster button multiple times, this should prevent multiple requests
+        try {
+            const payload = {
+                role: isEmployer ? "company" : "applicant",
+                email,
+                password,
+                name
+            };
+
+            const data = await authApi.register(payload);
+            setToken(data.token);
+            setAuthUser(data.user);
+            navigate("/");
+        }
+        catch (err) {
+            setSubmitError(err.message || "Registration failed");
+        }
+        finally { // doesnt matter if request fails or not
+            setLoading(false);
         }
     }
 
@@ -53,7 +81,9 @@ export default function RegisterForm({ role }) {
                     {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
                 </section>
 
-                <button type="submit">Register</button>
+                {submitError && <p className="error">{submitError}</p>}
+                
+                <button type="submit" disabled={loading}>{loading ? "Registering…" : "Register"}</button>
             </form>
 
             <p>                
