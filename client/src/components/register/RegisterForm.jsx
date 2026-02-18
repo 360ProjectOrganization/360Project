@@ -58,12 +58,16 @@ export default function RegisterForm({ role }) {
             {/* TODO: header will go here if we want it on the registration page (can be added when its implemented) */}
 
             <section className="registerCard">
-                <h2>You are registering as an {isEmployer ? "employer" : "applicant"}</h2>
+                <h2>You are registering as an {" "}
+                    <span className="roleText">
+                        {isEmployer ? "employer" : "applicant"}
+                    </span>
+                </h2>
 
                 <form onSubmit={handleSubmit}> {/*only inputs and button */}
                     <section className="nameInputSection">
                         <label>{isEmployer ? "Company Name" : "Full Name"}</label>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)}  />
                         {errors.name && <p className="error">{errors.name}</p>}
                     </section>
 
