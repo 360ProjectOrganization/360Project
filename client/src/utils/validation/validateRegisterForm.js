@@ -31,13 +31,13 @@ export function validateRegisterForm({name, email, password, confirmPassword}, r
 
     //Passwor drules
     if (!password) {
-        errors.password = "Email is required";
+        errors.password = "Password is required";
     }
     else {
         if (password.length < 8) errors.password = "Password must be at least 8 characters";
         else if (!/[A-Z]/.test(password)) errors.password = "Password must include an uppercase letter";
         else if (!/[a-z]/.test(password)) errors.password = "Password must include a lowercase letter";
-        else if (!/[0-9]/.test(password)) errors.password = "Password must include an uppercase letter";
+        else if (!/[0-9]/.test(password)) errors.password = "Password must include a number";
     }
 
     //confirm password stuff
