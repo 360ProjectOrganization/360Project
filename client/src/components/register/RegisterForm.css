@@ -73,7 +73,41 @@
     border-color: var(--color-cta-primary);
 }
 
-.registerCard button {
+.passwordWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.passwordWrapper input {
+    padding-right: 36px;
+}
+
+.togglePassword {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-body);
+
+    /* override registerCard button so that this stays small */
+    width: auto;
+    height: auto;
+    min-width: unset;
+    margin: 0;
+    background: transparent;
+    font-size: 14px;
+}
+
+.togglePassword:hover {
+    color: var(--color-title);
+}
+
+.registerCard button[type="submit"] {
     width: 60%;
     height: 48px;
     background: var(--color-cta-primary);
@@ -82,8 +116,8 @@
     margin-top: 20px;
 }
 
-.registerCard button:hover {
-    background: var(--color-cta-secondary)
+.registerCard button[type="submit"]:hover {
+    background: var(--color-cta-secondary);
 }
 
 .registerCard p {

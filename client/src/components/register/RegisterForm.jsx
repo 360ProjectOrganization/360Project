@@ -17,6 +17,9 @@ export default function RegisterForm({ role }) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
@@ -80,13 +83,23 @@ export default function RegisterForm({ role }) {
 
                     <section className="passwordInputSection">
                         <label>Password</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <div className="passwordWrapper">
+                            <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <button type="button" className="togglePassword" onClick={() => setShowPassword(previousSelection => !previousSelection)} aria-label={showPassword ? "Hide password" : "Show password"}>
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
                         {errors.password && <p className="error">{errors.password}</p>}
                     </section>
 
                     <section className="confirmPasswordInputSection">
                         <label>Confirm Password</label>
-                        <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        <div className="passwordWrapper">
+                            <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                            <button type="button" className="togglePassword" onClick={() => setShowConfirmPassword(prev => !prev)} aria-label={showConfirmPassword ? "Hide password" : "Show password"}>
+                                {showConfirmPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
                         {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
                     </section>
 
