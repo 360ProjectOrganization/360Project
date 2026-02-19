@@ -13,7 +13,7 @@ export default function LoginForm({typeOfUser, setOnLoginScreen, setLoginType}){
         try {
             const payload = {
                 role: typeOfUser === "Admin"
-                    ? "admin"
+                    ? "administrator"
                     : typeOfUser === "Employer"
                     ? "company"
                     : "applicant",
