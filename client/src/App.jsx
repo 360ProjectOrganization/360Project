@@ -1,14 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import HomePage from './pages/HomePage.jsx';
+import RegisterApplicantPage from './pages/RegisterApplicantPage.jsx';
+import RegisterEmployerPage from './pages/RegisterEmployerPage.jsx';
 
 function App() {
-  return (
-    <div className="app">
-      <Routes>
-        <Route path='/' element={<Home />} />
-      </Routes>
-    </div>
-  );
+    return (
+        <div className="app">
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/register-applicant" element={<RegisterApplicantPage />} />
+                <Route path="/register-employer" element={<RegisterEmployerPage />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
