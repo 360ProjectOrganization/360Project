@@ -23,7 +23,7 @@ const Dropdown = () => {
         {
             id:1,
             label: "Login",
-            value: "/" //TODO for Login page
+            value: "/Login"
         },
         {
             id: 2,
