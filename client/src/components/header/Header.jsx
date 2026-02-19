@@ -1,3 +1,4 @@
+import Dropdown from "./Dropdown";
 import "./Header.css"
 
 function Header() {
@@ -24,9 +25,7 @@ function Header() {
                 </section>
 
                 <section id="user-profile">
-                    <button className="header-profile">
-                        <a>Profile</a>
-                    </button>
+                    <Dropdown />
                 </section>
             </section>
         </>
