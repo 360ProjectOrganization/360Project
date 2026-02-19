@@ -39,6 +39,8 @@ const Dropdown = () => {
                     setDropdownActivated(!dropdownActivated);
                 }}>
                     Profile
+                
+                <span className="dropdown-symbol">{dropdownActivated ? " - " : " + "}</span>
                 </button>
                 
                 <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>

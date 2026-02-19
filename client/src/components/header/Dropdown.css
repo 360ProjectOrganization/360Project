@@ -40,3 +40,8 @@
 .dropdown-option-button:hover {
     background-color: var(--color-cta-secondary-darker);
 }
+
+.dropdown-symbol {
+    font-weight: bold;
+    font-size: medium;
+}
