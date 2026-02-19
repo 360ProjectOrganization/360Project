@@ -14,7 +14,6 @@ const Dropdown = () => {
             }
         }
         document.addEventListener("click", dropdownHandler);
-
         return() => {
             document.removeEventListener("click", dropdownHandler);
         }
@@ -24,12 +23,12 @@ const Dropdown = () => {
         {
             id:1,
             label: "Login",
-            value: "login-page"
+            value: "/" //TODO for Login page
         },
         {
             id: 2,
             label: "Register",
-            value: "register-page"
+            value: "/register-applicant" //TODO Update for general applicant page
         }
     ]
 
@@ -43,14 +42,11 @@ const Dropdown = () => {
                 </button>
                 
                 <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
-                    {dropdownItems.map((option, index) => {
-
+                    {dropdownItems.map((option) => {
                         return (
-                            <button>
-                                <a>
-                                    {option.label}
-                                </a>
-                            </button>
+                            <a href={option.value} className="dropdown-option-button">
+                                {option.label}
+                            </a>
                         )
 
                     })}
