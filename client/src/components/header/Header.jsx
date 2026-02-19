@@ -1,7 +1,20 @@
 import Dropdown from "./Dropdown";
 import "./Header.css"
+import { getToken } from "../../utils/api.js"
+import { jwtDecode } from "jwt-decode";
+import { useState } from "react";
+import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
+import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
 
 function Header() {
+    const [hideAdminPortal, setHideAdminPortal] = useState(false);
+    const [hideCompanyPortal, setHideCompanyPortal] = useState(false);
+
+    const token = getToken();
+    const decoded = jwtDecode(token);
+    let userId = decoded.id;
+    let userRole = decoded.role;  //applicant, company, administrator
+    
 
     return (
         <>
@@ -11,17 +24,12 @@ function Header() {
                 </section>
 
                 <section id="navigation-container">
-                    <button className="header-button-company">
-                        <a href="/"> {/* To be added later */}
-                            Company Portal
-                        </a>
-                    </button>
-
-                    <button className="header-button-admin">
-                        <a href="/"> {/* To be added later */}
-                            Admin Portal
-                        </a>
-                    </button>
+                    {
+                        userRole === "administrator" ? <CompanyPortalButton /> : ""
+                    }
+                    {
+                        userRole === "company" ? <AdminPortalButton /> : ""
+                    }
                 </section>
 
                 <section id="user-profile">

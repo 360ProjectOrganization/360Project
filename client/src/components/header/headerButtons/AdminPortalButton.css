@@ -1,0 +1,6 @@
+.header-button-admin {
+    border-radius: 5px;
+    height: 1.5em;
+    margin: 0 0.25em 0 1em;
+    background-color: var(--color-cta-secondary);
+}
