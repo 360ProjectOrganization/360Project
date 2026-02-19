@@ -1,0 +1,77 @@
+#header-container {
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    padding: 10px;
+    border-bottom: solid 1px var(--color-divider);
+    background-color: var(--color-page-bg);
+    border-radius: 10px;
+}
+
+#jobly-container {
+    width: 10%;
+    padding: 10px;
+}
+
+#jobly-container a{
+    color: var(--color-title);
+}
+
+#jobly-container a {
+    font-size: 30px;
+}
+
+#navigation-container {
+    width: 70%;
+    margin-left: 1em;
+    padding: 1em;
+}
+
+#navigation-container a {
+    padding: 0.5em;
+}
+
+.header-button-company {
+    border-radius: 5px;
+    height: 1.5em;
+    margin: 0 1em 0 0.25em;
+    background-color: var(--color-cta-primary);
+}
+
+.header-button-admin {
+    border-radius: 5px;
+    height: 1.5em;
+    margin: 0 0.25em 0 1em;
+    background-color: var(--color-cta-secondary);
+}
+
+#user-profile {
+    text-align: center;
+    width: 10%;
+    margin-left: 1em;
+    padding: 1em;
+}
+
+.header-profile {
+    background-color: var(--color-page-bg);
+    border-radius: 10px;
+    padding: 0 1em 0 1em;
+    width: 120px;
+}
+
+#user-profile a {
+    font-size: 20px;
+    color: var(--color-title);
+}
+
+a:link {
+    text-decoration: none;
+    color: antiquewhite;
+}
+
+a:visited {
+    color: antiquewhite;
+}
+
+a:hover {
+    cursor: pointer;
+}
