@@ -1,51 +1,53 @@
 import { useForm } from "react-hook-form"
 import BackButton from "./BackButton";
-
+import { authApi, setToken, setAuthUser } from "../../utils/api.js";
+import { useState } from "react";
 export default function LoginForm({typeOfUser, setOnLoginScreen, setLoginType}){
-    const { register, handleSubmit, formState: {errors}} = useForm();
+    const { register, handleSubmit} = useForm();
     const back = ()=>{
         setOnLoginScreen()
         setLoginType()
     }
+    const [errorMessage, setErrorMessage] = useState()
     const onSubmit = async(data)=> {
-        /*try {
-            const responseLogin = await login(data.username, data.password);
-            if(responseLogin === null){
-                alert("Failed Login")
-            }else{
-                If we 
-                const dataToCokie= {
-                    accountId:responseLogin.accountId,
-                    userName:responseLogin.email,
-                    role: typeOfUser}
-                await setCookie("userInfo", dataToCokie,{secure: false, maxAge: 1800});
-                window.location.href="/home";
-                
+        try {
+            const payload = {
+                role: typeOfUser === "Admin"
+                    ? "admin"
+                    : typeOfUser === "Employer"
+                    ? "company"
+                    : "applicant",
+                email: data.email,
+                password: data.password
+
             }
+            const response = await authApi.login(payload);
+            setToken(response.token);
+            setAuthUser(response.user);
+            window.location.href="/";
         } catch (error) {
-            console.log(error)
-        } */
-       console.log(data)
+            setErrorMessage(error.message || "Login failed")
+        } 
     };
     return(
-       <section>
+       <section className="background">
             <BackButton functionToCall={back}/>
             <section className="registerPage">
                 <section className="registerCard">
-                    <header className="roleText">JobLy {typeOfUser}</header>
+                    <h2 className="roleText">JobLy {typeOfUser}</h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <input className="emailInputSection" name="email" placeholder="Email" {...register("email", { 
+                        <input type="email"className="emailInputSection" name="email" placeholder="Email" {...register("email", { 
                                     required:{
-                                        value: true,
-                                        message: 'Please enter a valid Email'
+                                        value: true
+            
                                     }
                                     })}/>
                         <input className="passwordInputSection" type="password" name="password" placeholder="Password" {...register("password", { 
                                     required:{
                                         value: true,
-                                        message: 'Please set a Password'
                                     }
                                     })}/>
+                        {errorMessage && (<p className="error">{errorMessage}</p>)}
                         <button type="submit">Login</button>
                     </form>
                 </section>

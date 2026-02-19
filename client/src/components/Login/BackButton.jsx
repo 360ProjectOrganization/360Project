@@ -1,5 +1,6 @@
+import backButtonImg from "../../imgs/BackButton.png";
 export default function BackButton({functionToCall}){
     return(
-        <button onClick={functionToCall}>Back</button>
+        <img className="backButton" onClick={functionToCall} src={backButtonImg }alt="Back Button" />
     )
 }

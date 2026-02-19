@@ -1,5 +1,6 @@
 import applicantImg from "../../imgs/Applicant.png";
 import employerImg from "../../imgs/Employer.png";
+import "./login.css"
 import { useState } from 'react'
 import LoginForm from "./LoginForm";
 import BackButton from "./BackButton";
@@ -32,22 +33,26 @@ export default function ChoseLoginType(){
     return(
         <section>
            { !onLoginScreen &&(
-            <section>
+            <section className="background">
                 <BackButton functionToCall={goHome}/>
-                <header>You Are Logging In As An</header>
-                <section>
-                    <figure>
-                        <figcaption>Applicant</figcaption>
-                        <img src={applicantImg} alt="" onClick={setLoginTypeApplicant}/>
-                        
-                    </figure>
-                    <figure onClick={setLoginTypeEmployer}>
-                        <figcaption>Employer</figcaption>
-                        <img src={employerImg} alt="" onClick={setLoginTypeEmployer}/>
-                    </figure>
+                <section className="registerPage">
+                    <section className="registerCard"> 
+                        <h2 roleText>Are You Logging In As An</h2>
+                        <section className = "imgContainer">
+                            <figure>
+                                <figcaption>Applicant</figcaption>
+                                <img src={applicantImg} alt="" onClick={setLoginTypeApplicant}/>
+                                
+                            </figure>
+                            <figure onClick={setLoginTypeEmployer}>
+                                <figcaption>Employer</figcaption>
+                                <img src={employerImg} alt="" onClick={setLoginTypeEmployer}/>
+                            </figure>
+                        </section>
+                        <button type="submit" onClick={register}>I Don't Have An Account</button>
+                    </section>
+                    <footer>Admin Login <span onClick={setLoginTypeAdmin} style={{cursor: 'pointer'}}><u>Here</u></span></footer>
                 </section>
-                <button onClick={register}>I Don't Have An Account</button>
-                <footer>Admin Login <span onClick={setLoginTypeAdmin}><u>Here</u></span></footer>
             </section>)}
             {onLoginScreen&&(<LoginForm typeOfUser = {loginType} setLoginType={setLoginType} setOnLoginScreen = {setOnLoginScreen}/>)}
         </section>
