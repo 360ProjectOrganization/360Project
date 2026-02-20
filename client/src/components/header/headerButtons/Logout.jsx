@@ -8,7 +8,7 @@ function Logout() {
 
     return (
         <button className="logout-button" onClick={handleUserLogout}>
-            <a href="/"> {/* To be added later */}
+            <a href="/">
                 Logout
             </a>
         </button>
