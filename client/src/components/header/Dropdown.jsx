@@ -56,6 +56,11 @@ function Dropdown () {
             id: 2,
             label: "Register",
             value: "/register-applicant" //TODO Update for general applicant page
+        },
+        {
+            id:3,
+            label: "Profile Page",
+            value: userId ? "/profile" : "/Login"
         }
     ];
 
@@ -66,19 +71,17 @@ function Dropdown () {
                     setDropdownActivated(!dropdownActivated);
                 }}>
                     {
-
                         userRole === "applicant" ? `Welcome, ${applicantName}` : "Profile"
                     }
                 </button>
                 
-                <div className={`dropdown-options ${dropdownActivated && !token ? "visible" : ""}`}>
+                <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
                     {dropdownItems.map((option) => {
                         return (
                             <a href={option.value} className="dropdown-option-button">
                                 {option.label}
                             </a>
                         )
-
                     })}
                 </div>
             </section>
