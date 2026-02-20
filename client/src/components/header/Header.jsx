@@ -1,6 +1,6 @@
 import Dropdown from "./Dropdown";
 import "./Header.css"
-import { getToken, applicantApi } from "../../utils/api.js"
+import { getToken } from "../../utils/api.js"
 import { jwtDecode } from "jwt-decode";
 import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
 import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
@@ -16,15 +16,6 @@ function Header() {
         userId = decoded.id;
         userRole = decoded.role;  //applicant, company, administrator
     }
-    
-    async function getUserName(){
-        if(userId){
-            const fetchUserInfo = await applicantApi.getById(userId);
-            console.log(fetchUserInfo.name);
-        }
-    }
-
-    getUserName();
 
     return (
         <>

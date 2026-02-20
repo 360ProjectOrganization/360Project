@@ -1,12 +1,36 @@
 import { useEffect, useRef, useState } from "react";
 import "./Dropdown.css"
-import { getToken } from "../../utils/api.js"
+import { getToken, applicantApi } from "../../utils/api.js"
+import { jwtDecode } from "jwt-decode";
 
-const Dropdown = () => {
+function Dropdown () {
     const [dropdownActivated, setDropdownActivated] = useState(false);
+    const [applicantName, setApplicantName] = useState("");
     const dropdownReference = useRef(null);
 
     const token = getToken();
+    let userId = "";
+    let userRole = "";
+    
+    if(token){
+        const decoded = jwtDecode(token);
+        userRole = decoded.role;
+        if(userRole === "applicant"){
+            userId = decoded.id;
+        }
+    }
+    
+    useEffect(() => {
+        async function getUserName(){
+            if(userId != ""){
+                const fetchUserInfo = await applicantApi.getById(userId);
+                let name = fetchUserInfo.name;
+                let firstName = name.split(" ")[0];
+                setApplicantName(firstName);
+            }
+        }
+        getUserName();
+    }, [])
 
     useEffect(() => {
         function dropdownHandler (e) {
@@ -41,7 +65,10 @@ const Dropdown = () => {
                 <button className="dropdown-button" onClick={() => {
                     setDropdownActivated(!dropdownActivated);
                 }}>
-                    Profile
+                    {
+
+                        userRole === "applicant" ? `Welcome, ${applicantName}` : "Profile"
+                    }
                 </button>
                 
                 <div className={`dropdown-options ${dropdownActivated && !token ? "visible" : ""}`}>
