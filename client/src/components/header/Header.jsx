@@ -1,20 +1,30 @@
 import Dropdown from "./Dropdown";
 import "./Header.css"
-import { getToken } from "../../utils/api.js"
+import { getToken, applicantApi } from "../../utils/api.js"
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
 import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
 import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
+import Logout from "./headerButtons/Logout.jsx";
 
 function Header() {
-    const [hideAdminPortal, setHideAdminPortal] = useState(false);
-    const [hideCompanyPortal, setHideCompanyPortal] = useState(false);
-
     const token = getToken();
-    const decoded = jwtDecode(token);
-    let userId = decoded.id;
-    let userRole = decoded.role;  //applicant, company, administrator
+    let userId = "";
+    let userRole = "";
+
+    if(token){
+        const decoded = jwtDecode(token);
+        userId = decoded.id;
+        userRole = decoded.role;  //applicant, company, administrator
+    }
     
+    async function getUserName(){
+        if(userId){
+            const fetchUserInfo = await applicantApi.getById(userId);
+            console.log(fetchUserInfo.name);
+        }
+    }
+
+    getUserName();
 
     return (
         <>
@@ -25,15 +35,21 @@ function Header() {
 
                 <section id="navigation-container">
                     {
-                        userRole === "administrator" ? <CompanyPortalButton /> : ""
+                        userRole === "company" ? <CompanyPortalButton /> : ""
                     }
                     {
-                        userRole === "company" ? <AdminPortalButton /> : ""
+                        userRole === "administrator" ? <AdminPortalButton /> : ""
                     }
                 </section>
 
                 <section id="user-profile">
                     <Dropdown />
+                </section>
+
+                <section id="header-logout">
+                    {
+                        userId != "" ? <Logout /> : ""
+                    }
                 </section>
             </section>
         </>

@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import "./Dropdown.css"
+import { getToken } from "../../utils/api.js"
 
 const Dropdown = () => {
     const [dropdownActivated, setDropdownActivated] = useState(false);
     const dropdownReference = useRef(null);
+
+    const token = getToken();
 
     useEffect(() => {
         function dropdownHandler (e) {
@@ -12,12 +15,12 @@ const Dropdown = () => {
                     setDropdownActivated(false);
                 }
             }
-        }
+        };
         document.addEventListener("click", dropdownHandler);
         return() => {
             document.removeEventListener("click", dropdownHandler);
-        }
-    })
+        };
+    });
 
     let dropdownItems = [
         {
@@ -30,7 +33,7 @@ const Dropdown = () => {
             label: "Register",
             value: "/register-applicant" //TODO Update for general applicant page
         }
-    ]
+    ];
 
     return (
         <>
@@ -39,11 +42,9 @@ const Dropdown = () => {
                     setDropdownActivated(!dropdownActivated);
                 }}>
                     Profile
-                
-                <span className="dropdown-symbol">{dropdownActivated ? " - " : " + "}</span>
                 </button>
                 
-                <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
+                <div className={`dropdown-options ${dropdownActivated && !token ? "visible" : ""}`}>
                     {dropdownItems.map((option) => {
                         return (
                             <a href={option.value} className="dropdown-option-button">
@@ -56,6 +57,6 @@ const Dropdown = () => {
             </section>
         </>
     )
-}
+};
 
 export default Dropdown;
