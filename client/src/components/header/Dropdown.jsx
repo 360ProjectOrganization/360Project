@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import "./Dropdown.css"
-import { getToken, applicantApi } from "../../utils/api.js"
+import "./Dropdown.css";
+import { getToken, applicantApi } from "../../utils/api.js";
 import { jwtDecode } from "jwt-decode";
 
 function Dropdown () {
@@ -18,7 +18,7 @@ function Dropdown () {
         if(userRole === "applicant"){
             userId = decoded.id;
         }
-    }
+    };
     
     useEffect(() => {
         async function getUserName(){
@@ -28,10 +28,11 @@ function Dropdown () {
                 let firstName = name.split(" ")[0];
                 setApplicantName(firstName);
             }
-        }
+        };
         getUserName();
-    }, [])
+    }, []);
 
+    // Dropdown code outline from https://www.youtube.com/watch?v=qb70Epml9X0&t=41s
     useEffect(() => {
         function dropdownHandler (e) {
             if(dropdownReference.current){
@@ -60,7 +61,7 @@ function Dropdown () {
         {
             id:3,
             label: "Profile Page",
-            value: userId ? "/profile" : "/Login"
+            value: token ? "/profile" : "/Login"
         }
     ];
 
@@ -76,9 +77,9 @@ function Dropdown () {
                 </button>
                 
                 <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
-                    {dropdownItems.map((option) => {
+                    {dropdownItems.map(option => {
                         return (
-                            <a href={option.value} className="dropdown-option-button">
+                            <a href={option.value} key={option.id} className="dropdown-option-button">
                                 {option.label}
                             </a>
                         )

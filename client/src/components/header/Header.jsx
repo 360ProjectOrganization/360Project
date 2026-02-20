@@ -1,6 +1,6 @@
 import Dropdown from "./Dropdown";
-import "./Header.css"
-import { getToken } from "../../utils/api.js"
+import "./Header.css";
+import { getToken } from "../../utils/api.js";
 import { jwtDecode } from "jwt-decode";
 import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
 import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
@@ -14,7 +14,7 @@ function Header() {
     if(token){
         const decoded = jwtDecode(token);
         userId = decoded.id;
-        userRole = decoded.role;  //applicant, company, administrator
+        userRole = decoded.role;  //roles = applicant, company, administrator
     }
 
     return (

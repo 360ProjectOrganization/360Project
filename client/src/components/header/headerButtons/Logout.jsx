@@ -1,4 +1,4 @@
-import "./Logout.css"
+import "./HeaderButton.css"
 import { clearToken } from "../../../utils/api";
 
 function Logout() {
