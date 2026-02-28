@@ -56,7 +56,7 @@ function Dropdown () {
         {
             id: 2,
             label: "Register",
-            value: "/register-applicant" //TODO Update for general applicant page
+            value: "/register"
         },
         {
             id:3,
