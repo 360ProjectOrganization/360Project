@@ -62,15 +62,29 @@ cd server
 npm run seed
 ```
 
-## API Endpoints
+## API reference list
+
+Base URL for API: `/api`.
+
+### Health
+
+| Method | Endpoint | Description | Response |
+|--------|----------|-------------|----------|
+| GET | `/api/health` | Health check | `{ status, timestamp }` |
+
+### Auth
 
 | Method | Endpoint | Description | Request | Response |
 |--------|----------|-------------|---------|----------|
-| GET | `/api/health` | Health check | — | `{ status, timestamp }` |
 | POST | `/api/auth/register` | Register a new user | Body: `role`, `email`, `password`, `name` | `{ user, token }` |
 | POST | `/api/auth/login` | Log in and get a user + JWT | Body: `email`, `password`, `role` | `{ user, token }` |
 | PUT | `/api/auth/changepassword` | Change user's password | Header: `Authorization: Bearer <token>`. Body: `currentPassword`, `newPassword` | `{ _id, email, name?, role, ... }` |
 | PUT | `/api/auth/changeemail` | Change user's email | Header: `Authorization: Bearer <token>`. Body: `newEmail`, `password` | `{ _id, email, name?, role, ... }` |
+
+### Applicants
+
+| Method | Endpoint | Description | Request | Response |
+|--------|----------|-------------|---------|----------|
 | GET | `/api/applicants` | List all applicants | — | Array of applicants (no password, pfp, or resume) |
 | GET | `/api/applicants/:id` | Get one applicant by ID | — | Single applicant (no password, pfp, or resume) |
 | GET | `/api/applicants/:id/pfp` | Get applicant's profile picture (or default) | — | Image body; `Content-Type` set |
@@ -78,6 +92,14 @@ npm run seed
 | POST | `/api/applicants/:id/delete` | Delete an applicant account | — | `{ deleted: true }` |
 | PUT | `/api/applicants/:id/pfp` | Upload or replace applicant's profile picture | `multipart/form-data` with `file` | Updated applicant object |
 | POST | `/api/applicants/:id/resume` | Upload or replace applicant's resume | `multipart/form-data` with `file` | Updated applicant object |
+
+### Companies
+
+| Method | Endpoint | Description | Request | Response |
+|--------|----------|-------------|---------|----------|
+| GET | `/api/companies` | List all companies | — | Array of companies (no password or pfp)|
+| GET | `/api/companies/:id` | Get one company by id| — | Single company (no password or pfp) |
+| GET | `/api/companies/:id/job-postings` | Job postings for company | — | Array of job postings |
 
 ## Authentication
 
