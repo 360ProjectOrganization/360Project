@@ -113,7 +113,16 @@ export const applicantApi = {
 };
 
 // company API methods
+export const companyApi = {
+  getAll: () =>
+    apiRequest('/companies'),
 
+  getById: (id) =>
+    apiRequest(`/companies/${id}`),
+
+  getJobPostings: (companyId) =>
+    apiRequest(`/companies/${companyId}/job-postings`),
+};
 
 // job postings API methods
 
