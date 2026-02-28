@@ -1,17 +1,19 @@
+import { Link, useNavigate } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
 import ChooseUserTypeFlow from "../UserType/ChooseUserTypeFlow";
 
 export default function ChooseRegisterType() {
-    const goHome = () => (window.location.href = "/");
-    
+    const navigate = useNavigate();
+    const goHome = () => navigate("/");
+
     return (
         <ChooseUserTypeFlow 
             titleText="You Are Registering As An"
             onBack={goHome}
             bottomButton={
-                <button onClick={() => (window.location.href = "/Login")}>
+                <Link to="/Login" className="register-card-link-button">
                     I already have an account
-                </button>
+                </Link>
             }
             renderNext={(type, helpers) => (
                 <RegisterForm

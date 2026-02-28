@@ -1,24 +1,26 @@
+import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import ChooseUserTypeFlow from "../UserType/ChooseUserTypeFlow";
 
 export default function ChoseLoginType(){
-    const goHome = () => (window.location.href = "/");
+    const navigate = useNavigate();
+    const goHome = () => navigate("/");
 
     return (
         <ChooseUserTypeFlow 
             titleText="You Are Logging In As An"
             onBack={goHome}
             bottomButton={
-                <button onClick={() => (window.location.href = "/register")}>
+                <Link to="/register" className="register-card-link-button">
                     I don't have an account
-                </button>
+                </Link>
             }
             footer={
                 <footer>
                     Admin Login{" "}
-                    <span onClick={() => (window.location.href = "/admin-login")} style={{ cursor: "pointer" }}>
+                    <Link to="/admin-login" style={{ cursor: "pointer" }}>
                         <u>Here</u>
-                    </span>
+                    </Link>
                 </footer>
             }
             renderNext={(type, helpers) => (

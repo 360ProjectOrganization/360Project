@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import BackButton from "../Login/BackButton";
 import ChooseFigure from "../Login/ChooseFigure";
+import "../Login/login.css";
 
 //images
 import Applicant from "../../imgs/Applicant.png";
