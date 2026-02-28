@@ -4,6 +4,7 @@ import "./login.css"
 import { useState } from 'react'
 import LoginForm from "./LoginForm";
 import BackButton from "./BackButton";
+import ChooseFigure from "./chooseFigure";
 export default function ChoseLoginType(){
     const[onLoginScreen,setOnLoginScreen] = useState(false);
     const[loginType, setLoginType] = useState()
@@ -39,15 +40,8 @@ export default function ChoseLoginType(){
                     <section className="registerCard"> 
                         <h2 roleText>Are You Logging In As An</h2>
                         <section className = "imgContainer">
-                            <figure>
-                                <figcaption>Applicant</figcaption>
-                                <img src={applicantImg} alt="" onClick={setLoginTypeApplicant}/>
-                                
-                            </figure>
-                            <figure onClick={setLoginTypeEmployer}>
-                                <figcaption>Employer</figcaption>
-                                <img src={employerImg} alt="" onClick={setLoginTypeEmployer}/>
-                            </figure>
+                            <ChooseFigure text = {"Applicant"} img ={applicantImg} func={setLoginTypeApplicant}/>
+                            <ChooseFigure text = {"Employer"} img ={employerImg} func={setLoginTypeEmployer}/>
                         </section>
                         <button type="submit" onClick={register}>I Don't Have An Account</button>
                     </section>
