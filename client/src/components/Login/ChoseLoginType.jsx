@@ -21,13 +21,13 @@ export default function ChoseLoginType(){
                     </span>
                 </footer>
             }
-            renderNext={(type, helpers) => {
+            renderNext={(type, helpers) => (
                 <LoginForm
                     typeOfUser={type}
                     setLoginType={helpers.setSelectedType}
                     setOnLoginScreen={helpers.setOnNextScreen}
                 />
-            }}
+            )}
         />
     );
 }

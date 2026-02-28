@@ -5,8 +5,8 @@ import { useState } from "react";
 export default function LoginForm({typeOfUser, setOnLoginScreen, setLoginType}){
     const { register, handleSubmit} = useForm();
     const back = ()=>{
-        setOnLoginScreen()
-        setLoginType()
+        setOnLoginScreen(false)
+        setLoginType(null)
     }
     const [errorMessage, setErrorMessage] = useState()
     const onSubmit = async(data)=> {

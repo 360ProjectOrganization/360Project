@@ -9,17 +9,17 @@ export default function ChooseRegisterType() {
             titleText="You Are Registering As An"
             onBack={goHome}
             bottomButton={
-                <button onClick={() => (window.location.href = "/login")}>
+                <button onClick={() => (window.location.href = "/Login")}>
                     I already have an account
                 </button>
             }
-            renderNext={(type, helpers) => {
+            renderNext={(type, helpers) => (
                 <RegisterForm
                     typeOfUser={type}
-                    setLoginType={helpers.setSelectedType}
-                    setOnLoginScreen={helpers.setOnNextScreen}
+                    setOnRegisterScreen={helpers.setOnNextScreen}
+                    setRegisterType={helpers.setSelectedType}
                 />
-            }}
+            )}
         />
     );
 }
