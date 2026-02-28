@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import BackButton from "../BackButton";
+import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
+import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 
-import { validateRegisterForm } from "../../utils/validation/validateRegisterForm";
-import { authApi, setToken, setAuthUser } from "../../utils/api.js";
-
-import Header from "../header/Header.jsx";
-
-export default function RegisterForm({ role }) {
-    const isEmployer = role === "employer";
+export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
+    const navigate = useNavigate();
+    const isEmployer = typeOfUser === "Employer";
 
     const [errors, setErrors] = useState({});
     const [submitError, setSubmitError] = useState("");
@@ -21,16 +20,19 @@ export default function RegisterForm({ role }) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     
-    const navigate = useNavigate();
+    const back = () => {
+        setOnRegisterScreen(false);
+        setRegisterType(null);
+    };
 
     async function handleSubmit(e) {
         e.preventDefault();
         setSubmitError("");
 
-        const inputErrors = validateRegisterForm({ name, email, password, confirmPassword }, role);
+        const inputErrors = validateRegisterForm({ name, email, password, confirmPassword }, typeOfUser?.toLowerCase() ?? "applicant");
         setErrors(inputErrors);
 
-        //if errors is oempty then input is valid
+        //if errors is empty then input is valid
         if (Object.keys(inputErrors).length > 0) {
             return;
         }
@@ -44,9 +46,9 @@ export default function RegisterForm({ role }) {
                 name
             };
 
-            const data = await authApi.register(payload);
-            setToken(data.token);
-            setAuthUser(data.user);
+            const response = await authApi.register(payload);
+            setToken(response.token);
+            setAuthUser(response.user);
             navigate("/");
         }
         catch (err) {
@@ -58,18 +60,14 @@ export default function RegisterForm({ role }) {
     }
 
     return (
-        <>
-            <Header />
+        <section className="background">
+            <BackButton functionToCall={back} />
+            
             <section className="registerPage">
-
                 <section className="registerCard">
-                    <h2>You are registering as an {" "}
-                        <span className="roleText">
-                            {isEmployer ? "employer" : "applicant"}
-                        </span>
-                    </h2>
+                    <h2 className="roleText">JobLy {typeOfUser}</h2>
 
-                    <form onSubmit={handleSubmit}> {/*only inputs and button */}
+                    <form onSubmit={handleSubmit}>
                         <section className="nameInputSection">
                             <label>{isEmployer ? "Company Name" : "Full Name"}</label>
                             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={isEmployer ? "Carson versus The Computer" : "Alice Chains"} />
@@ -109,11 +107,13 @@ export default function RegisterForm({ role }) {
                         <button type="submit" disabled={loading}>{loading ? "Registering…" : "Register"}</button>
                     </form>
 
-                    <p>                
-                        Register as {isEmployer ? "applicant" : "employer"} <Link to={isEmployer ? "/register-applicant" : "/register-employer"}>here</Link> 
+                    <p style={{ cursor: "pointer"}} onClick={() => {
+                        setRegisterType(isEmployer ? "Applicant" : "Employer");
+                    }}>
+                        Not an {isEmployer ? "Employer" : "Applicant"}? Register as {isEmployer ? "Applicant" : "Employer"} instead
                     </p>
                 </section>
             </section>
-        </>
+        </section>
     );
 }

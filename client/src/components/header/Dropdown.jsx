@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Dropdown.css";
 import { getToken, applicantApi } from "../../utils/api.js";
 import { jwtDecode } from "jwt-decode";
@@ -56,7 +57,7 @@ function Dropdown () {
         {
             id: 2,
             label: "Register",
-            value: "/register-applicant" //TODO Update for general applicant page
+            value: "/register"
         },
         {
             id:3,
@@ -77,13 +78,11 @@ function Dropdown () {
                 </button>
                 
                 <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
-                    {dropdownItems.map(option => {
-                        return (
-                            <a href={option.value} key={option.id} className="dropdown-option-button">
-                                {option.label}
-                            </a>
-                        )
-                    })}
+                    {dropdownItems.map(option => (
+                        <Link to={option.value} key={option.id} className="dropdown-option-button" onClick={() => setDropdownActivated(false)}>
+                            {option.label}
+                        </Link>
+                    ))}
                 </div>
             </section>
         </>

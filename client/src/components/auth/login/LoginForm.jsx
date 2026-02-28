@@ -1,12 +1,15 @@
-import { useForm } from "react-hook-form"
-import BackButton from "./BackButton";
-import { authApi, setToken, setAuthUser } from "../../utils/api.js";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import BackButton from "../BackButton";
+import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 import { useState } from "react";
-export default function LoginForm({typeOfUser, setOnLoginScreen, setLoginType}){
-    const { register, handleSubmit} = useForm();
+
+export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }) {
+    const { register, handleSubmit } = useForm();
+    const navigate = useNavigate();
     const back = ()=>{
-        setOnLoginScreen()
-        setLoginType()
+        setOnLoginScreen(false)
+        setLoginType(null)
     }
     const [errorMessage, setErrorMessage] = useState()
     const onSubmit = async(data)=> {
@@ -24,7 +27,7 @@ export default function LoginForm({typeOfUser, setOnLoginScreen, setLoginType}){
             const response = await authApi.login(payload);
             setToken(response.token);
             setAuthUser(response.user);
-            window.location.href="/";
+            navigate("/");
         } catch (error) {
             setErrorMessage(error.message || "Login failed")
         } 
