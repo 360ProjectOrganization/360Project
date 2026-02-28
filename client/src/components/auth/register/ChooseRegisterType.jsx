@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
-import ChooseUserTypeFlow from "../UserType/ChooseUserTypeFlow";
+import ChooseUserTypeFlow from "../ChooseUserTypeFlow";
 
 export default function ChooseRegisterType() {
     const navigate = useNavigate();

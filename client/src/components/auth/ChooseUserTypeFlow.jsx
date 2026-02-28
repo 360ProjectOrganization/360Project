@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import BackButton from "../Login/BackButton";
-import ChooseFigure from "../Login/ChooseFigure";
-import "../Login/login.css";
+import { useState } from "react";
+import BackButton from "./BackButton";
+import ChooseFigure from "./ChooseFigure";
+import "./auth.css";
 
-//images
 import Applicant from "../../imgs/Applicant.png";
 import Employer from "../../imgs/Employer.png";
 
-export default function ChooseUserTypeFlow({titleText, applicantImg=Applicant, employerImg=Employer, onBack, renderNext, bottomButton, footer }) {
+export default function ChooseUserTypeFlow({ titleText, applicantImg = Applicant, employerImg = Employer, onBack, renderNext, bottomButton, footer }) {
     const [selectedType, setSelectedType] = useState(null);
     const [onNextScreen, setOnNextScreen] = useState(false);
 
@@ -25,9 +24,9 @@ export default function ChooseUserTypeFlow({titleText, applicantImg=Applicant, e
                         <section className="registerCard">
                             <h2>{titleText}</h2>
 
-                            <section className = "imgContainer">
-                                <ChooseFigure text = {"Applicant"} img ={applicantImg} func={() => chooseType("Applicant")}/>
-                                <ChooseFigure text = {"Employer"} img ={employerImg} func={() => chooseType("Employer")}/>
+                            <section className="imgContainer">
+                                <ChooseFigure text="Applicant" img={applicantImg} func={() => chooseType("Applicant")} />
+                                <ChooseFigure text="Employer" img={employerImg} func={() => chooseType("Employer")} />
                             </section>
 
                             {bottomButton}
@@ -38,7 +37,7 @@ export default function ChooseUserTypeFlow({titleText, applicantImg=Applicant, e
                 </section>
             )}
 
-            {onNextScreen && renderNext(selectedType, {setSelectedType, setOnNextScreen})}
+            {onNextScreen && renderNext(selectedType, { setSelectedType, setOnNextScreen })}
         </section>
     );
 }

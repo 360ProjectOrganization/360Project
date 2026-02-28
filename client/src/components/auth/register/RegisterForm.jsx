@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../Login/BackButton.jsx";
-import { validateRegisterForm } from "../../utils/validation/validateRegisterForm";
-import { authApi, setToken, setAuthUser } from "../../utils/api.js";
+import BackButton from "../BackButton";
+import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
+import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 
 export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
     const back = () => {
         setOnRegisterScreen(false);
         setRegisterType(null);
-    }
+    };
 
     async function handleSubmit(e) {
         e.preventDefault();

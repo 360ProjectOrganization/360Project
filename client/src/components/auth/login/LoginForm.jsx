@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import BackButton from "./BackButton";
-import { authApi, setToken, setAuthUser } from "../../utils/api.js";
+import BackButton from "../BackButton";
+import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 import { useState } from "react";
 
 export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }) {

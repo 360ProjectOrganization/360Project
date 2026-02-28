@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
-import ChooseUserTypeFlow from "../UserType/ChooseUserTypeFlow";
+import ChooseUserTypeFlow from "../ChooseUserTypeFlow";
 
 export default function ChoseLoginType(){
     const navigate = useNavigate();
