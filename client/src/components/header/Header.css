@@ -54,3 +54,9 @@ a:visited {
 a:hover {
     cursor: pointer;
 }
+
+#user-profile-picture{
+    background-color: black;
+    width: 10%;
+    text-align: center;
+}

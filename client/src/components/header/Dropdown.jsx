@@ -10,7 +10,6 @@ function Dropdown () {
     const [token, setToken] = useState("");
     const [role, setRole] = useState("");
     const [id, setId] = useState("");
-    const dropdownReference = useRef(null);
 
     useEffect(() => {
         const available_token = getToken();
@@ -43,20 +42,6 @@ function Dropdown () {
         getUserName();
     }, [id]);
 
-    useEffect(() => {
-        function dropdownHandler (e) {
-            if(dropdownReference.current){
-                if(!dropdownReference.current.contains(e.target)){
-                    setDropdownActivated(false);
-                }
-            }
-        };
-        document.addEventListener("click", dropdownHandler);
-        return() => {
-            document.removeEventListener("click", dropdownHandler);
-        };
-    });
-
     let dropdownItems = [
         {
             id:1,
@@ -77,10 +62,13 @@ function Dropdown () {
 
     return (
         <>
-            <section id="dropdown-container" ref={dropdownReference}>
-                <button className="dropdown-button" onClick={() => {
-                    setDropdownActivated(!dropdownActivated);
-                }}>
+            <section id="dropdown-container"
+                onMouseEnter={() => {setDropdownActivated(true);}}
+                onMouseLeave={() => {setDropdownActivated(false);}}
+            >
+                <button 
+                    className="dropdown-button" 
+                >
                     {
                         role === "applicant" ? `Welcome, ${applicantName}` : "Profile"
                     }
@@ -88,7 +76,7 @@ function Dropdown () {
                 
                 <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
                     {dropdownItems.map(option => (
-                        <Link to={option.value} key={option.id} className="dropdown-option-button" onClick={() => setDropdownActivated(false)}>
+                        <Link to={option.value} key={option.id} className="dropdown-option-button">
                             {option.label}
                         </Link>
                     ))}

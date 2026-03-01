@@ -41,6 +41,10 @@ function Header() {
                     }
                 </section>
 
+                <section id="user-profile-picture">
+                    <h3>Some Text</h3>
+                </section>
+
                 <section id="user-profile">
                     <Dropdown />
                 </section>
