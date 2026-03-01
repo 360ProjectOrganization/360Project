@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
 import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
 import Logout from "./headerButtons/Logout.jsx";
+import ProfilePicture from "./ProfilePicture.jsx";
 
 function Header() {
     const [token, setToken] = useState("");
@@ -42,7 +43,9 @@ function Header() {
                 </section>
 
                 <section id="user-profile-picture">
-                    <h3>Some Text</h3>
+                    {
+                        token ? <ProfilePicture /> : "" 
+                    }
                 </section>
 
                 <section id="user-profile">
