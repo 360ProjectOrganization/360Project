@@ -7,33 +7,42 @@ import { jwtDecode } from "jwt-decode";
 function Dropdown () {
     const [dropdownActivated, setDropdownActivated] = useState(false);
     const [applicantName, setApplicantName] = useState("");
+    const [token, setToken] = useState("");
+    const [role, setRole] = useState("");
+    const [id, setId] = useState("");
     const dropdownReference = useRef(null);
 
-    const token = getToken();
-    let userId = "";
-    let userRole = "";
-    
-    if(token){
+    useEffect(() => {
+        const available_token = getToken();
+        if(available_token){
+            setToken(available_token);
+        };
+    }, [])
+
+    useEffect(() => {
+        if(!token) return;
+
         const decoded = jwtDecode(token);
-        userRole = decoded.role;
-        if(userRole === "applicant"){
-            userId = decoded.id;
+        setRole(decoded.role);
+            
+        if(role === "applicant"){
+            setId(decoded.id);
         }
-    };
+    }, [token, role])
+    
     
     useEffect(() => {
         async function getUserName(){
-            if(userId != ""){
-                const fetchUserInfo = await applicantApi.getById(userId);
+            if(id){
+                const fetchUserInfo = await applicantApi.getById(id);
                 let name = fetchUserInfo.name;
                 let firstName = name.split(" ")[0];
                 setApplicantName(firstName);
             }
         };
         getUserName();
-    }, []);
+    }, [id]);
 
-    // Dropdown code outline from https://www.youtube.com/watch?v=qb70Epml9X0&t=41s
     useEffect(() => {
         function dropdownHandler (e) {
             if(dropdownReference.current){
@@ -73,7 +82,7 @@ function Dropdown () {
                     setDropdownActivated(!dropdownActivated);
                 }}>
                     {
-                        userRole === "applicant" ? `Welcome, ${applicantName}` : "Profile"
+                        role === "applicant" ? `Welcome, ${applicantName}` : "Profile"
                     }
                 </button>
                 
