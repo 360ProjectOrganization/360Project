@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { getToken, applicantApi } from "../../utils/api.js";
-import "./ProfilePicture.css";
 
 function ProfilePicture() {
     const [token, setToken] = useState("");
@@ -25,10 +24,9 @@ function ProfilePicture() {
         async function getUserPfp(){
             if(id){
                 const userPfpURL = applicantApi.getPfpUrl(id);
-                const options = {
+                let response = await fetch(userPfpURL, {
                     method: "GET"
-                }
-                let response = await fetch(userPfpURL, options);
+                });
 
                 if(response.status === 200){
                     const imageBlob = await response.blob();
