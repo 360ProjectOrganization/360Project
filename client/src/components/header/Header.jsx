@@ -44,7 +44,7 @@ function Header() {
 
                 <section id="user-profile">
                     {
-                        token ? <ProfilePicture /> : "" 
+                        role === "applicant" ? <ProfilePicture /> : "" 
                     }
                     <Dropdown />
                 </section>

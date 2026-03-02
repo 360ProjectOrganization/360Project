@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Dropdown.css";
-import { getToken, applicantApi } from "../../utils/api.js";
+import { getToken, applicantApi, companyApi } from "../../utils/api.js";
 import { jwtDecode } from "jwt-decode";
 
 function Dropdown () {
     const [dropdownActivated, setDropdownActivated] = useState(false);
-    const [applicantName, setApplicantName] = useState("");
+    const [enrolledName, setEnrolledName] = useState("");
     const [token, setToken] = useState("");
     const [role, setRole] = useState("");
     const [id, setId] = useState("");
@@ -24,7 +24,7 @@ function Dropdown () {
         const decoded = jwtDecode(token);
         setRole(decoded.role);
             
-        if(role === "applicant"){
+        if(role != "administrator"){
             setId(decoded.id);
         }
     }, [token, role])
@@ -32,11 +32,15 @@ function Dropdown () {
     
     useEffect(() => {
         async function getUserName(){
-            if(id){
-                const fetchUserInfo = await applicantApi.getById(id);
-                let name = fetchUserInfo.name;
-                let firstName = name.split(" ")[0];
-                setApplicantName(firstName);
+            if(role === "applicant"){
+                const fetchApplicanInfo = await applicantApi.getById(id);
+                let applicantName = fetchApplicanInfo.name;
+                let firstName = applicantName.split(" ")[0];
+                setEnrolledName(firstName);
+            }else if (role === "company"){
+                const fetchCompanyInfo = await companyApi.getById(id);
+                let companyName = fetchCompanyInfo.name;
+                setEnrolledName(companyName);
             }
         };
         getUserName();
@@ -70,7 +74,7 @@ function Dropdown () {
                     className="dropdown-button" 
                 >
                     {
-                        role === "applicant" ? `Welcome, ${applicantName}` : "Profile"
+                        role === "applicant" || role === "company" ? `Welcome, ${enrolledName}` : "Profile"
                     }
                 </button>
                 
