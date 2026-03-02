@@ -96,6 +96,13 @@ async function seed() {
   await JobPosting.findByIdAndUpdate(jobPostings[10]._id, { applicants: [applicants[2]._id] });
   await JobPosting.findByIdAndUpdate(jobPostings[11]._id, { applicants: [] });
 
+  // set jobsAppliedTo on applicants
+  await Applicant.findByIdAndUpdate(applicants[0]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[1]._id, jobPostings[4]._id, jobPostings[7]._id, jobPostings[9]._id] });
+  await Applicant.findByIdAndUpdate(applicants[1]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[1]._id, jobPostings[4]._id, jobPostings[6]._id, jobPostings[9]._id] });
+  await Applicant.findByIdAndUpdate(applicants[2]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[4]._id, jobPostings[7]._id, jobPostings[10]._id] });
+  await Applicant.findByIdAndUpdate(applicants[3]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[4]._id, jobPostings[6]._id, jobPostings[8]._id, jobPostings[9]._id] });
+  await Applicant.findByIdAndUpdate(applicants[4]._id, { jobsAppliedTo: [jobPostings[2]._id, jobPostings[4]._id, jobPostings[7]._id] });
+
   // create an admin
   await Administrator.create({
     email: 'admin@jobly.com',
