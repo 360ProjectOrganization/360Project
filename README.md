@@ -101,6 +101,9 @@ Base URL for API: `/api`.
 | GET | `/api/companies/:id` | Get one company by id| — | Single company (no password or pfp) |
 | GET | `/api/companies/:id/job-postings` | Job postings for company | — | Array of job postings |
 | GET | `/api/companies/:id/analytics` | Company hiring analytics | — | `{ totalJobs, closedJobs, avgPostingDurationDays, fillRate }` |
+| GET | `/api/companies/:id/pfp` | Get company's profile picture (or default) | — | Image body; `Content-Type` set |
+| PUT | `/api/companies/:id/pfp` | Upload or replace company's profile picture | `multipart/form-data` with `file` | Updated company object |
+| POST | `/api/companies/:id/delete` | Delete a company account | — | `{ deleted: true }` |
 
 ## Authentication
 
