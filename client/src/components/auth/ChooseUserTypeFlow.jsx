@@ -32,7 +32,7 @@ export default function ChooseUserTypeFlow({ titleText, applicantImg = Applicant
                             {bottomButton}
                         </section>
 
-                        {footer}
+                        {typeof footer === "function" ? footer(() => chooseType("Admin")) : footer}
                     </section>
                 </section>
             )}

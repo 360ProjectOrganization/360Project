@@ -15,14 +15,12 @@ export default function ChoseLoginType(){
                     I don't have an account
                 </Link>
             }
-            footer={
+            footer={(selectAdmin) => (
                 <footer>
                     Admin Login{" "}
-                    <Link to="/admin-login" style={{ cursor: "pointer" }}>
-                        <u>Here</u>
-                    </Link>
+                    <u style={{ cursor: "pointer" }} onClick={selectAdmin}>Here</u>
                 </footer>
-            }
+            )}
             renderNext={(type, helpers) => (
                 <LoginForm
                     typeOfUser={type}
