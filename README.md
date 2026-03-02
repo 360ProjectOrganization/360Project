@@ -100,6 +100,7 @@ Base URL for API: `/api`.
 | GET | `/api/companies` | List all companies | — | Array of companies (no password or pfp)|
 | GET | `/api/companies/:id` | Get one company by id| — | Single company (no password or pfp) |
 | GET | `/api/companies/:id/job-postings` | Job postings for company | — | Array of job postings |
+| GET | `/api/companies/:id/analytics` | Company hiring analytics | — | `{ totalJobs, closedJobs, avgPostingDurationDays, fillRate }` |
 
 ## Authentication
 

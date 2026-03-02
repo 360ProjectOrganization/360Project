@@ -122,6 +122,9 @@ export const companyApi = {
 
   getJobPostings: (companyId) =>
     apiRequest(`/companies/${companyId}/job-postings`),
+
+  getAnalytics: (companyId) =>
+    apiRequest(`/companies/${companyId}/analytics`),
 };
 
 // job postings API methods

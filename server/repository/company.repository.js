@@ -25,6 +25,45 @@ const companyRepository = {
     return await JobPosting.find({ _id: { $in: company.jobPostings } })
       .lean();
   },
+
+  async findAnalyticsByCompanyId(companyId) {
+    const company = await Company.findById(companyId).select('jobPostings').lean();
+    if (!company || !company.jobPostings?.length) {
+      return { totalJobs: 0, closedJobs: 0, avgPostingDurationDays: 0, fillRate: 0 };
+    }
+
+    const jobs = await JobPosting.find({ _id: { $in: company.jobPostings } })
+      .select('status publishedAt closedAt applicants')
+      .lean();
+
+    const now = new Date();
+    const published = jobs.filter((j) => j.publishedAt);
+    const closed = jobs.filter((j) => j.status === 'CLOSED');
+    const filled = closed.filter((j) => j.applicants?.length > 0);
+
+    let totalDurationMs = 0;
+    let durationCount = 0;
+    for (const job of published) {
+      const end = job.closedAt ? new Date(job.closedAt) : now;
+      totalDurationMs += end.getTime() - new Date(job.publishedAt).getTime();
+      durationCount++;
+    }
+
+    const avgPostingDurationDays = durationCount > 0
+      ? Math.round((totalDurationMs / durationCount) / (1000 * 60 * 60 * 24) * 10) / 10
+      : 0;
+
+    const fillRate = published.length > 0
+      ? Math.round((filled.length / published.length) * 100 * 10) / 10
+      : 0;
+
+    return {
+      totalJobs: jobs.length,
+      closedJobs: closed.length,
+      avgPostingDurationDays,
+      fillRate,
+    };
+  },
 };
 
 module.exports = companyRepository;

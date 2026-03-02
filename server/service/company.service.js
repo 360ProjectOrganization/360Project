@@ -21,6 +21,14 @@ class CompanyService {
     }
     return await companyRepository.findJobPostingsByCompanyId(companyId);
   }
+
+  async getCompanyAnalytics(companyId) {
+    const company = await companyRepository.findById(companyId);
+    if (!company) {
+      throw new Error('Company not found');
+    }
+    return await companyRepository.findAnalyticsByCompanyId(companyId);
+  }
 }
 
 module.exports = new CompanyService();

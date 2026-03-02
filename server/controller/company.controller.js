@@ -26,6 +26,19 @@ router.get('/:id/job-postings', async (req, res) => {
   }
 });
 
+// GET: api/companies/:id/analytics
+router.get('/:id/analytics', async (req, res) => {
+  try {
+    const analytics = await companyService.getCompanyAnalytics(req.params.id);
+    res.json(analytics);
+  } catch (error) {
+    if (error.message === 'Company not found') {
+      return res.status(404).json({ error: error.message });
+    }
+    res.status(500).json({ error: 'Failed to fetch company analytics' });
+  }
+});
+
 // GET: api/companies/:id
 router.get('/:id', async (req, res) => {
   try {
