@@ -10,6 +10,7 @@ const applicantSchema = new mongoose.Schema({
   pfpContentType: { type: String, default: 'image/jpeg' },
   resume: { type: Buffer },
   resumeContentType: { type: String, default: 'application/pdf' },
+  jobsAppliedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'JobPosting' }],
 }, { timestamps: true });
 
 applicantSchema.plugin(passwordHashPlugin);
