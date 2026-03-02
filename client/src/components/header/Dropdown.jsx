@@ -74,7 +74,9 @@ function Dropdown () {
                     className="dropdown-button" 
                 >
                     {
-                        role === "applicant" || role === "company" ? `Welcome, ${enrolledName}` : "Profile"
+                        role === "applicant" || role === "company" ? `Welcome, ${enrolledName}`
+                        : role === "administrator" ? "Welcome, Admin"
+                        : "Profile"
                     }
                 </button>
                 

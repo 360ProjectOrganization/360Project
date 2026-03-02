@@ -44,7 +44,7 @@ function ProfilePicture() {
                 <img 
                     src={image}
                     alt="pfp"
-                    style={{maxWidth: "60%",
+                    style={{maxWidth: "55%",
                             borderRadius: "40px"
                         }}
                 ></img>

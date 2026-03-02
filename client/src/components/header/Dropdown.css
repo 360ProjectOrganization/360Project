@@ -9,17 +9,18 @@
 
 .dropdown-button {
     background-color: var(--color-page-bg);
-    padding: 0 1em 0 0em;
-    width: 9em;
-    font-size: 16px;
+    padding: 0 4em 0 0;
+    width: 12.5em;
+    font-size: 18px;
     color: var(--color-title);
 }
 
 .dropdown-options {
     position: absolute;
-    top: 100%;
-    width: 8.5em;
     display: flex;
+    margin-left: 0.5em;
+    top: 100%;
+    width: 8.25em;
     flex-direction: column;
     opacity: 0;
     visibility: hidden;
