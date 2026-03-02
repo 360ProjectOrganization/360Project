@@ -42,13 +42,10 @@ function Header() {
                     }
                 </section>
 
-                <section id="user-profile-picture">
+                <section id="user-profile">
                     {
                         token ? <ProfilePicture /> : "" 
                     }
-                </section>
-
-                <section id="user-profile">
                     <Dropdown />
                 </section>
 
