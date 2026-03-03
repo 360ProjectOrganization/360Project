@@ -10,6 +10,7 @@ export default function CompanyPortal() {
     const storedUser = localStorage.getItem("jobly_user");
     const user = storedUser ? JSON.parse(storedUser) : null;
     const companyId = user?._id;
+    const companyName = user?.name;
 
     const handlePostingsClick = () => {
         setActiveview("postings");
@@ -31,7 +32,7 @@ export default function CompanyPortal() {
                 onProfileClick={handleProfileClick}
             />
             
-            {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} />}
+            {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} companyName={companyName} />}
         </>
     );
 }
