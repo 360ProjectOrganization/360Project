@@ -2,24 +2,33 @@
 const express = require('express');
 const router = express.Router();
 const applicantService = require('../service/applicant.service');
+const userService = require('../service/user.service');
 const multer = require('multer');
 
-const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
+const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } });
+const ROLE = 'applicant';
 
-// GET: api/applicants/:id/pfp or api/applicants/:id/resume
-router.get(/^\/([^/]+)\/(pfp|resume)$/, async (req, res, next) => {
-  const match = req.path.match(/^\/([^/]+)\/(pfp|resume)$/);
-  if (!match) return next();
-  const [, id, asset] = match;
+// GET: api/applicants/:id/pfp
+router.get('/:id/pfp', async (req, res) => {
   try {
-    const { buffer, contentType } = asset === 'resume'
-      ? await applicantService.getApplicantResume(id)
-      : await applicantService.getApplicantPfp(id);
+    const { buffer, contentType } = await userService.getPfp(ROLE, req.params.id);
     const body = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer?.data ?? []);
-    if (asset === 'resume') {
-      const inline = req.query.inline === '1' || req.query.inline === 'true';
-      res.set('Content-Disposition', inline ? 'inline; filename="resume.pdf"' : 'attachment; filename="resume.pdf"');
+    res.type(contentType).send(body);
+  } catch (err) {
+    if (err.message === 'User not found' || err.message === 'No profile picture') {
+      return res.status(404).end();
     }
+    res.status(500).end();
+  }
+});
+
+// GET: api/applicants/:id/resume
+router.get('/:id/resume', async (req, res) => {
+  try {
+    const { buffer, contentType } = await applicantService.getApplicantResume(req.params.id);
+    const body = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer?.data ?? []);
+    const inline = req.query.inline === '1' || req.query.inline === 'true';
+    res.set('Content-Disposition', inline ? 'inline; filename="resume.pdf"' : 'attachment; filename="resume.pdf"');
     res.type(contentType).send(body);
   } catch (err) {
     if (err.message === 'Applicant not found') return res.status(404).end();
@@ -54,12 +63,10 @@ router.get('/:id', async (req, res) => {
 router.put('/:id/pfp', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    const result = await applicantService.updateApplicantPfp(
-      req.params.id, req.file.buffer, req.file.mimetype
-    );
+    const result = await userService.updatePfp(ROLE, req.params.id, req.file.buffer, req.file.mimetype);
     res.json(result);
   } catch (error) {
-    if (error.message === 'Applicant not found') return res.status(404).json({ error: error.message });
+    if (error.message === 'User not found') return res.status(404).json({ error: error.message });
     res.status(500).json({ error: 'Failed to update profile picture' });
   }
 });
@@ -81,10 +88,10 @@ router.post('/:id/resume', upload.single('file'), async (req, res) => {
 // POST: api/applicants/:id/delete
 router.post('/:id/delete', async (req, res) => {
   try {
-    await applicantService.deleteApplicant(req.params.id);
+    await userService.deleteAccount(ROLE, req.params.id);
     res.json({ deleted: true });
   } catch (err) {
-    if (err.message === 'Applicant not found') return res.status(404).json({ error: err.message });
+    if (err.message === 'User not found') return res.status(404).json({ error: err.message });
     res.status(500).json({ error: 'Failed to delete account' });
   }
 });

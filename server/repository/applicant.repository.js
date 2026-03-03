@@ -16,29 +16,17 @@ const applicantRepository = {
     return await Applicant.findById(id).select('-password -pfp -resume').lean();
   },
 
-  async deleteById(id) {
-    const result = await Applicant.findByIdAndDelete(id);
-    return result != null;
+  async findByIdForResume(id) {
+    return await Applicant.findById(id).select('resume resumeContentType');
   },
 
-  async findByIdForAsset(id, field) {
-    const key = field === 'pfp' ? 'pfp pfpContentType' : 'resume resumeContentType';
-    return await Applicant.findById(id).select(key);
+  async updateResume(id, buffer, contentType) {
+    return await Applicant.findByIdAndUpdate(
+      id,
+      { resume: buffer, resumeContentType: contentType || 'application/pdf' },
+      { new: true }
+    ).select('-password -pfp -resume').lean();
   },
-
-  async updateAsset(id, field, buffer, contentType) {
-    const update = field === 'pfp'
-      ? { pfp: buffer, pfpContentType: contentType || 'image/jpeg' }
-      : { resume: buffer, resumeContentType: contentType || 'application/pdf' };
-    return await Applicant.findByIdAndUpdate(id, update, { new: true })
-      .select('-password -pfp -resume').lean();
-  },
-
-  // TODO:
-  // create
-  // update
-  // delete
-  // view applied jobs
 };
 
 module.exports = applicantRepository;
