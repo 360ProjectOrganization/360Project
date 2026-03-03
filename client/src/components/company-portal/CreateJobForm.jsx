@@ -2,7 +2,7 @@ import { useState } from "react";
 import { jobPostingApi } from "../../utils/api";
 import { validateCreateJobForm } from "../../utils/validation/validateCreateJobForm";
 
-export default function CreateJobForm({ companyId, onSuccess }) {
+export default function CreateJobForm({ companyId, onSuccess, onCancel }) {
     const [errors, setErrors] = useState({});
     const [createError, setCreateError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -10,6 +10,15 @@ export default function CreateJobForm({ companyId, onSuccess }) {
     const [title, setTitle] = useState("");
     const [location, setLocation] = useState("");
     const [description, setDescription] = useState("");
+
+    function handleCancel() {
+        setTitle("");
+        setLocation("");
+        setDescription("");
+        setErrors({});
+        setCreateError("");
+        onCancel?.();
+    }
 
     async function handleCreate(e) {
         e.preventDefault();
@@ -80,7 +89,7 @@ export default function CreateJobForm({ companyId, onSuccess }) {
             </div>
 
             <div className="job-posting-form-footer">
-                <button id="cancel-btn" type="reset">Cancel</button>
+                <button id="cancel-btn" type="reset" onClick={handleCancel}>Cancel</button>
                 <button id="create-btn" type="submit" disabled={loading}>{loading ? "Creating..." : "Create"}</button>
             </div>
         </form>

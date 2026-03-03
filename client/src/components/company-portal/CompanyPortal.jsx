@@ -24,7 +24,7 @@ export default function CompanyPortal() {
     };
 
     const handleProfileClick = () => {
-        //TODO: once company profile is created, add navigate here
+        //TODO: once company profile is created, add navigation here
     };
 
     return (
@@ -37,8 +37,8 @@ export default function CompanyPortal() {
             
             {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} companyName={companyName} />}
 
-            <Modal isOpen={openModal === "open-modal"} onClose={() => setOpenModal(null)} title="Create New Job Posting">
-                <CreateJobForm companyId={companyId} onSuccess={() => {setOpenModal(null)}}/>
+            <Modal isOpen={openModal === "open-modal"} onClose={() => setOpenModal(false)} title="Create New Job Posting">
+                <CreateJobForm companyId={companyId} onSuccess={() => {setOpenModal(false)}} onCancel={() => setOpenModal(false)}/>
             </Modal>
         </>
     );
