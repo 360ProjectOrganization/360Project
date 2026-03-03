@@ -29,6 +29,22 @@ class CompanyService {
     }
     return await companyRepository.findAnalyticsByCompanyId(companyId);
   }
+
+  async createJobPosting(companyId, data) {
+    const company = await companyRepository.findById(companyId);
+    if (!company) {
+      throw new Error('Company not found');
+    }
+    if (!data.title || typeof data.title !== 'string' || !data.title.trim()) {
+      throw new Error('Title is required');
+    }
+    return await companyRepository.createJobPostingForCompany(companyId, {
+      title: data.title.trim(),
+      location: data.location,
+      description: data.description,
+      tags: data.tags,
+    });
+  }
 }
 
 module.exports = new CompanyService();

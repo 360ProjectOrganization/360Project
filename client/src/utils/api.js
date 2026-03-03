@@ -139,7 +139,10 @@ export const companyApi = {
 };
 
 // job postings API methods
-
+export const jobPostingApi = {
+  createJobPosting: (companyId, data) =>
+    apiRequest(`/companies/${companyId}/create-job`, { method: 'POST', body: data }),
+};
 
 // admin API methods
 export const adminApi = {

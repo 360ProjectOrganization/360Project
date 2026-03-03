@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { companyApi } from "../../utils/api";
+import { jobPostingApi } from "../../utils/api";
 
-export default function CreateJobForm() {
+
+export default function CreateJobForm({ companyId, onSuccess }) {
     const [errors, setErrors] = useState({});
     const [createError, setCreateError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -9,9 +10,6 @@ export default function CreateJobForm() {
     const [title, setTitle] = useState("");
     const [location, setLocation] = useState("");
     const [description, setDescription] = useState("");
-
-    const [cancel, setCancel] = useState(false);
-    const [create, setCreate] = useState(false);
 
     async function handleCreate(e) {
         e.preventDefault();
@@ -26,15 +24,14 @@ export default function CreateJobForm() {
 
         setLoading(true);
         try {
-            const payload = {
-
-            }
-
-            const response = await companyApi.blah(payload);
-            //close modal
+            await jobPostingApi.createJobPosting(companyId, { title, location, description });
+            onSuccess?.();
         }
         catch (err) {
             setCreateError(err.message || "Failed to create job posting");
+        }
+        finally {
+            setLoading(false);
         }
     }
 
