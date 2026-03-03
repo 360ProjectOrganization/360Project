@@ -5,9 +5,13 @@ import CompanyPortalJobPostings from "./CompanyPortalJobPostings.jsx";
 
 export default function CompanyPortal() {
     const [activeView, setActiveview] = useState("postings"); //default view is postings
+    
+    //get company ID from local storage
+    const storedUser = localStorage.getItem("jobly_user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    const companyId = user?._id;
 
     const handlePostingsClick = () => {
-        // display all job postings for a company
         setActiveview("postings");
     };
 
@@ -27,7 +31,7 @@ export default function CompanyPortal() {
                 onProfileClick={handleProfileClick}
             />
             
-            {activeView === "postings" && <CompanyPortalJobPostings/>}
+            {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} />}
         </>
     );
 }
