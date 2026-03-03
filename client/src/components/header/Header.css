@@ -9,7 +9,7 @@
 
 #jobly-container {
     width: 10%;
-    padding: 10px;
+    padding: 20px 10px 10px 10px;
 }
 
 #jobly-container a{
@@ -29,17 +29,16 @@
 }
 
 #user-profile {
+    display: flex;
     text-align: center;
-    width: 7%;
-    margin-right: 6.5em;
-    padding: 1em 0.5em 1em 0.5em;
+    width: 20%;
+    padding: 1em;
 }
 
 #header-logout {
     text-align: center;
     width: 7%;
-    margin-left: 0.5em;
-    padding: 1em 0.5em 1em 0.5em;
+    padding: 1.7em 0.5em 1em 0em;
 }
 
 a:link {

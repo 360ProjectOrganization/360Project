@@ -1,21 +1,30 @@
 import Dropdown from "./Dropdown";
 import "./Header.css";
 import { getToken } from "../../utils/api.js";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
 import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
 import Logout from "./headerButtons/Logout.jsx";
+import ProfilePicture from "./ProfilePicture.jsx";
 
 function Header() {
-    const token = getToken();
-    let userId = "";
-    let userRole = "";
+    const [token, setToken] = useState("");
+    const [role, setRole] = useState("");
 
-    if(token){
+    useEffect(() => {
+        const available_token = getToken();
+        if(available_token){
+            setToken(available_token);
+        };
+    }, [])
+
+    useEffect(() => {
+        if(!token) return;
+    
         const decoded = jwtDecode(token);
-        userId = decoded.id;
-        userRole = decoded.role;  //roles = applicant, company, administrator
-    }
+        setRole(decoded.role);
+    }, [token, role])
 
     return (
         <>
@@ -26,20 +35,23 @@ function Header() {
 
                 <section id="navigation-container">
                     {
-                        userRole === "company" ? <CompanyPortalButton /> : ""
+                        role === "company" ? <CompanyPortalButton /> : ""
                     }
                     {
-                        userRole === "administrator" ? <AdminPortalButton /> : ""
+                        role === "administrator" ? <AdminPortalButton /> : ""
                     }
                 </section>
 
                 <section id="user-profile">
+                    {
+                        role === "applicant" ? <ProfilePicture /> : "" 
+                    }
                     <Dropdown />
                 </section>
 
                 <section id="header-logout">
                     {
-                        userId != "" ? <Logout /> : ""
+                        token ? <Logout /> : ""
                     }
                 </section>
             </section>
