@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CompanyPortalSubNav from "./CompanyPortalSubNav.jsx";
 import CompanyPortalJobPostings from "./CompanyPortalJobPostings.jsx";
+import CreateJobForm from "./CreateJobForm.jsx";
+import Modal from "../common/Modal.jsx";
 
 export default function CompanyPortal() {
     const [activeView, setActiveview] = useState("postings"); //default view is postings
+    const [openModal, setOpenModal] = useState(null);
     
     //get company ID from local storage
     const storedUser = localStorage.getItem("jobly_user");
@@ -16,8 +19,8 @@ export default function CompanyPortal() {
         setActiveview("postings");
     };
 
-    const handleCreateClick = () => {
-        // opens modal for creating a job posting
+    const handleCreateJobPostingClick = () => {
+        setOpenModal("open-modal");
     };
 
     const handleProfileClick = () => {
@@ -28,11 +31,15 @@ export default function CompanyPortal() {
         <>
             <CompanyPortalSubNav
                 onPostingsClick={handlePostingsClick}
-                onCreateClick={handleCreateClick}
+                onCreateClick={handleCreateJobPostingClick}
                 onProfileClick={handleProfileClick}
             />
             
             {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} companyName={companyName} />}
+
+            <Modal isOpen={openModal === "open-modal"} onClose={() => setOpenModal(null)} title="Create New Job Posting">
+                <CreateJobForm companyId={companyId} onSuccess={() => {setOpenModal(null)}}/>
+            </Modal>
         </>
     );
 }

@@ -1,0 +1,47 @@
+.modal-background {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    width: 80vw;
+    height: 80vh;
+    border-radius: 8px;
+    background-color: var(--color-card-bg);
+    border: 3px solid var(--color-cta-secondary);
+    overflow-y: auto;
+    box-shadow: 0 20px 60px var(--color-card-shadow);
+}
+
+.modal-container hr {
+    border: none;
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: var(--color-title-alt);
+    height: 2px;
+    border-radius: 100px;
+}
+
+.modal-header { 
+    position: relative;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    color: var(--color-title-alt);
+}
+
+.modal-header button {
+    position: absolute;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--color-title-alt);
+    font-weight: bold;
+}
