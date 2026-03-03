@@ -8,6 +8,7 @@ import Modal from "../common/Modal.jsx";
 export default function CompanyPortal() {
     const [activeView, setActiveview] = useState("postings"); //default view is postings
     const [openModal, setOpenModal] = useState(null);
+    const [refreshKey, setRefreshKey] = useState(0);
     
     //get company ID from local storage
     const storedUser = localStorage.getItem("jobly_user");
@@ -35,10 +36,10 @@ export default function CompanyPortal() {
                 onProfileClick={handleProfileClick}
             />
             
-            {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} companyName={companyName} />}
+            {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} companyName={companyName} refreshKey={refreshKey} />}
 
             <Modal isOpen={openModal === "open-modal"} onClose={() => setOpenModal(false)} title="Create New Job Posting">
-                <CreateJobForm companyId={companyId} onSuccess={() => {setOpenModal(false)}} onCancel={() => setOpenModal(false)}/>
+                <CreateJobForm companyId={companyId} onSuccess={() => { setOpenModal(false); setRefreshKey((k) => k + 1); }} onCancel={() => setOpenModal(false)}/>
             </Modal>
         </>
     );

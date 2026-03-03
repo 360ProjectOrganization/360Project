@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { companyApi } from "../../utils/api.js";
 
-export default function CompanyPostalJobPostings({ companyId, companyName }) {
+export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey }) {
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -24,7 +24,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName }) {
         }
 
         load();
-    }, [companyId]);
+    }, [companyId, refreshKey]);
 
     if (!companyId) return <div style={{ padding: "20px" }}>Missing company id.</div>;
     if (loading) return <div style={{ padding: "20px" }}>Loading job postings...</div>;
@@ -42,11 +42,11 @@ export default function CompanyPostalJobPostings({ companyId, companyName }) {
         <section className="job-postings-container">
             <h2>Company {companyName} Current Postings</h2>
 
-            {jobPostings.map((p) => {
-                <div>
-                    posting fr
+            {jobPostings.map((p) => (
+                <div key={p._id || p.id}>
+                    {p.title}
                 </div>
-            })}
+            ))}
         </section>
     );
 }

@@ -19,7 +19,7 @@ export default function CreateJobForm({ companyId, onSuccess, onCancel }) {
         setCreateError("");
         onCancel?.();
     }
-
+    
     async function handleCreate(e) {
         e.preventDefault();
         setCreateError("");
@@ -34,6 +34,10 @@ export default function CreateJobForm({ companyId, onSuccess, onCancel }) {
         setLoading(true);
         try {
             await jobPostingApi.createJobPosting(companyId, { title, location, description });
+            setTitle("");
+            setLocation("");
+            setDescription("");
+            setErrors({});
             onSuccess?.();
         }
         catch (err) {
