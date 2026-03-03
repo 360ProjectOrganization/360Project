@@ -71,6 +71,16 @@
     border: 2px solid var(--color-cta-secondary);
 }
 
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.error-text {
+    color: red;
+    margin-top: 5px;
+}
+
 .job-posting-form-footer {
     margin-top: auto;
     display: flex;
