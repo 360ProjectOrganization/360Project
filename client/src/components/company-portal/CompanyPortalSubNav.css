@@ -7,6 +7,7 @@
 }
 
 .company-portal-btn {
+    cursor: pointer;
     width: 20%;
     border-radius: 8px;
     padding: 20px;
@@ -15,5 +16,5 @@
 }
 
 .company-portal-btn:hover {
-    background-color: var(--color-cta-secondary);
+    background-color: var(--color-card-bg-alt);
 }
