@@ -1,4 +1,4 @@
-import "./CompanyPortalSubNav.css";
+import "./CompanyPortal.css";
 
 export default function CompanyPortalSubNav({onPostingsClick, onCreateClick, onProfileClick}) {
     return (
