@@ -1,0 +1,19 @@
+.subnav-container {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    padding: 15px;
+    background-color: var(--color-divider);
+}
+
+.company-portal-btn {
+    width: 20%;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: var(--color-card-bg);
+    color: var(--color-cta-primary);
+}
+
+.company-portal-btn:hover {
+    background-color: var(--color-cta-secondary);
+}
