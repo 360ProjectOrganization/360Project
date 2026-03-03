@@ -105,6 +105,13 @@ Base URL for API: `/api`.
 | PUT | `/api/companies/:id/pfp` | Upload or replace company's profile picture | `multipart/form-data` with `file` | Updated company object |
 | POST | `/api/companies/:id/delete` | Delete a company account | — | `{ deleted: true }` |
 
+### Admin
+
+| Method | Endpoint | Description | Request | Response |
+|--------|----------|-------------|---------|----------|
+| GET | `/api/admin/:id/pfp` | Get administrator's profile picture (or default) | — | Image body; `Content-Type` set |
+| PUT | `/api/admin/:id/pfp` | Upload or replace administrator's profile picture | `multipart/form-data` with `file` | Updated administrator object |
+
 ## Authentication
 
 - **JWT:** Login and register returns a `token`, the client sends it as `Authorization: Bearer <token>` on protected requests.
