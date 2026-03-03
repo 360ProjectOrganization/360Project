@@ -125,12 +125,32 @@ export const companyApi = {
 
   getAnalytics: (companyId) =>
     apiRequest(`/companies/${companyId}/analytics`),
+
+  getPfpUrl: (id) => `${API_BASE}/companies/${id}/pfp`,
+
+  uploadPfp: (id, file) => {
+    const form = new FormData();
+    form.append('file', file);
+    return apiRequest(`/companies/${id}/pfp`, { method: 'PUT', body: form });
+  },
+
+  deleteAccount: (id) =>
+    apiRequest(`/companies/${id}/delete`, { method: 'POST' }),
 };
 
 // job postings API methods
 
 
 // admin API methods
+export const adminApi = {
+  getPfpUrl: (id) => `${API_BASE}/admin/${id}/pfp`,
+
+  uploadPfp: (id, file) => {
+    const form = new FormData();
+    form.append('file', file);
+    return apiRequest(`/admin/${id}/pfp`, { method: 'PUT', body: form });
+  },
+};
 
 
 
