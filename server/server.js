@@ -7,6 +7,7 @@ const { connectDB, closeDB } = require('./repository/connection');
 const applicantRoutes = require('./controller/applicant.controller');
 const authRoutes = require('./controller/auth.controller');
 const companyRoutes = require('./controller/company.controller');
+const adminRoutes = require('./controller/admin.controller');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -36,6 +37,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/applicants', applicantRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/companies', companyRoutes);
+app.use('/api/admin', adminRoutes);
 
 // start server
 async function startServer() {
