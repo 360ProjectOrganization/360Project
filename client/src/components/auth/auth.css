@@ -1,0 +1,14 @@
+.imgContainer{
+    display: flex;
+    align-items: center;
+}
+.imgContainer figure{
+    margin: 10px;
+    text-align: center;
+
+}
+.imgContainer img{
+    width: 70%;
+    height: 70%;
+    cursor: pointer;
+}

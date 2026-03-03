@@ -1,0 +1,56 @@
+#header-container {
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    padding: 10px;
+    border-bottom: solid 1px var(--color-divider);
+    background-color: var(--color-page-bg);
+    border-radius: 10px;
+}
+
+#jobly-container {
+    width: 10%;
+    padding: 10px;
+}
+
+#jobly-container a{
+    color: var(--color-title);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#navigation-container {
+    width: 70%;
+    margin-left: 1em;
+    padding: 1em;
+}
+
+#navigation-container a {
+    padding: 0.5em;
+}
+
+#user-profile {
+    text-align: center;
+    width: 7%;
+    margin-right: 6.5em;
+    padding: 1em 0.5em 1em 0.5em;
+}
+
+#header-logout {
+    text-align: center;
+    width: 7%;
+    margin-left: 0.5em;
+    padding: 1em 0.5em 1em 0.5em;
+}
+
+a:link {
+    text-decoration: none;
+    color: antiquewhite;
+}
+
+a:visited {
+    color: antiquewhite;
+}
+
+a:hover {
+    cursor: pointer;
+}
