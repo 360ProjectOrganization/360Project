@@ -64,6 +64,25 @@ const companyRepository = {
       fillRate,
     };
   },
+
+  async createJobPostingForCompany(companyId, jobData) {
+    const company = await Company.findById(companyId);
+    if (!company) return null;
+
+    const job = await JobPosting.create({
+      title: jobData.title,
+      location: jobData.location ?? '',
+      description: jobData.description ?? '',
+      tags: jobData.tags ?? [],
+      status: 'ACTIVE',
+      publishedAt: new Date(),
+    });
+
+    company.jobPostings.push(job._id);
+    await company.save();
+
+    return job.toObject ? job.toObject() : job;
+  },
 };
 
 module.exports = companyRepository;
