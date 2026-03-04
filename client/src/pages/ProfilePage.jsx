@@ -74,13 +74,30 @@ function ProfilePage () {
 
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
+                    <h2>{role}</h2>
+                    <span id="profile-button-layout">
+                        <button id="edit-profile">
+                            <a>
+                                Edit Profile
+                            </a>
+                        </button>
+                        <button id="upload-resume">
+                            <a>
+                                Upload Resume
+                            </a>
+                        </button>
+                        <button id="download-resume">
+                            <a>
+                                Download Resume
+                            </a>
+                        </button>
+                    </span>
 
                 </section>
-
-                <section id="profile-buttons">
-                    <h1>Buttons</h1>
-
-                </section>
+            </section>
+            
+            <section id="applied-to-container">
+                <h2>My Recent Job Applications</h2>
             </section>
             
         </>

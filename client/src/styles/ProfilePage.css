@@ -3,14 +3,14 @@
     height: 30%;
     padding: 1em;
     gap: 1em;
-    background-color: purple;
+    background-color: var(--color-divider);
 }
 
 #profile-picture-section{
     align-content: center;
     text-align: center;
     width: 20%;
-    background-color: blue
+    /* background-color: blue */
 }
 
 #profile-picture-section img {
@@ -20,13 +20,50 @@
 }
 
 #profile-details {
+    color: var(--color-title);
     align-content: center;
     padding-left: 1em;
-    width: 20%;
-    background-color: yellow;
+    width: 80%;
+    /* background-color: yellow; */
 }
 
-#profile-buttons{
-    width: 60%;
-    background-color: red;
+#edit-profile {
+    padding: 0.5em;
+    margin-right: 1em;
+    width: 8em;
+    background-color: var(--color-cta-secondary-darker);
+    a {
+        font-size: 1em;
+        color: white;
+    }
+}
+
+#upload-resume {
+    padding: 0.5em;
+    margin-right: 1em;
+    width: 10em;
+    background-color: var(--color-cta-secondary);
+    a {
+        font-size: 1em;
+        color: white;
+    }
+}
+
+#download-resume {
+    padding: 0.5em;
+    margin-right: 1em;
+    width: 10em;
+    background-color: var(--color-cta-primary);
+    a {
+        font-size: 1em;
+        color: white;
+    }
+}
+
+/* APPLIED TO CONTAINER CSS */
+#applied-to-container {
+    width: auto;
+    height: auto;
+    color: var(--color-title);
+    padding-left: 5em;
 }
