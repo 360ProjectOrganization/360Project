@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { validateCreateJobForm } from "../../utils/validation/validateCreateJobForm";
+import { validateCreateJobForm } from "../../utils/validation/validateCreateJobForm.js";
 
 export default function JobPostingForm({
     initialValues = { title: "", location: "", description: "" },
     submitLabel = "Save",
     submittingLabel = "Saving...",
-    onsubmit,
+    onSubmit,
     onCancel
 }) {
     const [errors, setErrors] = useState({});
@@ -99,7 +99,7 @@ export default function JobPostingForm({
             </div>
 
             <div className="job-posting-form-footer">
-                <button id="cancel-btn" type="reset" onClick={handleCancel}>Cancel</button>
+                <button id="cancel-btn" type="button" onClick={handleCancel}>Cancel</button>
                 <button id="create-btn" type="submit" disabled={loading}>{loading ? submittingLabel : submitLabel}</button>
             </div>
         </form>

@@ -1,5 +1,5 @@
-import { jobPostingApi } from "../../utils/api";
-import JobPostingForm from "./JobPostingForm";
+import { jobPostingApi } from "../../utils/api.js";
+import JobPostingForm from "./JobPostingForm.jsx";
 
 export default function CreateJobForm({ companyId, onSuccess, onCancel }) {
     return (

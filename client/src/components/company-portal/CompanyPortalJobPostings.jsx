@@ -1,10 +1,24 @@
 import { useEffect, useState } from "react";
 import { companyApi } from "../../utils/api.js";
 import Card from "../common/Card.jsx";
+import Modal from "../common/Modal.jsx";
+import EditJobForm from "./EditJobForm.jsx";
 
 export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey }) {
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [selectedPosting, setSelectedPosting] = useState(null);
+
+    const openEdit = (posting) => {
+        setSelectedPosting(posting);
+        setIsEditOpen(true);
+    };
+    const closeEdit = () => {
+        setIsEditOpen(false);
+        setSelectedPosting(null);
+    };
 
     const handleStatusChange = async (jobId, newStatus) => {
         //TODO: once job posting update endpoint is created, implement function here
@@ -52,7 +66,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                 {jobPostings.map((p) => (
                     <Card key={p._id} title={p.title} footer={
                         <div className="card-actions">
-                            <button className="job-card-edit-btn">Edit</button>
+                            <button className="job-card-edit-btn" onClick={() => openEdit(p)}>Edit</button>
                             <button className="job-card-delete-btn">Delete</button>
                         </div>
                     }>
@@ -70,6 +84,20 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                     </Card>
                 ))}
             </section>
+
+            {/* edit modal */}
+            <Modal isOpen={isEditOpen} onClose={closeEdit} title="Edit Job Posting">
+                <EditJobForm posting={selectedPosting} onCancel={closeEdit} onSuccess={(updatedValues) => {
+                        closeEdit();
+                        if (!(selectedPosting?._id)) return;
+                        setJobPostings((prev) =>
+                            prev.map((jobpost) =>
+                                jobpost._id === id ? { ...jobpost, ...updatedValues } : jobpost
+                            )
+                        );
+                    }}
+                />
+            </Modal>
         </section>
     );
 }
