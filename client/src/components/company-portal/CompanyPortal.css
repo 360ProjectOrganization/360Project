@@ -145,12 +145,48 @@
     cursor: pointer;
 }
 
-#cancel-btn, 
+.form-action-btn,
+#cancel-btn,
 #create-btn {
     background-color: var(--color-icon-dark);
     color: var(--color-text-on-dark);
 }
 
-#cancel-btn:hover, #create-btn:hover {
+.form-action-btn:hover,
+#cancel-btn:hover,
+#create-btn:hover {
     background-color: var(--color-cta-secondary);
+}
+
+.delete-modal-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding: 20px 20px 0 20px;
+    text-align: center;
+}
+
+.delete-modal-content strong {
+    white-space: nowrap;
+}
+
+.delete-modal-content .modal-actions {
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    border-top: 1px solid var(--color-divider);
+}
+
+.modal-actions .form-action-btn {
+    padding: 8px 25px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
 }

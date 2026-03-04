@@ -4,11 +4,13 @@ import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import EditJobForm from "./EditJobForm.jsx";
 
+
 export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey }) {
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
 
     const openEdit = (posting) => {
@@ -19,6 +21,14 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         setIsEditOpen(false);
         setSelectedPosting(null);
     };
+    const openDelete = (posting) => {
+        setSelectedPosting(posting);
+        setIsDeleteOpen(true);
+    }
+    const closeDelete = () => {
+        setIsDeleteOpen(false);
+        setSelectedPosting(null);
+    }
 
     const handleStatusChange = async (jobId, newStatus) => {
         //TODO: once job posting update endpoint is created, implement function here
@@ -67,7 +77,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                     <Card key={p._id} title={p.title} footer={
                         <div className="card-actions">
                             <button className="job-card-edit-btn" onClick={() => openEdit(p)}>Edit</button>
-                            <button className="job-card-delete-btn">Delete</button>
+                            <button className="job-card-delete-btn" onClick={() => openDelete(p)}>Delete</button>
                         </div>
                     }>
                         {/* children */}
@@ -97,6 +107,24 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                         );
                     }}
                 />
+            </Modal>
+
+            {/* delete modal */}
+            <Modal isOpen={isDeleteOpen} onClose={closeDelete} title="Delete Job Posting" size="small">
+                {selectedPosting && (
+                    <div className="delete-modal-content">
+                        <p>Are you sure you want to delete <strong>{selectedPosting.title}</strong>?</p>
+                        <div className="modal-actions">
+                            <button className="form-action-btn" type="button" onClick={closeDelete}>Cancel</button>
+                            <button className="form-action-btn" type="button" onClick={() => {
+                                    //TODO: implement API call, might look a little different from comment below
+                                    // await jobPostingApi.deleteJobPosting(selectedPosting._id);
+                                    closeDelete();
+                                }}
+                            >Confirm</button>
+                        </div>
+                    </div>
+                )}
             </Modal>
         </section>
     );
