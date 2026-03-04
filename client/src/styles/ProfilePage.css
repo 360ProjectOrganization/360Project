@@ -1,0 +1,32 @@
+#profile-container {
+    display: flex;
+    height: 30%;
+    padding: 1em;
+    gap: 1em;
+    background-color: purple;
+}
+
+#profile-picture-section{
+    align-content: center;
+    text-align: center;
+    width: 20%;
+    background-color: blue
+}
+
+#profile-picture-section img {
+    width: 70%;
+    height: 90%;
+    border-radius: 120px;
+}
+
+#profile-details {
+    align-content: center;
+    padding-left: 1em;
+    width: 20%;
+    background-color: yellow;
+}
+
+#profile-buttons{
+    width: 60%;
+    background-color: red;
+}
