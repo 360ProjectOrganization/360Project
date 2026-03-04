@@ -53,11 +53,13 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                 setLoadError(null);
                 const data = await companyApi.getJobPostings(companyId);
                 setJobPostings(data);
-            } catch (err) {
+            }
+            catch (err) {
                 console.error("Failed to load job postings: ", err);
                 setLoadError(err?.message || "Failed to load job postings");
                 setJobPostings([]);
-            } finally {
+            }
+            finally {
                 setLoading(false);
             }
         }
