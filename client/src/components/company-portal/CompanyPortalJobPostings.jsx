@@ -8,6 +8,7 @@ import EditJobForm from "./EditJobForm.jsx";
 export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey }) {
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState(null);
 
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -24,16 +25,24 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     const openDelete = (posting) => {
         setSelectedPosting(posting);
         setIsDeleteOpen(true);
-    }
+    };
     const closeDelete = () => {
         setIsDeleteOpen(false);
         setSelectedPosting(null);
-    }
+    };
 
-    const handleStatusChange = async (jobId, newStatus) => {
-        //TODO: once job posting update endpoint is created, implement function here
-        console.log("Updating job status not implemented yet");
-    }
+    const handleStatusChange = (jobId, newStatus) => {
+        setJobPostings((prev) =>
+            prev.map((p) => (p._id === jobId ? { ...p, status: newStatus } : p))
+        );
+    };
+
+    const handleDeleteConfirm = () => {
+        const id = selectedPosting?._id;
+        if (!id) return;
+        setJobPostings((prev) => prev.filter((p) => p._id !== id));
+        closeDelete();
+    };
 
     useEffect(() => {
         if (!companyId) return;
@@ -41,14 +50,14 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         async function load() {
             try {
                 setLoading(true);
+                setLoadError(null);
                 const data = await companyApi.getJobPostings(companyId);
                 setJobPostings(data);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error("Failed to load job postings: ", err);
+                setLoadError(err?.message || "Failed to load job postings");
                 setJobPostings([]);
-            }
-            finally {
+            } finally {
                 setLoading(false);
             }
         }
@@ -58,6 +67,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
 
     if (!companyId) return <div style={{ padding: "20px" }}>Missing company id.</div>;
     if (loading) return <div style={{ padding: "20px" }}>Loading job postings...</div>;
+    if (loadError) return <div style={{ padding: "20px" }} className="error-text">{loadError}</div>;
     if (!companyName) companyName = "NULL";
     
     if (jobPostings.length === 0) {
@@ -80,9 +90,8 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                             <button className="job-card-delete-btn" onClick={() => openDelete(p)}>Delete</button>
                         </div>
                     }>
-                        {/* children */}
-                        <p><strong>Location: </strong>{p.location}</p>
-                        <p><strong>Description: </strong>{p.description}</p>
+                        <p><strong>Location: </strong>{p.location || "—"}</p>
+                        <p><strong>Description: </strong>{p.description || "—"}</p>
                         <p>
                             <strong>Status: </strong>
                             <select className={`pstatus ${p.status.toLowerCase()}`} value={p.status} onChange={(e) => handleStatusChange(p._id, e.target.value)}>
@@ -98,8 +107,9 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
             {/* edit modal */}
             <Modal isOpen={isEditOpen} onClose={closeEdit} title="Edit Job Posting">
                 <EditJobForm posting={selectedPosting} onCancel={closeEdit} onSuccess={(updatedValues) => {
+                        const id = selectedPosting?._id;
                         closeEdit();
-                        if (!(selectedPosting?._id)) return;
+                        if (!id) return;
                         setJobPostings((prev) =>
                             prev.map((jobpost) =>
                                 jobpost._id === id ? { ...jobpost, ...updatedValues } : jobpost
@@ -116,12 +126,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                         <p>Are you sure you want to delete <strong>{selectedPosting.title}</strong>?</p>
                         <div className="modal-actions">
                             <button className="form-action-btn" type="button" onClick={closeDelete}>Cancel</button>
-                            <button className="form-action-btn" type="button" onClick={() => {
-                                    //TODO: implement API call, might look a little different from comment below
-                                    // await jobPostingApi.deleteJobPosting(selectedPosting._id);
-                                    closeDelete();
-                                }}
-                            >Confirm</button>
+                            <button className="form-action-btn" type="button" onClick={handleDeleteConfirm}>Confirm</button>
                         </div>
                     </div>
                 )}
