@@ -20,7 +20,46 @@
 }
 
 .job-postings-layout {
-    background-color: pink;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    border-radius: 8px;
+    margin: 10px;
+    gap: 10px;
+}
+
+.job-card-edit-btn {
+    background-color: var(--color-card-bg-alt);
+    border: 2px solid var(--color-cta-secondary-darker);
+    width: 100px;
+    height: 30px;
+}
+
+.job-card-delete-btn {
+    background-color: var(--color-cta-primary);
+    border: 2px solid var(--color-cta-secondary-darker);
+    color: var(--color-text-on-dark);
+    width: 100px;
+    height: 30px;
+}
+
+.pstatus {
+    border-radius: 8px;
+    width: 120px;
+}
+
+.pstatus.active {
+    color: green;
+    font-weight: bold;
+}
+
+.pstatus.unpublished {
+    color: orange;
+    font-weight: bold;
+}
+
+.pstatus.closed {
+    color: orangered;
+    font-weight: bold;
 }
 
 .job-posting-form {

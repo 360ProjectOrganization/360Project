@@ -6,6 +6,11 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const handleStatusChange = async (jobId, newStatus) => {
+        //TODO: once job posting update endpoint is created, implement function here
+        console.log("Updating job status not implemented yet");
+    }
+
     useEffect(() => {
         if (!companyId) return;
 
@@ -51,9 +56,17 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                             <button className="job-card-delete-btn">Delete</button>
                         </div>
                     }>
+                        {/* children */}
                         <p><strong>Location: </strong>{p.location}</p>
                         <p><strong>Description: </strong>{p.description}</p>
-                        <p><strong>Status: </strong>{p.status}</p>
+                        <p>
+                            <strong>Status: </strong>
+                            <select className={`pstatus ${p.status.toLowerCase()}`} value={p.status} onChange={(e) => handleStatusChange(p._id, e.target.value)}>
+                                <option value="ACTIVE">Active</option>
+                                <option value="UNPUBLISHED">Unpublished</option>
+                                <option value="CLOSED">Closed</option>
+                            </select>
+                        </p>
                     </Card>
                 ))}
             </section>
