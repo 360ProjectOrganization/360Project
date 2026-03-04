@@ -4,7 +4,7 @@ function CompanyPortalButton() {
 
     return (
         <button className="header-button-company">
-            <a href="/"> {/* To be added later */}
+            <a href="/company-portal">
                 Company Portal
             </a>
         </button>
