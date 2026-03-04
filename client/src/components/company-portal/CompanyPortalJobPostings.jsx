@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { companyApi } from "../../utils/api.js";
+import Card from "../common/Card.jsx";
 
 export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey }) {
     const [jobPostings, setJobPostings] = useState([]);
@@ -40,13 +41,22 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
 
     return (
         <section className="job-postings-container">
-            <h2>Company {companyName} Current Postings</h2>
+            <h2>{companyName}'s Current Postings</h2>
 
-            {jobPostings.map((p) => (
-                <div key={p._id || p.id}>
-                    {p.title}
-                </div>
-            ))}
+            <section className="job-postings-layout">
+                {jobPostings.map((p) => (
+                    <Card key={p._id} title={p.title} footer={
+                        <div className="card-actions">
+                            <button className="job-card-edit-btn">Edit</button>
+                            <button className="job-card-delete-btn">Delete</button>
+                        </div>
+                    }>
+                        <p><strong>Location: </strong>{p.location}</p>
+                        <p><strong>Description: </strong>{p.description}</p>
+                        <p><strong>Status: </strong>{p.status}</p>
+                    </Card>
+                ))}
+            </section>
         </section>
     );
 }

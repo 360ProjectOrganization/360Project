@@ -19,6 +19,10 @@
     background-color: var(--color-card-bg-alt);
 }
 
+.job-postings-layout {
+    background-color: pink;
+}
+
 .job-posting-form {
     flex: 1;
     min-height: 0;
