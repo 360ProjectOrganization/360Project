@@ -2,7 +2,7 @@ import Header from "../components/header/Header.jsx"
 import "../styles/ProfilePage.css"
 import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi, companyApi } from "../utils/api.js"
+import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js"
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -19,15 +19,12 @@ function ProfilePage () {
         };
     }, [])
 
-    // Set ID
+    // Set Role
     useEffect(() => {
         if(!token) return;
         const decoded = jwtDecode(token);
         setRole(decoded.role);
-
-        if(role != "administrator"){
-            setId(decoded.id);
-        }
+        setId(decoded.id)
     }, [token, role])
 
     // Set Img and Name
@@ -40,14 +37,33 @@ function ProfilePage () {
             }else if (role === "company"){
                 const fetchCompanyInfo = await companyApi.getById(id);
                 let companyName = fetchCompanyInfo.name;
-                console.log(companyName)
                 setEnrolledName(companyName);
+            }else if(role === "administrator"){
+                setEnrolledName("Admin");
+            }else{
+                console.log("No role identified for setting name")
+                return;
             }
         };
         async function getUserPfp(){
-            if(id && role === "applicant"){
-                const userPfpURL = applicantApi.getPfpUrl(id);
-                let response = await fetch(userPfpURL, {
+            if(id){
+                let url = ""
+                switch(role){
+                    case "applicant":
+                        url = applicantApi.getPfpUrl(id);
+                        break;
+                    case "company":
+                        url = companyApi.getPfpUrl(id);
+                        break;
+                    case "administrator":
+                        url = adminApi.getPfpUrl(id);
+                        break;
+                    default:
+                        console.log("No role identified for pfp retrieval");
+                        return;
+                }
+
+                let response = await fetch(url, {
                     method: "GET"
                 });
 
@@ -82,24 +98,40 @@ function ProfilePage () {
                                 Edit Profile
                             </a>
                         </button>
-                        <button id="upload-resume">
-                            <a>
-                                Upload Resume
-                            </a>
-                        </button>
-                        <button id="download-resume">
-                            <a>
-                                Download Resume
-                            </a>
-                        </button>
+                        {
+                            role != "administrator" ?
+                                
+                                <>
+                                    <button id="upload-resume">
+                                        <a>
+                                            Upload Resume
+                                        </a>
+                                    </button>
+                                    <button id="download-resume">
+                                        <a>
+                                            Download Resume
+                                        </a>
+                                    </button>
+                                </>
+
+                            :""
+                        }
                     </span>
 
                 </section>
             </section>
             
-            <section id="applied-to-container">
-                <h2>My Recent Job Applications</h2>
-            </section>
+            {
+                role != "administrator" ? 
+                
+                    <section id="applied-to-container">
+                        <h2>My Recent Job Applications</h2>
+                    </section> 
+                
+
+                : ""
+            }
+            
             
         </>
     )
