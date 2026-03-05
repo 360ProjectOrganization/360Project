@@ -3,6 +3,7 @@ import "../styles/ProfilePage.css"
 import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode";
 import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js"
+import Card from "../components/common/Card.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -12,8 +13,13 @@ function ProfilePage () {
     const [email, setEmail] = useState("");
     const [id, setId] = useState("");
 
+    const [companyId, setCompanyId] = useState([]);
+
     const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
+    const [jobInfo, setJobInfo] = useState([]);
     const [image, setImage] = useState("");
+    // Create array, create object in function below with ...update, push job to array
+    // Map over this array later
 
     function convertToDate (date){
         const nonUTC = new Date(date);
@@ -29,8 +35,6 @@ function ProfilePage () {
             setToken(available_token);
         };
     }, [])
-
-    // Use /aplicants/:id to get more info for jobs applied to, email, createdDate
 
     // Set Role
     useEffect(() => {
@@ -97,6 +101,56 @@ function ProfilePage () {
         getUserPfp();
     }, [id])
 
+    // Narrow down application to related company
+    useEffect(() => {
+        if(!jobsAppliedTo) return;
+        const id_arr = []
+        async function getCompanyIDs(){
+            const allCompanies = await companyApi.getAll();
+            for(let i = 0; i < allCompanies.length; i++){
+                const postings = allCompanies[i].jobPostings;
+                function match (job) {
+                    return jobsAppliedTo.includes(job)
+                }
+                const matchExists = postings.some(match)
+                if(matchExists){
+                    id_arr.push(allCompanies[i]._id)
+                }
+            }
+            setCompanyId(id_arr)
+        }
+        getCompanyIDs();
+    }, [jobsAppliedTo])
+
+    useEffect(() => {
+        const jobs_arr = []
+        async function getJobInfo(){
+            for(let i = 0; i<companyId.length; i++){
+                const companyPostings = await companyApi.getJobPostings(companyId[i]);
+                for(let j = 0; j<companyPostings.length; j++){
+                    const postingApplicants = companyPostings[j].applicants;
+                    function matchApplicant (userId){
+                        return id.includes(userId)
+                    }
+                    const applicantMatchExists = postingApplicants.some(matchApplicant);
+                    if(applicantMatchExists){
+                        jobs_arr.push({
+                            ...jobInfo,
+                            id: companyPostings[j]._id,
+                            title: companyPostings[j].title,
+                            location: companyPostings[j].location,
+                            description: companyPostings[j].description,
+                            status: companyPostings[j].status
+                        })
+                        
+                    }
+                }
+            }
+            setJobInfo(jobs_arr);
+        }
+        getJobInfo();
+    }, [companyId])
+
     return (
         <>
             <Header />
@@ -146,12 +200,11 @@ function ProfilePage () {
                     <section id="applied-to-container">
                         <h2>My Recent Job Applications</h2>
                         {
-                            jobsAppliedTo.map((item) => {
-                                // TODO
+                            jobInfo.map((details) => {
+                                console.log(details.title)
                             })
                         }
                     </section> 
-                
 
                 : ""
             }
