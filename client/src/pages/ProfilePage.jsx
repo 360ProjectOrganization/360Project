@@ -2,7 +2,7 @@ import Header from "../components/header/Header.jsx"
 import "../styles/ProfilePage.css"
 import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi } from "../utils/api.js"
+import { getToken, applicantApi, companyApi } from "../utils/api.js"
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -40,11 +40,12 @@ function ProfilePage () {
             }else if (role === "company"){
                 const fetchCompanyInfo = await companyApi.getById(id);
                 let companyName = fetchCompanyInfo.name;
+                console.log(companyName)
                 setEnrolledName(companyName);
             }
         };
         async function getUserPfp(){
-            if(id){
+            if(id && role === "applicant"){
                 const userPfpURL = applicantApi.getPfpUrl(id);
                 let response = await fetch(userPfpURL, {
                     method: "GET"
