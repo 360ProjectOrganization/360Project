@@ -8,8 +8,19 @@ function ProfilePage () {
     const [token, setToken] = useState("");
     const [enrolledName, setEnrolledName] = useState("");
     const [role, setRole] = useState("");
+    const [memberSince, setMemberSince] = useState("");
+    const [email, setEmail] = useState("");
     const [id, setId] = useState("");
+
+    const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
     const [image, setImage] = useState("");
+
+    function convertToDate (date){
+        const nonUTC = new Date(date);
+        const dateString = nonUTC.toString();
+        const finalDate = dateString.substring(4,15);
+        return finalDate;
+    }
 
     // Token
     useEffect(() => {
@@ -18,6 +29,8 @@ function ProfilePage () {
             setToken(available_token);
         };
     }, [])
+
+    // Use /aplicants/:id to get more info for jobs applied to, email, createdDate
 
     // Set Role
     useEffect(() => {
@@ -30,19 +43,25 @@ function ProfilePage () {
     // Set Img and Name
     useEffect(() => {
         async function getUserName(){
-            if(role === "applicant"){
-                const fetchApplicanInfo = await applicantApi.getById(id);
-                const applicantName = fetchApplicanInfo.name;
-                setEnrolledName(applicantName);
-            }else if (role === "company"){
-                const fetchCompanyInfo = await companyApi.getById(id);
-                let companyName = fetchCompanyInfo.name;
-                setEnrolledName(companyName);
-            }else if(role === "administrator"){
-                setEnrolledName("Admin");
-            }else{
-                console.log("No role identified for setting name")
-                return;
+            switch (role){
+                case "applicant":
+                    const fetchApplicanInfo = await applicantApi.getById(id);
+                    const acctCreatedAt = convertToDate(fetchApplicanInfo.createdAt);
+
+                    setEnrolledName(fetchApplicanInfo.name);
+                    setEmail(fetchApplicanInfo.email);
+                    setMemberSince(acctCreatedAt);
+                    setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
+                    break;
+                case "company":
+                    const fetchCompanyInfo = await companyApi.getById(id);
+                    setEnrolledName(fetchCompanyInfo.name);
+                    break;
+                case "administrator":
+                    setEnrolledName("Admin");
+                    break;
+                default:
+                    return;
             }
         };
         async function getUserPfp(){
@@ -91,7 +110,7 @@ function ProfilePage () {
 
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
-                    <h2>{role}</h2>
+                    <h2>Member Since: {memberSince} | {email}</h2>
                     <span id="profile-button-layout">
                         <button id="edit-profile">
                             <a>
@@ -126,6 +145,11 @@ function ProfilePage () {
                 
                     <section id="applied-to-container">
                         <h2>My Recent Job Applications</h2>
+                        {
+                            jobsAppliedTo.map((item) => {
+                                // TODO
+                            })
+                        }
                     </section> 
                 
 
