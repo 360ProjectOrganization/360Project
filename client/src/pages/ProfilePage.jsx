@@ -7,18 +7,17 @@ import Card from "../components/common/Card.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
-    
     const [enrolledName, setEnrolledName] = useState("");
-    const [role, setRole] = useState("");
-    const [memberSince, setMemberSince] = useState("");
-    const [email, setEmail] = useState("");
     const [id, setId] = useState("");
+    const [role, setRole] = useState("");
+    const [email, setEmail] = useState("");
+    const [memberSince, setMemberSince] = useState("");
+    const [image, setImage] = useState("");
 
     const [companyId, setCompanyId] = useState([]);
 
     const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
     const [jobInfo, setJobInfo] = useState([]);
-    const [image, setImage] = useState("");
 
     function convertToDate (date){
         const nonUTC = new Date(date);
@@ -49,16 +48,16 @@ function ProfilePage () {
             switch (role){
                 case "applicant":
                     const fetchApplicanInfo = await applicantApi.getById(id);
-                    const acctCreatedAt = convertToDate(fetchApplicanInfo.createdAt);
-
                     setEnrolledName(fetchApplicanInfo.name);
                     setEmail(fetchApplicanInfo.email);
-                    setMemberSince(acctCreatedAt);
+                    setMemberSince(convertToDate(fetchApplicanInfo.createdAt));
                     setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
                     break;
                 case "company":
                     const fetchCompanyInfo = await companyApi.getById(id);
                     setEnrolledName(fetchCompanyInfo.name);
+                    setEmail(fetchCompanyInfo.email);
+                    setMemberSince(convertToDate(fetchCompanyInfo.createdAt));
                     break;
                 case "administrator":
                     setEnrolledName("Admin");
@@ -109,11 +108,11 @@ function ProfilePage () {
             for(let i = 0; i < allCompanies.length; i++){
                 const postings = allCompanies[i].jobPostings;
                 function match (job) {
-                    return jobsAppliedTo.includes(job)
+                    return jobsAppliedTo.includes(job);
                 }
-                const matchExists = postings.some(match)
+                const matchExists = postings.some(match);
                 if(matchExists){
-                    id_arr.push(allCompanies[i]._id)
+                    id_arr.push(allCompanies[i]._id);
                 }
             }
             setCompanyId(id_arr)
@@ -121,6 +120,7 @@ function ProfilePage () {
         getCompanyIDs();
     }, [jobsAppliedTo])
 
+    // Match job postings with logged in id
     useEffect(() => {
         const jobs_arr = []
         async function getJobInfo(){
@@ -129,7 +129,7 @@ function ProfilePage () {
                 for(let j = 0; j<companyPostings.length; j++){
                     const postingApplicants = companyPostings[j].applicants;
                     function matchApplicant (userId){
-                        return id.includes(userId)
+                        return id.includes(userId);
                     }
                     const applicantMatchExists = postingApplicants.some(matchApplicant);
                     if(applicantMatchExists){
@@ -158,7 +158,9 @@ function ProfilePage () {
                 </section>
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
-                    <h2>Member Since: {memberSince} | {email}</h2>
+                    {
+                        role != "administrator" ? <p><strong>Member Since: </strong>{memberSince} | {email}</p> : ""
+                    }
                     <span id="profile-button-layout">
                         <button id="edit-profile">
                             <a>Edit Profile</a>

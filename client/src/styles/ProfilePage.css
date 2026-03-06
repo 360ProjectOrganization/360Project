@@ -24,7 +24,9 @@
     align-content: center;
     padding-left: 1em;
     width: 80%;
-    /* background-color: yellow; */
+    p {
+        font-size: 1.25em;
+    }
 }
 
 #edit-profile {
