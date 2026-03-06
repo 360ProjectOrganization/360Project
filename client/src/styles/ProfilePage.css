@@ -1,0 +1,76 @@
+#profile-container {
+    display: flex;
+    height: 30%;
+    padding: 1em;
+    gap: 1em;
+    background-color: var(--color-divider);
+}
+
+#profile-picture-section{
+    align-content: center;
+    text-align: center;
+    width: 20%;
+}
+
+#profile-picture-section img {
+    width: 70%;
+    height: 90%;
+    border-radius: 120px;
+}
+
+#profile-details {
+    color: var(--color-title);
+    align-content: center;
+    padding-left: 1em;
+    width: 80%;
+    p {
+        font-size: 1.25em;
+    }
+}
+
+#edit-profile {
+    padding: 0.5em;
+    margin-right: 1em;
+    width: 8em;
+    background-color: var(--color-cta-secondary-darker);
+    a {
+        font-size: 1em;
+        color: white;
+    }
+}
+
+#upload-resume {
+    padding: 0.5em;
+    margin-right: 1em;
+    width: 10em;
+    background-color: var(--color-cta-secondary);
+    a {
+        font-size: 1em;
+        color: white;
+    }
+}
+
+#download-resume {
+    padding: 0.5em;
+    margin-right: 1em;
+    width: 10em;
+    background-color: var(--color-cta-primary);
+    a {
+        font-size: 1em;
+        color: white;
+    }
+}
+
+#applied-to-container{
+    padding: 0 5em 0 5em;
+}
+
+#job-cards{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+#applied-to-text {
+    color: var(--color-title);
+}
