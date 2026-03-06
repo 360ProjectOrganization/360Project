@@ -42,7 +42,7 @@ function ProfilePage () {
         setId(decoded.id)
     }, [token, role])
 
-    // Set Img and Name
+    // Set pfp and user details
     useEffect(() => {
         async function getUserName(){
             switch (role){
