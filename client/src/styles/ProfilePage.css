@@ -61,9 +61,15 @@
 }
 
 /* APPLIED TO CONTAINER CSS */
-#applied-to-container {
-    width: auto;
-    height: auto;
+#applied-to-container{
+    padding: 0 5em 0 5em;
+}
+
+#job-cards{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+#applied-to-text {
     color: var(--color-title);
-    padding-left: 5em;
 }

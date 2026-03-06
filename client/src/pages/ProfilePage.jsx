@@ -7,6 +7,7 @@ import Card from "../components/common/Card.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
+    
     const [enrolledName, setEnrolledName] = useState("");
     const [role, setRole] = useState("");
     const [memberSince, setMemberSince] = useState("");
@@ -18,8 +19,6 @@ function ProfilePage () {
     const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
     const [jobInfo, setJobInfo] = useState([]);
     const [image, setImage] = useState("");
-    // Create array, create object in function below with ...update, push job to array
-    // Map over this array later
 
     function convertToDate (date){
         const nonUTC = new Date(date);
@@ -142,7 +141,6 @@ function ProfilePage () {
                             description: companyPostings[j].description,
                             status: companyPostings[j].status
                         })
-                        
                     }
                 }
             }
@@ -156,60 +154,43 @@ function ProfilePage () {
             <Header />
             <section id="profile-container">
                 <section id="profile-picture-section">
-                    <img
-                        src={image}
-                        alt="pfp"
-                    />
+                    <img src={image} alt="pfp"/>
                 </section>
-
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
                     <h2>Member Since: {memberSince} | {email}</h2>
                     <span id="profile-button-layout">
                         <button id="edit-profile">
-                            <a>
-                                Edit Profile
-                            </a>
+                            <a>Edit Profile</a>
                         </button>
-                        {
-                            role != "administrator" ?
-                                
-                                <>
-                                    <button id="upload-resume">
-                                        <a>
-                                            Upload Resume
-                                        </a>
-                                    </button>
-                                    <button id="download-resume">
-                                        <a>
-                                            Download Resume
-                                        </a>
-                                    </button>
-                                </>
-
-                            :""
-                        }
+                        {role === "applicant" ?
+                            <>
+                                <button id="upload-resume">
+                                    <a>Upload Resume</a>
+                                </button>
+                                <button id="download-resume">
+                                    <a>Download Resume</a>
+                                </button>
+                            </> :""}
                     </span>
-
                 </section>
             </section>
             
-            {
-                role != "administrator" ? 
-                
-                    <section id="applied-to-container">
-                        <h2>My Recent Job Applications</h2>
-                        {
-                            jobInfo.map((details) => {
-                                console.log(details.title)
-                            })
-                        }
-                    </section> 
-
-                : ""
-            }
-            
-            
+            {role === "applicant" ? 
+                <section id="applied-to-container">
+                    <h2 id="applied-to-text">My Recent Job Applications</h2>
+                    <div id="job-cards">
+                        {jobInfo.map((p) => {
+                            return (
+                                <Card key={p._id} title={p.title} footer={""}>
+                                    <p><strong>Location: </strong>{p.location || "—"}</p>
+                                    <p><strong>Description: </strong>{p.description || "—"}</p>
+                                    <p><strong>Status: </strong>{p.status}</p>
+                                </Card>
+                            )
+                        })}
+                    </div>
+                </section> : "" }
         </>
     )
 };
