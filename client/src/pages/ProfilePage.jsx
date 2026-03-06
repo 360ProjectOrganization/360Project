@@ -107,9 +107,7 @@ function ProfilePage () {
             const allCompanies = await companyApi.getAll();
             for(let i = 0; i < allCompanies.length; i++){
                 const postings = allCompanies[i].jobPostings;
-                function match (job) {
-                    return jobsAppliedTo.includes(job);
-                }
+                const match = (job) => jobsAppliedTo.includes(job);
                 const matchExists = postings.some(match);
                 if(matchExists){
                     id_arr.push(allCompanies[i]._id);
@@ -120,17 +118,15 @@ function ProfilePage () {
         getCompanyIDs();
     }, [jobsAppliedTo])
 
-    // Match job postings with logged in id
+    // Match applicant ids with logged in id
     useEffect(() => {
         const jobs_arr = []
         async function getJobInfo(){
-            for(let i = 0; i<companyId.length; i++){
+            for(let i = 0; i <companyId.length; i++){
                 const companyPostings = await companyApi.getJobPostings(companyId[i]);
-                for(let j = 0; j<companyPostings.length; j++){
+                for(let j = 0; j <companyPostings.length; j++){
                     const postingApplicants = companyPostings[j].applicants;
-                    function matchApplicant (userId){
-                        return id.includes(userId);
-                    }
+                    const matchApplicant = (applicantId) => id.includes(applicantId);
                     const applicantMatchExists = postingApplicants.some(matchApplicant);
                     if(applicantMatchExists){
                         jobs_arr.push({

@@ -10,7 +10,6 @@
     align-content: center;
     text-align: center;
     width: 20%;
-    /* background-color: blue */
 }
 
 #profile-picture-section img {
@@ -62,7 +61,6 @@
     }
 }
 
-/* APPLIED TO CONTAINER CSS */
 #applied-to-container{
     padding: 0 5em 0 5em;
 }
