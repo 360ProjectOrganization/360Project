@@ -31,10 +31,16 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         setSelectedPosting(null);
     };
 
-    const handleStatusChange = (jobId, newStatus) => {
-        setJobPostings((prev) =>
-            prev.map((p) => (p._id === jobId ? { ...p, status: newStatus } : p))
-        );
+    const handleStatusChange = async (jobId, newStatus) => {
+        try {
+            await jobPostingApi.updateStatus(jobId, newStatus);
+            setJobPostings((prev) =>
+                prev.map((p) => (p._id === jobId ? { ...p, status: newStatus } : p))
+            );
+        }
+        catch (err) {
+            console.error("Failed to update status:", err);
+        }
     };
 
     const handleDeleteConfirm = async () => {
