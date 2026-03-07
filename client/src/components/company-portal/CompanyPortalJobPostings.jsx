@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { companyApi } from "../../utils/api.js";
+import { companyApi, jobPostingApi } from "../../utils/api.js";
 import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import EditJobForm from "./EditJobForm.jsx";
@@ -37,9 +37,10 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         );
     };
 
-    const handleDeleteConfirm = () => {
+    const handleDeleteConfirm = async () => {
         const id = selectedPosting?._id;
         if (!id) return;
+        await jobPostingApi.delete(id);
         setJobPostings((prev) => prev.filter((p) => p._id !== id));
         closeDelete();
     };
