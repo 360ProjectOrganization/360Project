@@ -142,6 +142,29 @@ export const companyApi = {
 export const jobPostingApi = {
   createJobPosting: (companyId, data) =>
     apiRequest(`/companies/${companyId}/create-job`, { method: 'POST', body: data }),
+
+  getAll: () =>
+    apiRequest('/job-postings'),
+
+  getById: (id) =>
+    apiRequest(`/job-postings/${id}`),
+
+  apply: (id) =>
+    apiRequest(`/job-postings/${id}/apply`, { method: 'POST' }),
+
+  update: (id, payload) =>
+    apiRequest(`/job-postings/${id}`, { method: 'PUT', body: payload }),
+
+  updateStatus: (id, status) =>
+    apiRequest(`/job-postings/${id}/status`, { method: 'PATCH', body: { status } }),
+
+  delete: (id) =>
+    apiRequest(`/job-postings/${id}`, { method: 'DELETE' }),
+
+  getRecentApplications: (id, limit) => {
+    const qs = limit != null ? `?limit=${limit}` : '';
+    return apiRequest(`/job-postings/${id}/applications${qs}`);
+  },
 };
 
 // admin API methods
