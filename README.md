@@ -143,5 +143,5 @@ When you add a new feature, say "job postings":
 1. `server/repository/models/jobPosting.model.js` - Mongoose schema
 2. `server/repository/jobPosting.repository.js` - Database operations
 3. `server/service/jobPosting.service.js` - Business logic
-4. `server/controller/jobPostings.controller.js` - Routes & handlers
+4. `server/controller/jobPosting.controller.js` - Routes & handlers
 5. Register routes in `server/server.js`

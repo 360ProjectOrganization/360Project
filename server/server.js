@@ -8,7 +8,7 @@ const applicantRoutes = require('./controller/applicant.controller');
 const authRoutes = require('./controller/auth.controller');
 const companyRoutes = require('./controller/company.controller');
 const adminRoutes = require('./controller/admin.controller');
-const jobPostingsRoutes = require('./controller/jobPostings.controller');
+const jobPostingsRoutes = require('./controller/jobPosting.controller');
 
 const app = express();
 const PORT = process.env.PORT;
