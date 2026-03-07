@@ -8,6 +8,7 @@ const applicantRoutes = require('./controller/applicant.controller');
 const authRoutes = require('./controller/auth.controller');
 const companyRoutes = require('./controller/company.controller');
 const adminRoutes = require('./controller/admin.controller');
+const jobPostingsRoutes = require('./controller/jobPosting.controller');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -38,6 +39,7 @@ app.use('/api/applicants', applicantRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/job-postings', jobPostingsRoutes);
 
 // start server
 async function startServer() {

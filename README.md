@@ -104,6 +104,19 @@ Base URL for API: `/api`.
 | GET | `/api/companies/:id/pfp` | Get company's profile picture (or default) | — | Image body; `Content-Type` set |
 | PUT | `/api/companies/:id/pfp` | Upload or replace company's profile picture | `multipart/form-data` with `file` | Updated company object |
 | POST | `/api/companies/:id/delete` | Delete a company account | — | `{ deleted: true }` |
+| POST | `/api/companies/:id/create-job` | Create a job posting for this company | Body: `title`, optional `location`, `description`, `tags` | Created job object |
+
+### Job postings
+
+| Method | Endpoint | Description | Request | Response |
+|--------|----------|-------------|---------|----------|
+| GET | `/api/job-postings` | List all job postings | Query: optional `status`, `companyId`, `limit`, `skip` | Array of job postings |
+| GET | `/api/job-postings/:id` | Get one job posting | — | Single job posting |
+| POST | `/api/job-postings/:id/apply` | Apply to job (appliscant only) | Header: `Authorization: Bearer <token>`. Applicant must have a resume on their profile. Job must be ACTIVE. | `{ applied: true, job }` |
+| PUT | `/api/job-postings/:id` | Update a job posting | Header: `Authorization: Bearer <token>` (company owner or admin). Body: `title`, `tags`, `location`, `description`, `status` (all optional) | Updated job object |
+| PATCH | `/api/job-postings/:id/status` | Change job status | Header: `Authorization: Bearer <token>` (company owner or admin). Body: `{ "status": "ACTIVE" \| "UNPUBLISHED" \| "CLOSED" }` | Updated job object |
+| DELETE | `/api/job-postings/:id` | Delete a job posting | Header: `Authorization: Bearer <token>` (company owner or admin) | `{ deleted: true }` |
+| GET | `/api/job-postings/:id/applications` | Get recent applications for a job | Header: `Authorization: Bearer <token>` (company owner). Query: optional `limit` (default 50, max 100) | Array of applicants |
 
 ### Admin
 
@@ -127,8 +140,8 @@ On the backend it gets parsed by Multer to be held by in memory as a Buffer. The
 
 When you add a new feature, say "job postings":
 
-1. `server/repository/models/jobPostings.model.js` - Mongoose schema
-2. `server/repository/jobPostings.repository.js` - Database operations
+1. `server/repository/models/jobPosting.model.js` - Mongoose schema
+2. `server/repository/jobPosting.repository.js` - Database operations
 3. `server/service/jobPosting.service.js` - Business logic
-4. `server/controller/jobPostings.controller.js` - Routes & handlers
+4. `server/controller/jobPosting.controller.js` - Routes & handlers
 5. Register routes in `server/server.js`

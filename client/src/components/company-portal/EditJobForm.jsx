@@ -13,8 +13,7 @@ export default function EditJobForm({ posting, onSuccess, onCancel }) {
             submittingLabel="Saving..."
             onCancel={onCancel}
             onSubmit={async (values) => {
-                //TODO: add API call when it is implemented, basic example below, could change depedning on how API endpoint is implemented
-                // await jobPostingApi.updateJobPosting(posting._id, values);
+                await jobPostingApi.update(posting._id, values);
                 onSuccess?.(values);
             }}
         />

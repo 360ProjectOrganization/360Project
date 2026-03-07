@@ -20,6 +20,11 @@ const applicantRepository = {
     return await Applicant.findById(id).select('resume resumeContentType');
   },
 
+  async hasResume(id) {
+    const doc = await Applicant.findById(id).select('resume').lean();
+    return doc != null && doc.resume != null && Buffer.isBuffer(doc.resume) && doc.resume.length > 0;
+  },
+
   async updateResume(id, buffer, contentType) {
     return await Applicant.findByIdAndUpdate(
       id,
