@@ -1,20 +1,23 @@
 .logout-button {
-    border-radius: 5px;
-    height: 1.5em;
-    margin: -0.05em 1em 0 0.25em;
+    border-radius: 10px;
+    margin: 0 0.5em 0 0.5em;
+    padding: 0.5em;
+    font-size: 1.10em;
     background-color: var(--color-cta-primary);
 }
 
 .header-button-company {
-    border-radius: 5px;
-    height: 1.5em;
-    margin: 0.7em 1em 0 0.25em;
+    border-radius: 10px;
+    margin: 0 0.5em 0 0.5em;
+    padding: 0.5em;
+    font-size: 1.10em;
     background-color: var(--color-cta-primary);
 }
 
 .header-button-admin {
-    border-radius: 5px;
-    height: 1.5em;
-    margin: 0.7em 0.25em 0 1em;
+    border-radius: 10px;
+    margin: 0 0.5em 0 0.5em;
+    padding: 0.5em;
+    font-size: 1.10em;
     background-color: var(--color-cta-secondary);
 }

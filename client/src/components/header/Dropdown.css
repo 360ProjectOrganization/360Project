@@ -1,24 +1,29 @@
+#profile-section {
+    display: flex;
+}
+
 #dropdown-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: 200px;
     position: relative;
     align-self: center;
 }
 
 .dropdown-button {
     background-color: var(--color-page-bg);
-    padding: 0 4em 0 0;
-    width: 12.5em;
-    font-size: 18px;
+    width: 12em;
+    margin-right: 1em;
+    padding: 0.5em;
+    font-size: 17px;
     color: var(--color-title);
 }
 
 .dropdown-options {
+    text-align: center;
     position: absolute;
     display: flex;
-    margin-left: 0.5em;
+    margin-left: 1.75em;
+    font-size: 1.10em;
     top: 100%;
     width: 8.25em;
     flex-direction: column;
@@ -40,9 +45,4 @@
 
 .dropdown-option-button:hover {
     background-color: var(--color-cta-secondary-darker);
-}
-
-.dropdown-symbol {
-    font-weight: bold;
-    font-size: medium;
 }
