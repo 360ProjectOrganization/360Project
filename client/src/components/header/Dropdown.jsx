@@ -30,7 +30,6 @@ function Dropdown () {
         }
     }, [token, role])
     
-    
     useEffect(() => {
         async function getUserName(){
             if(role === "applicant"){
@@ -84,7 +83,6 @@ function Dropdown () {
                             : "Profile"
                         }
                     </button>
-                    
                     <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
                         {dropdownItems.map(option => (
                             <Link to={option.value} key={option.id} className="dropdown-option-button">
@@ -93,7 +91,6 @@ function Dropdown () {
                         ))}
                     </div>
                 </section>
-
             </section>
         </>
     )

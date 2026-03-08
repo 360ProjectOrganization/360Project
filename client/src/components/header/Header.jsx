@@ -31,7 +31,6 @@ function Header() {
                 <section id="jobly-container">
                     <a href="/">JobLy</a>
                 </section>
-
                 <section id="special-navigation-container">
                     {
                         role === "company" ? <CompanyPortalButton /> : ""
@@ -40,14 +39,12 @@ function Header() {
                         role === "administrator" ? <AdminPortalButton /> : ""
                     }
                 </section>
-
                 <section id="user-navigation-conatainer">
                     <Dropdown />
                     {
                         token ? <Logout /> : ""
                     }
                 </section>
-
             </section>
         </>
     );
