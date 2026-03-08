@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { getToken, applicantApi } from "../../utils/api.js";
+import "./Dropdown.css"
 
 function ProfilePicture() {
     const [token, setToken] = useState("");
@@ -40,11 +41,13 @@ function ProfilePicture() {
 
     return (
         <>
-            <div id="pfp-container">
-                <img 
+            <div>
+                <img id="pfp"
                     src={image}
                     alt="pfp"
-                    style={{maxWidth: "15%",
+                    style={{
+                            width: "3em",
+                            padding: "0.5em",
                             borderRadius: "40px"
                         }}
                 ></img>

@@ -1,3 +1,7 @@
+#profile-section {
+    display: flex;
+}
+
 #dropdown-container {
     display: flex;
     flex-direction: column;
@@ -8,7 +12,7 @@
 .dropdown-button {
     background-color: var(--color-page-bg);
     width: 12em;
-    margin-right: 2em;
+    margin-right: 1em;
     padding: 0.5em;
     font-size: 17px;
     color: var(--color-title);
@@ -18,15 +22,14 @@
     text-align: center;
     position: absolute;
     display: flex;
-    margin-left: 2.5em;
+    margin-left: 1.75em;
+    font-size: 1.10em;
     top: 100%;
     width: 8.25em;
     flex-direction: column;
     opacity: 0;
     visibility: hidden;
 }
-
-
 
 .dropdown-options.visible {
     opacity: 1;

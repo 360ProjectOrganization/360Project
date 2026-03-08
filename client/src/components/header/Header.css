@@ -2,7 +2,7 @@
     font-family: 'Times New Roman', Times, serif;
     display: flex;
     padding: 0.5em;
-    border-bottom: solid 2px var(--color-divider);
+    border-bottom: solid 0.25em var(--color-divider);
     background-color: var(--color-page-bg);
 }
 
@@ -12,7 +12,6 @@
     align-items: center;
     width: 10%;
     margin: 0.5em;
-    background-color: lightblue;
     a{
         color: var(--color-title);
         font-size: 2.5em;
@@ -24,8 +23,7 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    width: 50%;
-    background-color: lightpink;
+    width: 65%;
     margin: 0.5em;
 }
 
@@ -33,11 +31,9 @@
     display: flex;
     justify-content: right;
     align-items: center;
-    width: 40%;
-    background-color: lightseagreen;
+    width: 25%;
     margin: 0.5em;
 }
-
 
 a:link {
     text-decoration: none;
