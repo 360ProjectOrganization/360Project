@@ -33,27 +33,17 @@ function Header() {
                     <a href="/">JobLy</a>
                 </section>
 
-                <section id="navigation-container">
-                    {
-                        role === "company" ? <CompanyPortalButton /> : ""
-                    }
-                    {
-                        role === "administrator" ? <AdminPortalButton /> : ""
-                    }
+                <section id="special-navigation-container">
+                    <CompanyPortalButton />
+                    <AdminPortalButton />
                 </section>
 
-                <section id="user-profile">
-                    {
-                        role === "applicant" ? <ProfilePicture /> : "" 
-                    }
+                <section id="user-navigation-conatainer">
+                    <ProfilePicture />
                     <Dropdown />
+                    <Logout />
                 </section>
 
-                <section id="header-logout">
-                    {
-                        token ? <Logout /> : ""
-                    }
-                </section>
             </section>
         </>
     );
