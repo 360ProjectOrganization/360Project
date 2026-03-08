@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { getToken, applicantApi, companyApi, adminApi } from "../../utils/api.js";
-import "./Dropdown.css"
 
 function ProfilePicture() {
     const [token, setToken] = useState("");
