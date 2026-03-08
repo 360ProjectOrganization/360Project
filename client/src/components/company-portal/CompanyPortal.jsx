@@ -6,6 +6,7 @@ import CreateJobForm from "./CreateJobForm.jsx";
 import Modal from "../common/Modal.jsx";
 
 export default function CompanyPortal() {
+    const navigate = useNavigate();
     const [activeView, setActiveview] = useState("postings"); //default view is postings
     const [openModal, setOpenModal] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
@@ -25,7 +26,7 @@ export default function CompanyPortal() {
     };
 
     const handleProfileClick = () => {
-        //TODO: once company profile is created, add navigation here
+        navigate("/profile");
     };
 
     return (
