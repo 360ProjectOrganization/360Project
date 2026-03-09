@@ -3,6 +3,8 @@ import Card from "../common/Card.jsx";
 import { companyApi } from "../../utils/api.js";
 import { formatDate } from "../../utils/formatHelpers.js";
 
+import JobDetails from "./JobDetails.jsx";
+
 export default function HomeJobPostings() {
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
