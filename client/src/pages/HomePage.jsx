@@ -1,13 +1,13 @@
 import Header from "../components/header/Header.jsx"
+import HomeSearchBar from "../components/home/HomeSearchBar.jsx";
+import HomeJobPostings from "../components/home/HomeJobPostings.jsx";
 
 export default function HomePage() {
     return (
         <>
             <Header />
-            <div>
-                <h1>Home</h1>
-                <p>You're logged in. (placeholder for now idk)</p>
-            </div>
+            <HomeSearchBar />
+            <HomeJobPostings />
         </>
     );
 }
