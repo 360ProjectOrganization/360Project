@@ -2,6 +2,10 @@ export function formatDate(date) {
     const now = new Date();
     const posted = new Date(date);
 
+    if (isNaN(posted.getTime())) {
+        return "Unknown";
+    }
+
     const day_difference = Math.floor((now - posted) / (1000 * 60 * 60 * 24));
 
     if (day_difference === 0) return "today";

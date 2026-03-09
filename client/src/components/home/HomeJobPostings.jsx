@@ -40,7 +40,10 @@ export default function HomeJobPostings() {
                     })
                 );
 
-                setJobPostings(postingsByCompany.flat());
+                const postings = postingsByCompany.flat();
+                postings.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+
+                setJobPostings(postings);
             }
             catch (err) {
                 console.error("Failed to load job postings: ", err);
@@ -76,15 +79,14 @@ export default function HomeJobPostings() {
                                 <button className="home-apply-details-btn" onClick={() => openJobDetails(p)}>Apply / Details</button>
                             </div>
                         }>
-                            <p>Employer: {p.companyName}</p>
-                            <p>Location: {p.location}</p>
-                            <p>Description: {p.description}</p>
-                            <p>Published: {formatDate(p.publishedAt)}</p>
+                            <p className="job-info">Company: {p.companyName}</p>
+                            <p className="job-info">Location: {p.location}</p>
+                            <p className="job-description">Description: {p.description}</p>
+                            <p className="home-jp-date">Posted: {formatDate(p.publishedAt)}</p>
                         </Card>
                     );
                 })}
             </section>
-
         </section>
     );
 }

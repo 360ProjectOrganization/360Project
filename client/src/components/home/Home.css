@@ -36,3 +36,35 @@
     border: 2px solid var(--color-cta-secondary);
     outline: none;
 }
+
+.card-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.job-postings-layout {
+    justify-content: center;
+}
+
+.job-description {
+    overflow: hidden;
+}
+
+.home-jp-date {
+    font-style: italic;
+    opacity: 0.7;
+    font-size: 0.9rem;
+    margin-top: 40px;
+    margin-bottom: 0;
+}
+
+.home-apply-details-btn {
+    padding: 10px;
+    width: 50%;
+    background-color: var(--color-cta-primary);
+    color: white;
+}
+
+.home-apply-details-btn:hover {
+    background-color: var(--color-cta-secondary);
+}
