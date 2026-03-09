@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Dropdown.css";
 import { getToken, applicantApi, companyApi } from "../../utils/api.js";
 import { jwtDecode } from "jwt-decode";
+import ProfilePicture from "./ProfilePicture.jsx"
 
 function Dropdown () {
     const [dropdownActivated, setDropdownActivated] = useState(false);
@@ -28,7 +29,6 @@ function Dropdown () {
             setId(decoded.id);
         }
     }, [token, role])
-    
     
     useEffect(() => {
         async function getUserName(){
@@ -66,27 +66,31 @@ function Dropdown () {
 
     return (
         <>
-            <section id="dropdown-container"
-                onMouseEnter={() => {setDropdownActivated(true);}}
-                onMouseLeave={() => {setDropdownActivated(false);}}
-            >
-                <button 
-                    className="dropdown-button" 
+            <section id="profile-section">
+                {
+                    token ? <ProfilePicture /> : "" 
+                }
+                <section id="dropdown-container"
+                    onMouseEnter={() => {setDropdownActivated(true);}}
+                    onMouseLeave={() => {setDropdownActivated(false);}}
                 >
-                    {
-                        role === "applicant" || role === "company" ? `Welcome, ${enrolledName}`
-                        : role === "administrator" ? "Welcome, Admin"
-                        : "Profile"
-                    }
-                </button>
-                
-                <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
-                    {dropdownItems.map(option => (
-                        <Link to={option.value} key={option.id} className="dropdown-option-button">
-                            {option.label}
-                        </Link>
-                    ))}
-                </div>
+                    <button 
+                        className="dropdown-button" 
+                    >
+                        {
+                            role === "applicant" || role === "company" ? `Welcome, ${enrolledName}`
+                            : role === "administrator" ? "Welcome, Admin"
+                            : "Profile"
+                        }
+                    </button>
+                    <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
+                        {dropdownItems.map(option => (
+                            <Link to={option.value} key={option.id} className="dropdown-option-button">
+                                {option.label}
+                            </Link>
+                        ))}
+                    </div>
+                </section>
             </section>
         </>
     )

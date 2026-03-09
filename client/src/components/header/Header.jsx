@@ -6,7 +6,6 @@ import { jwtDecode } from "jwt-decode";
 import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
 import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
 import Logout from "./headerButtons/Logout.jsx";
-import ProfilePicture from "./ProfilePicture.jsx";
 
 function Header() {
     const [token, setToken] = useState("");
@@ -32,8 +31,7 @@ function Header() {
                 <section id="jobly-container">
                     <a href="/">JobLy</a>
                 </section>
-
-                <section id="navigation-container">
+                <section id="special-navigation-container">
                     {
                         role === "company" ? <CompanyPortalButton /> : ""
                     }
@@ -41,15 +39,8 @@ function Header() {
                         role === "administrator" ? <AdminPortalButton /> : ""
                     }
                 </section>
-
-                <section id="user-profile">
-                    {
-                        role === "applicant" ? <ProfilePicture /> : "" 
-                    }
+                <section id="user-navigation-conatainer">
                     <Dropdown />
-                </section>
-
-                <section id="header-logout">
                     {
                         token ? <Logout /> : ""
                     }

@@ -11,20 +11,12 @@ function ProfilePage () {
     const [id, setId] = useState("");
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
-    const [memberSince, setMemberSince] = useState("");
     const [image, setImage] = useState("");
 
     const [companyId, setCompanyId] = useState([]);
 
     const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
     const [jobInfo, setJobInfo] = useState([]);
-
-    function convertToDate (date){
-        const nonUTC = new Date(date);
-        const dateString = nonUTC.toString();
-        const finalDate = dateString.substring(4,15);
-        return finalDate;
-    }
 
     // Token
     useEffect(() => {
@@ -50,14 +42,12 @@ function ProfilePage () {
                     const fetchApplicanInfo = await applicantApi.getById(id);
                     setEnrolledName(fetchApplicanInfo.name);
                     setEmail(fetchApplicanInfo.email);
-                    setMemberSince(convertToDate(fetchApplicanInfo.createdAt));
                     setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
                     break;
                 case "company":
                     const fetchCompanyInfo = await companyApi.getById(id);
                     setEnrolledName(fetchCompanyInfo.name);
                     setEmail(fetchCompanyInfo.email);
-                    setMemberSince(convertToDate(fetchCompanyInfo.createdAt));
                     break;
                 case "administrator":
                     setEnrolledName("Admin");
@@ -80,7 +70,6 @@ function ProfilePage () {
                         url = adminApi.getPfpUrl(id);
                         break;
                     default:
-                        console.log("No role identified for pfp retrieval");
                         return;
                 }
 
@@ -155,7 +144,7 @@ function ProfilePage () {
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
                     {
-                        role != "administrator" ? <p><strong>Member Since: </strong>{memberSince} | {email}</p> : ""
+                        role != "administrator" ? <p><strong>Email: </strong>{email}</p> : ""
                     }
                     <span id="profile-button-layout">
                         <button id="edit-profile">
@@ -173,7 +162,6 @@ function ProfilePage () {
                     </span>
                 </section>
             </section>
-            
             {role === "applicant" ? 
                 <section id="applied-to-container">
                     <h2 id="applied-to-text">My Recent Job Applications</h2>

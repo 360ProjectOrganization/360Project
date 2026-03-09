@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi } from "../../utils/api.js";
+import { getToken, applicantApi, companyApi, adminApi } from "../../utils/api.js";
 
 function ProfilePicture() {
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
+    const [role, setRole] = useState("");
     const [image, setImage] = useState("");
 
     useEffect(() => {
@@ -17,22 +18,37 @@ function ProfilePicture() {
     useEffect(() => {
         if(!token) return;
         const decoded = jwtDecode(token);
+        setRole(decoded.role);
         setId(decoded.id);
-    }, [token])
+    }, [token, role])
 
     useEffect(() => {
         async function getUserPfp(){
             if(id){
-                const userPfpURL = applicantApi.getPfpUrl(id);
-                let response = await fetch(userPfpURL, {
+                let url = ""
+                switch(role){
+                    case "applicant":
+                        url = applicantApi.getPfpUrl(id);
+                        break;
+                    case "company":
+                        url = companyApi.getPfpUrl(id);
+                        break;
+                    case "administrator":
+                        url = adminApi.getPfpUrl(id);
+                        break;
+                    default:
+                        return;
+                }
+                
+                let response = await fetch(url, {
                     method: "GET"
                 });
-
+                
                 if(response.status === 200){
                     const imageBlob = await response.blob();
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     setImage(imageObjectURL);
-                }
+                } 
             }
         }
         getUserPfp();
@@ -40,11 +56,13 @@ function ProfilePicture() {
 
     return (
         <>
-            <div id="pfp-container">
-                <img 
+            <div>
+                <img id="pfp"
                     src={image}
                     alt="pfp"
-                    style={{maxWidth: "55%",
+                    style={{
+                            width: "3em",
+                            padding: "0.5em",
                             borderRadius: "40px"
                         }}
                 ></img>
