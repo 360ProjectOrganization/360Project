@@ -1,0 +1,38 @@
+.subnav-container {
+    gap: 30px;
+}
+
+.home-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+    width: 400px;
+}
+
+.home-search label {
+    white-space: nowrap;
+}
+
+.home-search input {
+    border: 2px solid var(--color-card-bg);
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.home-search input:focus {
+    border: 2px solid var(--color-cta-secondary);
+    outline: none;
+}
+
+.home-tags {
+    border: 2px solid var(--color-card-bg);
+    border-radius: 8px;
+    height: 30px;
+    width: 150px;
+}
+
+.home-tags:focus {
+    border: 2px solid var(--color-cta-secondary);
+    outline: none;
+}
