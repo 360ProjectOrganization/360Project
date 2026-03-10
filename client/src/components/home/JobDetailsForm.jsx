@@ -1,25 +1,35 @@
 import { jobPostingApi } from "../../utils/api.js";
-import JobPostingForm from "../company-portal/JobPostingForm.jsx";
+import { formatDate } from "../../utils/formatHelpers.js";
 
-import CompanyJobPostingDetails from "./JobPostingModals/CompanyJobPostingDetails.jsx";
-import ApplicantJobPostingDetails from "./JobPostingModals/ApplicantJobPostingDetails.jsx";
-import AdminJobPostingDetails from "./JobPostingModals/AdminJobPostingDetails.jsx";
+export default function JobDetailsForm({ posting, role, userId, onSuccess, onCancel }) {
 
-export default function JobDetailsForm({ posting, role, onSuccess, onCancel }) {
+    if (!role) {
+        return <>need to login / register</> // TODO: reroute and save the post they are looking at
+    }
 
-    const roleComponents = {
-        company: CompanyJobPostingDetails,
-        applicant: ApplicantJobPostingDetails,
-        administrator: AdminJobPostingDetails
-    };
+    async function handleAction() {
+        if (role === "applicant") {
+            await jobPostingApi.apply(posting, userId); //idk exact api call rn
+        }
+        
+        if (role === "company") {
+            // allow them to go to edit posting, so reroute them
+        }
 
-    const RoleComponent = roleComponent[role];
-
-    if (!RoleComponent) {
-        return <>need to login / register</> // TODO: reroute them after saving the post they're wanting to look at somehow (figure out later)
+        if (role === "administrator") {
+            // nothing
+        }
     }
 
     return (
-        <RoleComponent posting={posting} onSuccess={onSuccess} onCancel={onCancel} />
+        <>
+            <p className="job-info">Company: {posting.companyName}</p>
+            <p className="job-info">Location: {posting.location}</p>
+            <p className="job-description">Description: {posting.description}</p> {/* should display the full description (not cut off) */}
+            <p className="job-tags">Tags: {posting.tags}</p> { /* tags are an array so need to map through them or smth */}
+            <p className="home-jp-date">Posted: {formatDate(posting.publishedAt)}</p>
+
+            <button onClick={handleAction}>{(role === 'applicant') ? "Apply" : (role === 'company' ? "Edit Post" : "Admin Controls")}</button> {/* admin controls should take them to admin panel, specifically highlighting the job they were just looking at (if possible idk)*/}
+        </>
     );
 }
