@@ -98,11 +98,17 @@ export default function HomeJobPostings() {
                                 <button className="home-apply-details-btn" onClick={() => openJobDetails(p)}>{(role === 'applicant') ? "Apply" : "Details"}</button>
                             </div>
                         }>
-                            {hasApplied && <span className="home-applied-badge">Applied</span>}
-                            <p className="job-info">Company: {p.companyName}</p>
-                            <p className="job-info">Location: {p.location}</p>
-                            <p className="job-description">Description: {p.description}</p>
-                            <p className="home-jp-date">Posted: {formatDate(p.publishedAt)}</p>
+                            <div className="home-card-body-inner">
+                                <div>
+                                    <div className="home-card-header-row">
+                                        <p className="job-info">Company: {p.companyName}</p>
+                                        {hasApplied && <span className="home-applied-badge">Applied</span>}
+                                    </div>
+                                    <p className="job-info">Location: {p.location}</p>
+                                    <p className="job-description">Description: {p.description}</p>
+                                </div>
+                                <p className="home-jp-date">Posted: {formatDate(p.publishedAt)}</p>
+                            </div>
                         </Card>
                     );
                 })}

@@ -6,10 +6,6 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    if (!role) {
-        return <>need to login / register</> // TODO: reroute and save the post they are looking at
-    }
-
     const hasApplied = role === "applicant" && posting?.applicants?.some((aid) => String(aid) === userId);
     
     async function handleAction() {
@@ -54,16 +50,20 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
                         );
                     }) : "—"}
                 </p>
-                <p className="home-jp-date">Posted: {formatDate(posting.publishedAt)}</p>
             </section>
 
-            <footer className="job-details-footer">
-                {error && <div className="error-message">{error}</div>}
-                
-                <button onClick={handleAction} disabled={loading || hasApplied} className={hasApplied ? "job-details-applied-btn" : "job-details-btn"}>
-                    {(role === 'applicant') ? (hasApplied ? "Applied" : "Apply") : (role === 'company' ? "Edit Post" : "Admin Controls")}
-                </button>
-            </footer>
+            <div className="job-details-bottom">
+                <p className="home-jp-date">Posted: {formatDate(posting.publishedAt)}</p>
+                {role && (
+                <footer className="job-details-footer">
+                    {error && <div className="error-message">{error}</div>}
+                    
+                    <button onClick={handleAction} disabled={loading || hasApplied} className={hasApplied ? "job-details-applied-btn" : "job-details-btn"}>
+                        {(role === 'applicant') ? (hasApplied ? "Applied" : "Apply") : (role === 'company' ? "Edit Post" : "")}
+                    </button>
+                </footer>
+                )}
+            </div>
         </section>
     );
 }

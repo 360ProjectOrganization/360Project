@@ -14,6 +14,8 @@ export default function HomeSearchBar() {
                 <input type="search" className="home-search" placeholder="Location" />
             </section>
 
+            {/* TODO: add a filter for applied and not applied jobs, maybe just a toggle */}
+
             <select className="home-tags" name="tags" id="tags">
                 <option value="tag1">bro1</option>
                 <option value="tag2">bro2</option>
