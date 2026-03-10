@@ -106,7 +106,7 @@ export default function HomeJobPostings() {
             </section>
 
             <Modal isOpen={isJobDetailsOpen} onClose={closeJobDetails} title="Job Details">
-                <JobDetailsForm posting={selectedPosting} onCancel={closeJobDetails} onSuccess={(updatedValues) => {
+                <JobDetailsForm posting={selectedPosting} role={role} onCancel={closeJobDetails} onSuccess={(updatedValues) => {
                         const id = selectedPosting?._id;
                         closeJobDetails();
                         if (!id) return;
