@@ -1,3 +1,33 @@
+// Hash a string to an index, so that the same string always returns the same index 
+// this allows tags to be the same colour across the site
+function hashString(str) {
+    let hash = 0;
+    const s = String(str).toLowerCase();
+    for (let i = 0; i < s.length; i++) {
+        hash = ((hash << 5) - hash) + s.charCodeAt(i);
+        hash = hash | 0;
+    }
+    return Math.abs(hash);
+}
+
+// get a #fun colour for a tag
+export function getTagColor(tag) {
+    const palette = [
+        { bg: '#3b82f6', text: '#fff' },
+        { bg: '#22c55e', text: '#fff' },
+        { bg: '#f59e0b', text: '#1f2937' },
+        { bg: '#ef4444', text: '#fff' },
+        { bg: '#8b5cf6', text: '#fff' },
+        { bg: '#ec4899', text: '#fff' },
+        { bg: '#06b6d4', text: '#fff' },
+        { bg: '#84cc16', text: '#1f2937' },
+        { bg: '#f97316', text: '#fff' },
+        { bg: '#6366f1', text: '#fff' },
+    ];
+    const i = hashString(tag) % palette.length;
+    return palette[i];
+}
+
 export function formatDate(date) {
     const now = new Date();
     const posted = new Date(date);

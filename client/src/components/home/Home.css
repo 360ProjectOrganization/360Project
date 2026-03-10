@@ -78,26 +78,34 @@
 .job-details-info {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 25px;
     padding: 28px 30px 0 30px;
     font-size: 16px;
     line-height: 1.5;
 }
 
-.job-info,
-.job-description,
+.job-info-modal,
+.job-description-modal,
 .job-tags,
 .home-jp-date {
     margin: 0;
 }
 
-.job-description {
+.job-description-modal {
     white-space: pre-wrap;
 }
 
 .home-jp-date {
     font-size: 14px;
     opacity: 0.7;
+}
+
+.tag {
+    padding: 4px 10px;
+    margin-left: 8px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .job-details-footer {
