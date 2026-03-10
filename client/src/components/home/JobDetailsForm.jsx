@@ -11,7 +11,7 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
     }
 
     const hasApplied = role === "applicant" && posting?.applicants?.some((aid) => String(aid) === userId);
-
+    
     async function handleAction() {
         if (role === "applicant") {
             try {
@@ -41,18 +41,22 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
     }
 
     return (
-        <>
-            <p className="job-info">Company: {posting.companyName}</p>
-            <p className="job-info">Location: {posting.location}</p>
-            <p className="job-description">Description: {posting.description}</p> {/* should display the full description (not cut off) */}
-            <p className="job-tags">Tags: {posting.tags}</p> { /* tags are an array so need to map through them or smth */}
-            <p className="home-jp-date">Posted: {formatDate(posting.publishedAt)}</p>
+        <section className="job-details-container">
+            <section className="job-details-info">
+                <p className="job-info">Company: {posting.companyName}</p>
+                <p className="job-info">Location: {posting.location}</p>
+                <p className="job-description">Description: {posting.description}</p> {/* should display the full description (not cut off) */}
+                <p className="job-tags">Tags: {posting.tags}</p> { /* tags are an array so need to map through them or smth */}
+                <p className="home-jp-date">Posted: {formatDate(posting.publishedAt)}</p>
+            </section>
 
-            <button onClick={handleAction} disabled={loading || hasApplied} className={hasApplied ? "job-details-applied-btn" : ""}>
-                {(role === 'applicant') ? (hasApplied ? "Applied" : "Apply") : (role === 'company' ? "Edit Post" : "Admin Controls")}
-            </button>
-        
-            {error && <p className="error-message">{error}</p>}
-        </>
+            <footer className="job-details-footer">
+                {error && <div className="error-message">{error}</div>}
+                
+                <button onClick={handleAction} disabled={loading || hasApplied} className={hasApplied ? "job-details-applied-btn" : "job-details-btn"}>
+                    {(role === 'applicant') ? (hasApplied ? "Applied" : "Apply") : (role === 'company' ? "Edit Post" : "Admin Controls")}
+                </button>
+            </footer>
+        </section>
     );
 }
