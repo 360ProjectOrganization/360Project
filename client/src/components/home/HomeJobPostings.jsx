@@ -24,6 +24,7 @@ export default function HomeJobPostings() {
     const [locationQuery, setLocationQuery] = useState("");
     const [selectedTag, setSelectedTag] = useState("");
     const [appliedFilter, setAppliedFilter] = useState("all");
+    const allTags = [...new Set(jobPostings.flatMap((p) => p.tags || []))].sort(); //flatMap basically turns the set into one single array (instead of an array of arrays)
 
     const filteredJobPostings = filterJobPostings(jobPostings, {titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
 
@@ -97,8 +98,8 @@ export default function HomeJobPostings() {
     
     return (
         <section className="job-postings-container">
-            <HomeSearchBar titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} />
-            
+            <HomeSearchBar titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} tags={allTags} />
+
             <section className="job-postings-layout">
                 {filteredJobPostings.length === 0 ? (
                     <p className="no-results">No job postings match your search.</p>

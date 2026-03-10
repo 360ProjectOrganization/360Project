@@ -37,12 +37,26 @@
     outline: none;
 }
 
+.clear-filters-btn {
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: var(--color-cta-primary);
+    color: white;
+    font-size: 15px;
+}
+
+.clear-filters-btn:hover {
+    background-color: var(--color-cta-secondary);
+}
+
 .card-container:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
 .job-postings-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 400px));
     justify-content: center;
 }
 

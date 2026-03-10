@@ -1,7 +1,14 @@
 import "../company-portal/CompanyPortal.css";
 import "../home/Home.css";
 
-export default function HomeSearchBar({ titleQuery, setTitleQuery, locationQuery, setLocationQuery, selectedTag, setSelectedTag, appliedFilter, setAppliedFilter}) {
+export default function HomeSearchBar({ titleQuery, setTitleQuery, locationQuery, setLocationQuery, selectedTag, setSelectedTag, appliedFilter, setAppliedFilter, tags}) {
+    const clearFilters = () => {
+        setTitleQuery("");
+        setLocationQuery("");
+        setSelectedTag("");
+        setAppliedFilter("all");
+    };
+    
     return (
         <header className="subnav-container">
             <section className="home-search">
@@ -14,20 +21,22 @@ export default function HomeSearchBar({ titleQuery, setTitleQuery, locationQuery
                 <input type="search" className="home-search" placeholder="Location" value={locationQuery} onChange={(e) => setLocationQuery(e.target.value)} />
             </section>
 
-            {/* TODO: add a filter for applied and not applied jobs, maybe just a toggle */}
-
             <select className="home-tags" name="tags" id="tags" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
                 <option value="">All Tags</option>
-                <option value="tag1">bro1</option>
-                <option value="tag2">bro2</option>
-                <option value="tag3">bro3</option>
+                {tags.map((tag) => (
+                    <option key={tag} value={tag}>{tag}</option>
+                ))}
             </select>
 
-            <select value={appliedFilter} onChange={(e) => setAppliedFilter(e.target.value)}>
+            <select value={appliedFilter} className="home-tags" onChange={(e) => setAppliedFilter(e.target.value)}>
                 <option value="all">All Jobs</option>
                 <option value="applied">Applied</option>
                 <option value="not-applied">Not Applied</option>
             </select>
+
+            <button className="clear-filters-btn" onClick={ clearFilters }>
+                Clear Filters
+            </button>
         </header>
     );
 }
