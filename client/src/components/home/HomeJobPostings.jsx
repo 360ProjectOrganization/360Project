@@ -119,14 +119,5 @@ export default function HomeJobPostings() {
                 />
             </Modal>
         </section>
-
-        <Modal isOpen={isJobDetailsOpen} onClose={closeJobDetails} title="Apply / Details">
-            <JobDetailsForm posting={selectedPosting} onCancel={closeJobDetails} onSuccess={(updatedValues => {
-                const id = selectedPosting?._id;
-                closeJobDetails();
-                if (!is) return;
-                setJobPostings((prev) => prev.map((jobpost) => jobpost._id === id ? {...jobpost, ...updatedValues} : jobpost));
-            })}/>
-        </Modal>
     );
 }
