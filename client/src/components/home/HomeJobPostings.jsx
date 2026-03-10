@@ -90,12 +90,15 @@ export default function HomeJobPostings() {
         <section className="job-postings-container">
             <section className="job-postings-layout">
                 {jobPostings.map((p) => {
+                    const hasApplied = role === "applicant" && p.applicants?.some((val) => String(val) === id);
+
                     return (
                         <Card key={p._id} title={p.title} footer={
                             <div className="card-actions">
                                 <button className="home-apply-details-btn" onClick={() => openJobDetails(p)}>{(role === 'applicant') ? "Apply" : "Details"}</button>
                             </div>
                         }>
+                            {hasApplied && <span className="home-applied-badge">Applied</span>}
                             <p className="job-info">Company: {p.companyName}</p>
                             <p className="job-info">Location: {p.location}</p>
                             <p className="job-description">Description: {p.description}</p>
