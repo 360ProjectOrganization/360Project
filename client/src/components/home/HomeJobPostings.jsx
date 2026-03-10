@@ -1,11 +1,16 @@
 import {useEffect, useState } from "react";
 import Card from "../common/Card.jsx";
-import { companyApi } from "../../utils/api.js";
+import Modal from "../common/Modal.jsx";
+import { jwtDecode } from "jwt-decode";
+import {getToken, companyApi } from "../../utils/api.js";
 import { formatDate } from "../../utils/formatHelpers.js";
 
-import JobDetails from "./JobDetails.jsx";
+import JobDetailsForm from "./JobDetailsForm.jsx";
 
 export default function HomeJobPostings() {
+    const [id, setId] = useState("");
+    const [role, setRole] = useState("");
+
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadError, setLoadError] = useState(null);
@@ -21,6 +26,16 @@ export default function HomeJobPostings() {
         setIsJobDetailsOpen(false);
         setSelectedPosting(null);
     }
+
+    //get token, decode token, then extract the values
+    useEffect(() => {
+        const token = getToken();
+        if (!token) return; // TODO: user needs to be redirected to the login, and then taken back to the job posting Apply/Details modal
+        
+        const decoded = jwtDecode(token);
+        setRole(decoded.role);
+        setId(decoded.id);
+    }, []);
 
     useEffect(() => {
         async function load() {
@@ -78,7 +93,7 @@ export default function HomeJobPostings() {
                     return (
                         <Card key={p._id} title={p.title} footer={
                             <div className="card-actions">
-                                <button className="home-apply-details-btn" onClick={() => openJobDetails(p)}>Apply / Details</button>
+                                <button className="home-apply-details-btn" onClick={() => openJobDetails(p)}>{(role === 'applicant') ? "Apply" : "Details"}</button>
                             </div>
                         }>
                             <p className="job-info">Company: {p.companyName}</p>
@@ -89,6 +104,20 @@ export default function HomeJobPostings() {
                     );
                 })}
             </section>
+
+            <Modal isOpen={isJobDetailsOpen} onClose={closeJobDetails} title="Job Details">
+                <JobDetailsForm posting={selectedPosting} onCancel={closeJobDetails} onSuccess={(updatedValues) => {
+                        const id = selectedPosting?._id;
+                        closeJobDetails();
+                        if (!id) return;
+                        setJobPostings((prev) =>
+                            prev.map((jobpost) =>
+                                jobpost._id === id ? { ...jobpost, ...updatedValues } : jobpost
+                            )
+                        );
+                    }}
+                />
+            </Modal>
         </section>
     );
 }
