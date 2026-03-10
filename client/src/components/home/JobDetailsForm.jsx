@@ -28,11 +28,11 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
         }
 
         if (role === "company") {
-            // allow them to go to edit posting, so reroute them
+            // TODO: allow them to go to edit posting, so reroute them
         }
 
         if (role === "administrator") {
-            // nothing
+            // TODO: figure out if the admin should get something special, if not they get no button
         }
     }
 

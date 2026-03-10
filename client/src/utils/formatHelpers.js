@@ -1,13 +1,14 @@
 // Hash a string to an index, so that the same string always returns the same index 
 // this allows tags to be the same colour across the site
 function hashString(str) {
+    const s = String(str).trim().toLowerCase();
     let hash = 0;
-    const s = String(str).toLowerCase();
+
     for (let i = 0; i < s.length; i++) {
-        hash = ((hash << 5) - hash) + s.charCodeAt(i);
-        hash = hash | 0;
+        hash += s.charCodeAt(i) * (i + 1);
     }
-    return Math.abs(hash);
+
+    return hash;
 }
 
 // get a #fun colour for a tag
