@@ -5,7 +5,7 @@ function hashString(str) {
     let hash = 0;
 
     for (let i = 0; i < s.length; i++) {
-        hash += s.charCodeAt(i) * (i + 1);
+        hash += s.charCodeAt(i) * (i + 1); //there are probably better hash functions out there, but this one works fine for now
     }
 
     return hash;
