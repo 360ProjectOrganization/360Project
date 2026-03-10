@@ -9,9 +9,10 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
 
     async function handleAction() {
         if (role === "applicant") {
-            await jobPostingApi.apply(posting, userId); //idk exact api call rn
+            await jobPostingApi.apply(posting._id);
+            onSuccess?.();
         }
-        
+
         if (role === "company") {
             // allow them to go to edit posting, so reroute them
         }
