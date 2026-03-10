@@ -81,7 +81,7 @@ export default function HomeJobPostings() {
     if (jobPostings.length === 0) {
         return (
             <div style={{ padding: "20px" }}>
-                No job postings for {companyName}.
+                No job postings.
             </div>
         );
     }
