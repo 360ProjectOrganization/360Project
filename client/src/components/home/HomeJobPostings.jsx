@@ -4,8 +4,10 @@ import Modal from "../common/Modal.jsx";
 import { jwtDecode } from "jwt-decode";
 import {getToken, companyApi } from "../../utils/api.js";
 import { formatDate } from "../../utils/formatHelpers.js";
+import { filterJobPostings } from "../../utils/filterHelper.js";
 
 import JobDetailsForm from "./JobDetailsForm.jsx";
+import HomeSearchBar from "./HomeSearchBar.jsx";
 
 export default function HomeJobPostings() {
     const [id, setId] = useState("");
@@ -17,6 +19,13 @@ export default function HomeJobPostings() {
 
     const [isJobDetailsOpen, setIsJobDetailsOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
+
+    const [titleQuery, setTitleQuery] = useState("");
+    const [locationQuery, setLocationQuery] = useState("");
+    const [selectedTag, setSelectedTag] = useState("");
+    const [appliedFilter, setAppliedFilter] = useState("all");
+
+    const filteredJobPostings = filterJobPostings(jobPostings, {titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
 
     const openJobDetails = (posting) => {
         setSelectedPosting(posting);
@@ -88,30 +97,36 @@ export default function HomeJobPostings() {
     
     return (
         <section className="job-postings-container">
+            <HomeSearchBar titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} />
+            
             <section className="job-postings-layout">
-                {jobPostings.map((p) => {
-                    const hasApplied = role === "applicant" && p.applicants?.some((val) => String(val) === id);
+                {filteredJobPostings.length === 0 ? (
+                    <p className="no-results">No job postings match your search.</p>
+                ) : (
+                    filteredJobPostings.map((p) => {
+                        const hasApplied = role === "applicant" && p.applicants?.some((val) => String(val) === id);
 
-                    return (
-                        <Card key={p._id} title={p.title} footer={
-                            <div className="card-actions">
-                                <button className="home-apply-details-btn" onClick={() => openJobDetails(p)}>{(role === 'applicant') ? "Apply" : "Details"}</button>
-                            </div>
-                        }>
-                            <div className="home-card-body-inner">
-                                <div>
-                                    <div className="home-card-header-row">
-                                        <p className="job-info">Company: {p.companyName}</p>
-                                        {hasApplied && <span className="home-applied-badge">Applied</span>}
-                                    </div>
-                                    <p className="job-info">Location: {p.location}</p>
-                                    <p className="job-description">Description: {p.description}</p>
+                        return (
+                            <Card key={p._id} title={p.title} footer={
+                                <div className="card-actions">
+                                    <button className="home-apply-details-btn" onClick={() => openJobDetails(p)}>{(role === 'applicant') ? "Apply" : "Details"}</button>
                                 </div>
-                                <p className="home-jp-date">Posted: {formatDate(p.publishedAt)}</p>
-                            </div>
-                        </Card>
-                    );
-                })}
+                            }>
+                                <div className="home-card-body-inner">
+                                    <div>
+                                        <div className="home-card-header-row">
+                                            <p className="job-info">Company: {p.companyName}</p>
+                                            {hasApplied && <span className="home-applied-badge">Applied</span>}
+                                        </div>
+                                        <p className="job-info">Location: {p.location}</p>
+                                        <p className="job-description">Description: {p.description}</p>
+                                    </div>
+                                    <p className="home-jp-date">Posted: {formatDate(p.publishedAt)}</p>
+                                </div>
+                            </Card>
+                        );
+                    })
+                )}
             </section>
 
             <Modal isOpen={isJobDetailsOpen} onClose={closeJobDetails} title={selectedPosting?.title}>
