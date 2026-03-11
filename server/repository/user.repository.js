@@ -16,6 +16,16 @@ const userRepository = {
     return model;
   },
 
+  async findAll(filter = {}, options = {}) {
+      const { limit = 50, skip = 0, sort = { createdAt: -1 } } = options;
+      return await Administrator.find(filter)
+        .select('-password -pfp -resume')
+        .limit(limit)
+        .skip(skip)
+        .sort(sort)
+        .lean();
+    },
+
   async findById(role, id) {
     const Model = this.getModel(role);
     return await Model.findById(id).select('_id').lean();

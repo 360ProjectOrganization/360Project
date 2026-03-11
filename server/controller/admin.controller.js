@@ -6,6 +6,16 @@ const multer = require('multer');
 const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } });
 const ROLE = 'administrator';
 
+// GET: api/admin
+router.get('/', async (req, res) => {
+  try{
+    const admin = await userService.getAdminById(req.params.id);
+    res.json(admin)
+  } catch (error){
+    res.status(500).json({ error: 'Failed to fetch admin' });
+  }
+} )
+
 // GET: api/admin/:id/pfp
 router.get('/:id/pfp', async (req, res) => {
   try {

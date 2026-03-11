@@ -36,6 +36,12 @@ class UserService {
     if (!deleted) throw new Error('User not found');
     return { deleted: true };
   }
+
+  async getAll(){
+    const exists = await userRepository.findAll();
+    if(!exists) throw new Error("User not found");
+    return exists;
+  }
 }
 
 module.exports = new UserService();
