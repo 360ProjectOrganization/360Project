@@ -9,7 +9,7 @@ const ROLE = 'administrator';
 // GET: api/admin
 router.get('/', async (req, res) => {
   try{
-    const admin = await userService.getAdminById(req.params.id);
+    const admin = await userService.getAll();
     res.json(admin)
   } catch (error){
     res.status(500).json({ error: 'Failed to fetch admin' });

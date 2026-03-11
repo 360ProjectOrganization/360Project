@@ -39,7 +39,7 @@ class UserService {
 
   async getAll(){
     const exists = await userRepository.findAll();
-    if(!exists) throw new Error("User not found");
+    if(!exists) throw new Error("Users not found");
     return exists;
   }
 }
