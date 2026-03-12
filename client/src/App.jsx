@@ -16,6 +16,7 @@ function App() {
                 <Route path='/company-portal' element={<CompanyPortalPage />} />
                 <Route path='/Admin' element={<AdminPage />} />
 
+                <Route path='/Admin' element={<AdminPage />} />
             </Routes>
         </div>
     );
