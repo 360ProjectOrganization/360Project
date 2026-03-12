@@ -4,6 +4,7 @@ import RegisterApplicantPage from './pages/RegisterApplicantPage.jsx';
 import RegisterEmployerPage from './pages/RegisterEmployerPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
+import AdminPage from './pages/AdminPage.jsx';
 function App() {
     return (
         <div className="app">
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/register-employer" element={<RegisterEmployerPage />} />
                 <Route path="/Login" element={<LoginPage/>} />
                 <Route path='/profile' element={<ProfilePage />} />
+                <Route path='/Admin' element={<AdminPage />} />
             </Routes>
         </div>
     );
