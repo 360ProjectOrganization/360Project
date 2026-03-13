@@ -8,7 +8,7 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const hasApplied = role === "applicant" && posting?.applicants?.some((aid) => String(aid) === userId);
+    const hasApplied = role === "applicant" && posting?.applicants?.some((val) => String(val) === userId);
     const isOwnCompanyPost = role === "company" && String(posting.companyId) === String(userId);
     const canEditPosting = role === "administrator" || isOwnCompanyPost;
 

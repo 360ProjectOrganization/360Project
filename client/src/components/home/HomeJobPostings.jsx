@@ -106,6 +106,7 @@ export default function HomeJobPostings() {
                 ) : (
                     filteredJobPostings.map((p) => {
                         const hasApplied = role === "applicant" && p.applicants?.some((val) => String(val) === id);
+                        const isOwnCompanyPost = role === "company" && String(p.companyId) === String(id);
 
                         return (
                             <Card key={p._id} title={p.title} footer={
@@ -118,6 +119,7 @@ export default function HomeJobPostings() {
                                         <div className="home-card-header-row">
                                             <p className="job-info">Company: {p.companyName}</p>
                                             {hasApplied && <span className="home-applied-badge">Applied</span>}
+                                            {isOwnCompanyPost && <span className="home-applied-badge">Your Post</span>}
                                         </div>
                                         <p className="job-info">Location: {p.location}</p>
                                         <p className="job-description">Description: {p.description}</p>
