@@ -32,7 +32,8 @@ export default function HomeJobPostings() {
     const [appliedFilter, setAppliedFilter] = useState("all");
     const allTags = [...new Set(jobPostings.flatMap((p) => p.tags || []))].sort(); //flatMap basically turns the set into one single array (instead of an array of arrays)
 
-    const filteredJobPostings = filterJobPostings(jobPostings, {titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
+    const activeJobPostings = jobPostings.filter((p) => p.status === "ACTIVE");
+    const filteredJobPostings = filterJobPostings(activeJobPostings, {titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
 
     const openJobDetails = (posting) => {
         setSelectedPosting(posting);
