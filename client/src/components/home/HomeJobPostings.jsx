@@ -122,7 +122,7 @@ export default function HomeJobPostings() {
     
     return (
         <section className="job-postings-container">
-            <HomeSearchBar titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} tags={allTags} />
+            <HomeSearchBar role={role} titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} tags={allTags} />
 
             <section className="job-postings-layout">
                 {filteredJobPostings.length === 0 ? (
