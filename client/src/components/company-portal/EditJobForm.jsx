@@ -9,10 +9,12 @@ export default function EditJobForm({ posting, onSuccess, onCancel }) {
                 location: posting?.location ?? "",
                 description: posting?.description ?? "",
                 status: posting?.status ?? "ACTIVE",
+                tags: posting?.tags ?? [],
             }}
             submitLabel="Update"
             submittingLabel="Saving..."
             showStatusField={true}
+            showTagsField={true}
             onCancel={onCancel}
             onSubmit={async (values) => {
                 await jobPostingApi.update(posting._id, values);
