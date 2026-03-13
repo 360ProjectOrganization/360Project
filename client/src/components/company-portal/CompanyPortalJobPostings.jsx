@@ -5,7 +5,7 @@ import Modal from "../common/Modal.jsx";
 import EditJobForm from "./EditJobForm.jsx";
 
 
-export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey }) {
+export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey, editPostingId, onEditPosting }) {
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadError, setLoadError] = useState(null);
@@ -50,6 +50,18 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         setJobPostings((prev) => prev.filter((p) => p._id !== id));
         closeDelete();
     };
+
+    useEffect(() => {
+        if (!editPostingId || !jobPostings.length) return;
+
+        const postingToEdit = jobPostings.find(
+            (posting) => String(posting._id) === String(editPostingId)
+        );
+
+        if (postingToEdit) {
+            openEdit(postingToEdit);
+        }
+    }, [editPostingId, jobPostings, onEditPosting]);
 
     useEffect(() => {
         if (!companyId) return;

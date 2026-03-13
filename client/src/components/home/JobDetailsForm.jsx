@@ -1,12 +1,20 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { jobPostingApi } from "../../utils/api.js";
 import { formatDate, getTagColor } from "../../utils/formatHelpers.js";
 
 export default function JobDetailsForm({ posting, role, userId, onSuccess, onCancel }) {
+    const navigate = useNavigate();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
     const hasApplied = role === "applicant" && posting?.applicants?.some((aid) => String(aid) === userId);
+    const isOwnCompanyPost = role === "company" && String(posting.companyId) === String(userId);
+    const canEditPosting = role === "administrator" || isOwnCompanyPost;
+
+    const actionLabel = role === "applicant" ?
+        (hasApplied ? "Applied" : "Apply") : canEditPosting ?
+            "Edit Post" : null;
     
     async function handleAction() {
         if (role === "applicant") {
@@ -27,12 +35,17 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
             } 
         }
 
-        if (role === "company") {
-            // TODO: allow them to go to edit posting, so reroute them
+        if (role === "company" && isOwnCompanyPost) {
+            navigate('/company-portal', {
+                state: {
+                    editPostingId: posting._id,
+                },
+            });
+            return;
         }
 
         if (role === "administrator") {
-            // TODO: figure out if the admin should get something special, if not they get no button
+            // TODO: take the user to the admin portal, and highlight the specific job they are looking at OR open the modal (whatever is implemented)
         }
     }
 
@@ -54,12 +67,13 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
 
             <div className="job-details-bottom">
                 <p className="home-jp-date">Posted: {formatDate(posting.publishedAt)}</p>
-                {role && (
+
+                {actionLabel && (
                 <footer className="job-details-footer">
                     {error && <div className="error-message">{error}</div>}
                     
                     <button onClick={handleAction} disabled={loading || hasApplied} className={hasApplied ? "job-details-applied-btn" : "job-details-btn"}>
-                        {(role === 'applicant') ? (hasApplied ? "Applied" : "Apply") : (role === 'company' ? "Edit Post" : "")}
+                        {actionLabel}
                     </button>
                 </footer>
                 )}
