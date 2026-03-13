@@ -5,6 +5,7 @@ export default function JobPostingForm({
     initialValues = { title: "", location: "", description: "" },
     submitLabel = "Save",
     submittingLabel = "Saving...",
+    showStatusField = false,
     onSubmit,
     onCancel
 }) {
@@ -15,14 +16,16 @@ export default function JobPostingForm({
     const [title, setTitle] = useState("");
     const [location, setLocation] = useState("");
     const [description, setDescription] = useState("");
+    const [status, setStatus] = useState("ACTIVE");
 
     useEffect(() => {
         setTitle(initialValues.title ?? "");
         setLocation(initialValues.location ?? "");
         setDescription(initialValues.description ?? "");
+        if (showStatusField) setStatus(initialValues.status ?? "ACTIVE");
         setErrors({});
         setSubmitError("");
-    }, [initialValues.title, initialValues.location, initialValues.description]);
+    }, [initialValues.title, initialValues.location, initialValues.description, initialValues.status]);
 
     function handleCancel() {
         setErrors({});
@@ -42,7 +45,9 @@ export default function JobPostingForm({
 
         setLoading(true);
         try {
-            await onSubmit?.({ title, location, description });
+            const payload = { title, location, description };
+            if (showStatusField) payload.status = status;
+            await onSubmit?.(payload);
         }
         catch (err) {
             setSubmitError(err?.message || "Failed to save job posting");
@@ -94,6 +99,19 @@ export default function JobPostingForm({
                         {errors.description && <span className="error-text">{errors.description}</span>}
                     </div>
                 </div>
+
+                {showStatusField && (
+                    <div className="form-row">
+                        <label>Status</label>
+                        <div className="input-wrapper">
+                            <select className={`pstatus ${(status || "").toLowerCase()}`} value={status} onChange={(e) => setStatus(e.target.value)}>
+                                <option value="ACTIVE">Active</option>
+                                <option value="UNPUBLISHED">Unpublished</option>
+                                <option value="CLOSED">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                )}
 
                 {submitError && <div className="error-text">{submitError}</div>}
             </div>
