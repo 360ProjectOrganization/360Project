@@ -1,4 +1,5 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import { jwtDecode } from "jwt-decode";
@@ -10,12 +11,17 @@ import JobDetailsForm from "./JobDetailsForm.jsx";
 import HomeSearchBar from "./HomeSearchBar.jsx";
 
 export default function HomeJobPostings() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [id, setId] = useState("");
     const [role, setRole] = useState("");
 
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadError, setLoadError] = useState(null);
+
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const [isJobDetailsOpen, setIsJobDetailsOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
@@ -40,12 +46,30 @@ export default function HomeJobPostings() {
     //get token, decode token, then extract the values
     useEffect(() => {
         const token = getToken();
-        if (!token) return; // TODO: user needs to be redirected to the login, and then taken back to the job posting Apply/Details modal
+        if (!token) {
+            setIsAuthenticated(false);
+            return;
+        }
         
         const decoded = jwtDecode(token);
         setRole(decoded.role);
         setId(decoded.id);
+        setIsAuthenticated(true);
     }, []);
+
+    useEffect(() => {
+        const openPostingId = location.state?.openPostingId;
+        if (!openPostingId || jobPostings.length === 0) return;
+
+        const postingToOpen = jobPostings.find((posting) => String(posting._id) === String(openPostingId));
+        if (postingToOpen) {
+            openJobDetails(postingToOpen);
+            navigate(location.pathname, {
+                replace: true,
+                state: {},
+            });
+        }
+    }, [location.state, jobPostings]);
 
     useEffect(() => {
         async function load() {
@@ -133,7 +157,7 @@ export default function HomeJobPostings() {
             </section>
 
             <Modal isOpen={isJobDetailsOpen} onClose={closeJobDetails} title={selectedPosting?.title}>
-                <JobDetailsForm posting={selectedPosting} role={role} userId={id} onCancel={closeJobDetails} onSuccess={(updatedValues) => {
+                <JobDetailsForm posting={selectedPosting} role={role} userId={id} isAuthenticated={isAuthenticated} onCancel={closeJobDetails} onSuccess={(updatedValues) => {
                         const id = selectedPosting?._id;
                         closeJobDetails();
                         if (!id) return;

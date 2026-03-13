@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BackButton from "../BackButton";
 import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 import { useState } from "react";
@@ -7,6 +7,10 @@ import { useState } from "react";
 export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }) {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+    const location = useLocation();
+    const returnTo = location.state?.returnTo || "/";
+    const openPostingId = location.state?.openPostingId || null;
+
     const back = ()=>{
         setOnLoginScreen(false)
         setLoginType(null)
@@ -27,7 +31,9 @@ export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }
             const response = await authApi.login(payload);
             setToken(response.token);
             setAuthUser(response.user);
-            navigate("/");
+            navigate(returnTo, {
+                state: openPostingId ? { openPostingId } : undefined,
+            });
         } catch (error) {
             setErrorMessage(error.message || "Login failed")
         } 

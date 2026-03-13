@@ -1,9 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
 import ChooseUserTypeFlow from "../ChooseUserTypeFlow";
 
 export default function ChooseRegisterType() {
     const navigate = useNavigate();
+    const location = useLocation();
     const goHome = () => navigate("/");
 
     return (
@@ -11,7 +12,7 @@ export default function ChooseRegisterType() {
             titleText="You Are Registering As An"
             onBack={goHome}
             bottomButton={
-                <Link to="/Login" className="register-card-link-button">
+                <Link to="/Login" state={location.state} className="register-card-link-button">
                     I already have an account
                 </Link>
             }

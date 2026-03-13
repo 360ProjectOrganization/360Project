@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { jobPostingApi } from "../../utils/api.js";
 import { formatDate, getTagColor } from "../../utils/formatHelpers.js";
 
-export default function JobDetailsForm({ posting, role, userId, onSuccess, onCancel }) {
+export default function JobDetailsForm({ posting, role, userId, isAuthenticated, onSuccess, onCancel }) {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -12,11 +12,21 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
     const isOwnCompanyPost = role === "company" && String(posting.companyId) === String(userId);
     const canEditPosting = role === "administrator" || isOwnCompanyPost;
 
-    const actionLabel = role === "applicant" ?
+    const actionLabel = (!isAuthenticated || role === "applicant") ?
         (hasApplied ? "Applied" : "Apply") : canEditPosting ?
             "Edit Post" : null;
     
     async function handleAction() {
+        if (!isAuthenticated) {
+            navigate("/Login", {
+                state: {
+                    returnTo: "/",
+                    openPostingId: posting._id,
+                },
+            });
+            return;
+        }
+
         if (role === "applicant") {
             try {
                 setError("");
@@ -46,6 +56,7 @@ export default function JobDetailsForm({ posting, role, userId, onSuccess, onCan
 
         if (role === "administrator") {
             // TODO: take the user to the admin portal, and highlight the specific job they are looking at OR open the modal (whatever is implemented)
+            return;
         }
     }
 
