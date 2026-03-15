@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { companyApi, jobPostingApi } from "../../utils/api.js";
 import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import EditJobForm from "./EditJobForm.jsx";
 
 
-export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey }) {
+export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey, editPostingId, onEditPosting }) {
+    const location = useLocation();
+    const navigate = useNavigate();
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadError, setLoadError] = useState(null);
@@ -50,6 +53,19 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         setJobPostings((prev) => prev.filter((p) => p._id !== id));
         closeDelete();
     };
+
+    useEffect(() => {
+        if (!editPostingId || !jobPostings.length) return;
+
+        const postingToEdit = jobPostings.find(
+            (posting) => String(posting._id) === String(editPostingId)
+        );
+
+        if (postingToEdit) {
+            openEdit(postingToEdit);
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+    }, [editPostingId, jobPostings]);
 
     useEffect(() => {
         if (!companyId) return;

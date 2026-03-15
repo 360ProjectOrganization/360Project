@@ -1,7 +1,7 @@
 import "../company-portal/CompanyPortal.css";
 import "../home/Home.css";
 
-export default function HomeSearchBar({ titleQuery, setTitleQuery, locationQuery, setLocationQuery, selectedTag, setSelectedTag, appliedFilter, setAppliedFilter, tags}) {
+export default function HomeSearchBar({ role, titleQuery, setTitleQuery, locationQuery, setLocationQuery, selectedTag, setSelectedTag, appliedFilter, setAppliedFilter, tags}) {
     const clearFilters = () => {
         setTitleQuery("");
         setLocationQuery("");
@@ -28,11 +28,25 @@ export default function HomeSearchBar({ titleQuery, setTitleQuery, locationQuery
                 ))}
             </select>
 
-            <select value={appliedFilter} className="home-tags" onChange={(e) => setAppliedFilter(e.target.value)}>
-                <option value="all">All Jobs</option>
-                <option value="applied">Applied</option>
-                <option value="not-applied">Not Applied</option>
-            </select>
+            {role !== "administrator" && (
+                <select value={appliedFilter} className="home-tags" onChange={(e) => setAppliedFilter(e.target.value)}>
+                    <option value="all">All Jobs</option>
+
+                    {(role === "applicant" || role === "") && (
+                        <>
+                            <option value="applied">Applied</option>
+                            <option value="not-applied">Not Applied</option>
+                        </>
+                    )}
+
+                    {role === "company" && (
+                        <>
+                            <option value="mine">My Jobs</option>
+                            <option value="not-mine">Other Jobs</option>
+                        </>
+                    )}
+                </select>
+            )}
 
             <button className="clear-filters-btn" onClick={ clearFilters }>
                 Clear Filters
