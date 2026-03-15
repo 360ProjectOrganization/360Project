@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode";
 import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js"
 import Card from "../components/common/Card.jsx";
+import Modal from "../components/common/Modal.jsx";
+import UploadResumeForm from "../components/profile-page/UploadResumeForm.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -17,6 +19,8 @@ function ProfilePage () {
 
     const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
     const [jobInfo, setJobInfo] = useState([]);
+
+    const [uploadResume, setUploadResume] = useState(false);
 
     // Token
     useEffect(() => {
@@ -134,6 +138,14 @@ function ProfilePage () {
         getJobInfo();
     }, [companyId])
 
+    function openUploadModal() {
+        setUploadResume(true);
+    }
+
+    function closeUploadModal(){
+        setUploadResume(false);
+    }
+    
     return (
         <>
             <Header />
@@ -152,7 +164,7 @@ function ProfilePage () {
                         </button>
                         {role === "applicant" ?
                             <>
-                                <button id="upload-resume">
+                                <button id="upload-resume" onClick={openUploadModal}>
                                     <a>Upload Resume</a>
                                 </button>
                                 <button id="download-resume">
@@ -177,6 +189,10 @@ function ProfilePage () {
                         })}
                     </div>
                 </section> : "" }
+
+            <Modal isOpen={uploadResume} onClose={closeUploadModal} title={"Upload Resume"}>
+                <UploadResumeForm />
+            </Modal>
         </>
     )
 };
