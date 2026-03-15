@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BackButton from "../BackButton";
 import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
 import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 
 export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
     const navigate = useNavigate();
+    const location = useLocation();
+    const returnTo = location.state?.returnTo || "/";
+    const openPostingId = location.state?.openPostingId || null;
+
     const isEmployer = typeOfUser === "Employer";
 
     const [errors, setErrors] = useState({});
@@ -49,7 +53,9 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
             const response = await authApi.register(payload);
             setToken(response.token);
             setAuthUser(response.user);
-            navigate("/");
+            navigate(returnTo, {
+                state: openPostingId ? { openPostingId } : undefined,
+            });
         }
         catch (err) {
             setSubmitError(err.message || "Registration failed");

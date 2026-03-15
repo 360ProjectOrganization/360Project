@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import CompanyPortalSubNav from "./CompanyPortalSubNav.jsx";
 import CompanyPortalJobPostings from "./CompanyPortalJobPostings.jsx";
 import CreateJobForm from "./CreateJobForm.jsx";
@@ -7,10 +7,14 @@ import Modal from "../common/Modal.jsx";
 
 export default function CompanyPortal() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [activeView, setActiveview] = useState("postings"); //default view is postings
+    const [selectedPosting, setSelectedPosting] = useState(null);
     const [openModal, setOpenModal] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
     
+    const editPostingId = location.state?.editPostingId;
+
     //get company ID from local storage
     const storedUser = localStorage.getItem("jobly_user");
     const user = storedUser ? JSON.parse(storedUser) : null;
@@ -37,7 +41,18 @@ export default function CompanyPortal() {
                 onProfileClick={handleProfileClick}
             />
             
-            {activeView === "postings" && <CompanyPortalJobPostings companyId={companyId} companyName={companyName} refreshKey={refreshKey} />}
+            {activeView === "postings" && (
+                <CompanyPortalJobPostings
+                    companyId={companyId}
+                    companyName={companyName}
+                    refreshKey={refreshKey}
+                    editPostingId={editPostingId}
+                    onEditPosting={(posting) => {
+                        setSelectedPosting(posting);
+                        setOpenModal("edit");
+                    }}
+                />
+            )}
 
             <Modal isOpen={openModal === "open-modal"} onClose={() => setOpenModal(false)} title="Create New Job Posting">
                 <CreateJobForm companyId={companyId} onSuccess={() => { setOpenModal(false); setRefreshKey((k) => k + 1); }} onCancel={() => setOpenModal(false)}/>

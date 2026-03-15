@@ -1,4 +1,5 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import { jwtDecode } from "jwt-decode";
@@ -10,12 +11,17 @@ import JobDetailsForm from "./JobDetailsForm.jsx";
 import HomeSearchBar from "./HomeSearchBar.jsx";
 
 export default function HomeJobPostings() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [id, setId] = useState("");
     const [role, setRole] = useState("");
 
     const [jobPostings, setJobPostings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadError, setLoadError] = useState(null);
+
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const [isJobDetailsOpen, setIsJobDetailsOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
@@ -26,7 +32,8 @@ export default function HomeJobPostings() {
     const [appliedFilter, setAppliedFilter] = useState("all");
     const allTags = [...new Set(jobPostings.flatMap((p) => p.tags || []))].sort(); //flatMap basically turns the set into one single array (instead of an array of arrays)
 
-    const filteredJobPostings = filterJobPostings(jobPostings, {titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
+    const activeJobPostings = jobPostings.filter((p) => p.status === "ACTIVE");
+    const filteredJobPostings = filterJobPostings(activeJobPostings, {titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
 
     const openJobDetails = (posting) => {
         setSelectedPosting(posting);
@@ -40,12 +47,30 @@ export default function HomeJobPostings() {
     //get token, decode token, then extract the values
     useEffect(() => {
         const token = getToken();
-        if (!token) return; // TODO: user needs to be redirected to the login, and then taken back to the job posting Apply/Details modal
+        if (!token) {
+            setIsAuthenticated(false);
+            return;
+        }
         
         const decoded = jwtDecode(token);
         setRole(decoded.role);
         setId(decoded.id);
+        setIsAuthenticated(true);
     }, []);
+
+    useEffect(() => {
+        const openPostingId = location.state?.openPostingId;
+        if (!openPostingId || jobPostings.length === 0) return;
+
+        const postingToOpen = jobPostings.find((posting) => String(posting._id) === String(openPostingId));
+        if (postingToOpen) {
+            openJobDetails(postingToOpen);
+            navigate(location.pathname, {
+                replace: true,
+                state: {},
+            });
+        }
+    }, [location.state, jobPostings]);
 
     useEffect(() => {
         async function load() {
@@ -98,7 +123,7 @@ export default function HomeJobPostings() {
     
     return (
         <section className="job-postings-container">
-            <HomeSearchBar titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} tags={allTags} />
+            <HomeSearchBar role={role} titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} tags={allTags} />
 
             <section className="job-postings-layout">
                 {filteredJobPostings.length === 0 ? (
@@ -106,6 +131,7 @@ export default function HomeJobPostings() {
                 ) : (
                     filteredJobPostings.map((p) => {
                         const hasApplied = role === "applicant" && p.applicants?.some((val) => String(val) === id);
+                        const isOwnCompanyPost = role === "company" && String(p.companyId) === String(id);
 
                         return (
                             <Card key={p._id} title={p.title} footer={
@@ -118,6 +144,7 @@ export default function HomeJobPostings() {
                                         <div className="home-card-header-row">
                                             <p className="job-info">Company: {p.companyName}</p>
                                             {hasApplied && <span className="home-applied-badge">Applied</span>}
+                                            {isOwnCompanyPost && <span className="home-applied-badge">Your Post</span>}
                                         </div>
                                         <p className="job-info">Location: {p.location}</p>
                                         <p className="job-description">Description: {p.description}</p>
@@ -131,7 +158,7 @@ export default function HomeJobPostings() {
             </section>
 
             <Modal isOpen={isJobDetailsOpen} onClose={closeJobDetails} title={selectedPosting?.title}>
-                <JobDetailsForm posting={selectedPosting} role={role} userId={id} onCancel={closeJobDetails} onSuccess={(updatedValues) => {
+                <JobDetailsForm posting={selectedPosting} role={role} userId={id} isAuthenticated={isAuthenticated} onCancel={closeJobDetails} onSuccess={(updatedValues) => {
                         const id = selectedPosting?._id;
                         closeJobDetails();
                         if (!id) return;
