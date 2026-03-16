@@ -6,6 +6,7 @@ import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js"
 import Card from "../components/common/Card.jsx";
 import Modal from "../components/common/Modal.jsx";
 import UploadResumeForm from "../components/profile-page/UploadResumeForm.jsx";
+import EditProfileForm from "../components/profile-page/EditProfileForm.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -21,6 +22,7 @@ function ProfilePage () {
     const [jobInfo, setJobInfo] = useState([]);
 
     const [uploadResume, setUploadResume] = useState(false);
+    const [editProfile, setEditProfile] = useState(false);
 
     // Token
     useEffect(() => {
@@ -138,14 +140,6 @@ function ProfilePage () {
         getJobInfo();
     }, [companyId])
 
-    function openUploadModal() {
-        setUploadResume(true);
-    }
-
-    function closeUploadModal(){
-        setUploadResume(false);
-    }
-
     async function displayResume(){
         console.log(id)
         const url = applicantApi.getResumeViewUrl(id);
@@ -167,12 +161,12 @@ function ProfilePage () {
                         role != "administrator" ? <p><strong>Email: </strong>{email}</p> : ""
                     }
                     <span id="profile-button-layout">
-                        <button id="edit-profile">
+                        <button id="edit-profile" onClick={() => setEditProfile(true)}>
                             <a>Edit Profile</a>
                         </button>
                         {role === "applicant" ?
                             <>
-                                <button id="upload-resume" onClick={openUploadModal}>
+                                <button id="upload-resume" onClick={() => setUploadResume(true)}>
                                     <a>Upload Resume</a>
                                 </button>
                                 <button id="download-resume" onClick={displayResume}>
@@ -198,8 +192,12 @@ function ProfilePage () {
                     </div>
                 </section> : "" }
 
-            <Modal isOpen={uploadResume} onClose={closeUploadModal} title={"Upload Resume"}>
+            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"}>
                 <UploadResumeForm />
+            </Modal>
+
+            <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
+                <EditProfileForm />
             </Modal>
         </>
     )
