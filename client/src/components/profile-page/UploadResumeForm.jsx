@@ -22,13 +22,9 @@ function UploadResumeForm(){
         }, [token, id])
 
     async function submitResume(e){
-        try {
-            e.preventDefault();
-            const postApplicantResume = await applicantApi.uploadResume(id, file);
-
-        }catch(err){
-            console.log(err)
-        }
+        e.preventDefault();
+        const url = applicantApi.uploadResume(id, file);
+        let response = await fetch(url);
     }
 
     return (

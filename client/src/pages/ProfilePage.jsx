@@ -145,6 +145,14 @@ function ProfilePage () {
     function closeUploadModal(){
         setUploadResume(false);
     }
+
+    async function displayResume(){
+        console.log(id)
+        const url = applicantApi.getResumeViewUrl(id);
+        const response = await fetch(url);
+        console.log(response.url);
+        window.open(url, "_blank");
+    }
     
     return (
         <>
@@ -167,7 +175,7 @@ function ProfilePage () {
                                 <button id="upload-resume" onClick={openUploadModal}>
                                     <a>Upload Resume</a>
                                 </button>
-                                <button id="download-resume">
+                                <button id="download-resume" onClick={displayResume}>
                                     <a>Download Resume</a>
                                 </button>
                             </> :""}
