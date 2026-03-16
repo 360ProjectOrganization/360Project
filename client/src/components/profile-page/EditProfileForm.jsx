@@ -1,24 +1,46 @@
 import { useState, useEffect } from "react";
-import { authApi, setToken, setAuthUser } from "../../utils/api";
+import { Navigate, useNavigate } from "react-router-dom";
+import { authApi, clearToken } from "../../utils/api";
 import "./EditProfileForm.css"
 
 function EditProfileForm(){
+    const navigate = useNavigate();
     const [newEmail, setNewEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [newPassword2, setNewPassword2] = useState("");
 
     async function handleNewEmail(e){
         e.preventDefault();
         try {
             const payload = {
                 newEmail,
-                currentPassword
+                password
             };
-            const response = await authApi.changeEmail(payload);
+            await authApi.changeEmail(payload);
+            window.location.reload();
         } catch (error) {
             console.log(error);
         }
+    }
 
+    async function handleNewPassword(e){
+        e.preventDefault();
+        if(newPassword != newPassword2) return;
+        try {
+            const payload = {
+                currentPassword,
+                newPassword
+            };
+            await authApi.changePassword(payload);
+            // Force user to sign in again
+            navigate("/");
+            clearToken();
+            window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return(
@@ -26,7 +48,7 @@ function EditProfileForm(){
             <div id="edit-profile-section">
                 <form id="edit-profile-form">
                     <div className="update-section">
-                        <p>Change Email?</p>
+                        <p>Change Email</p>
                         
                         <label>New Email: </label>
                         <input 
@@ -40,7 +62,7 @@ function EditProfileForm(){
                         <input 
                             type="password"
                             placeholder="password"
-                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
 
                         <br />
@@ -68,10 +90,19 @@ function EditProfileForm(){
                             placeholder="new password"
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
-
                         <br />
+
+                        <label>Retype New Password: </label>
+                        <input 
+                            type="password"
+                            placeholder="retype new password"
+                            onChange={(e) => setNewPassword2(e.target.value)}
+                        />
+                        <br />
+
                         <button 
                             id="change-password-button"
+                            onClick={handleNewPassword}
                         >
                             Update Password
                         </button>
