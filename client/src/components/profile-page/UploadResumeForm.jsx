@@ -7,6 +7,7 @@ function UploadResumeForm(){
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [file, setFile] = useState("")
+    const [resumeError, setResumeError] = useState("");
 
         useEffect(() => {
             const available_token = getToken();
@@ -23,8 +24,22 @@ function UploadResumeForm(){
 
     async function submitResume(e){
         e.preventDefault();
-        const url = applicantApi.uploadResume(id, file);
-        let response = await fetch(url);
+
+        if(id === ""){
+            setResumeError("No ID found");
+            return;
+        }else if(file === ""){
+            setResumeError("No file attached");
+            return;
+        }
+
+        try {
+            const url = applicantApi.uploadResume(id, file);
+            await fetch(url);
+        } catch(err) {
+            console.log(err);
+            setResumeError("Error Uploading Resume");
+        }
     }
 
     return (
@@ -44,6 +59,7 @@ function UploadResumeForm(){
                     <button id="submit-resume" type="submit">
                         Submit
                     </button>
+                    <p id="error-text">{resumeError}</p>
                 </form>
             </div>
         </>

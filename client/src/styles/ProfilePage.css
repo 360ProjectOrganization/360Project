@@ -28,6 +28,13 @@
     }
 }
 
+#profile-button-layout {
+    p {
+        font-size: 1.1em;
+        color: red;
+    }
+}
+
 #edit-profile {
     padding: 0.5em;
     margin-right: 1em;

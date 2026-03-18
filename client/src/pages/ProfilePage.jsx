@@ -23,6 +23,7 @@ function ProfilePage () {
 
     const [uploadResume, setUploadResume] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
+    const [resumeError, setResumeError] = useState("");
 
     // Token
     useEffect(() => {
@@ -97,7 +98,7 @@ function ProfilePage () {
     // Narrow down application to related company
     useEffect(() => {
         if(!jobsAppliedTo) return;
-        const id_arr = []
+        const id_arr = [];
         async function getCompanyIDs(){
             const allCompanies = await companyApi.getAll();
             for(let i = 0; i < allCompanies.length; i++){
@@ -108,14 +109,14 @@ function ProfilePage () {
                     id_arr.push(allCompanies[i]._id);
                 }
             }
-            setCompanyId(id_arr)
+            setCompanyId(id_arr);
         }
         getCompanyIDs();
     }, [jobsAppliedTo])
 
     // Match applicant ids with logged in id
     useEffect(() => {
-        const jobs_arr = []
+        const jobs_arr = [];
         async function getJobInfo(){
             for(let i = 0; i <companyId.length; i++){
                 const companyPostings = await companyApi.getJobPostings(companyId[i]);
@@ -140,12 +141,20 @@ function ProfilePage () {
         getJobInfo();
     }, [companyId])
 
-    async function displayResume(){
-        console.log(id)
+    async function displayResume(e){
+        e.preventDefault();
         const url = applicantApi.getResumeViewUrl(id);
-        const response = await fetch(url);
-        console.log(response.url);
-        window.open(url, "_blank");
+        try {
+            const response = await fetch(url);
+            if(response.status === 404){
+                setResumeError("No resume available for download");
+                return;
+            }
+            window.open(url, "_blank");
+        } catch (error) {
+            console.log(error);
+            setResumeError("Error occured getting resume");
+        }
     }
     
     return (
@@ -172,6 +181,7 @@ function ProfilePage () {
                                 <button id="download-resume" onClick={displayResume}>
                                     <a>Download Resume</a>
                                 </button>
+                                <p>{resumeError}</p>
                             </> :""}
                     </span>
                 </section>

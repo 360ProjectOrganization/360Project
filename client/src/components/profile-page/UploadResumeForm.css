@@ -23,3 +23,9 @@
     color: white;
     font-size: 1.10em;
 }
+
+.error-text{
+    font-size: 0.75em;
+    color: red;
+    text-align: center;
+}
