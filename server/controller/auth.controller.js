@@ -65,7 +65,7 @@ router.put('/changepassword', requireAuth, async (req, res) => {
   } catch (err) {
     const msg = err.message || 'Password change failed';
     if (msg.includes('not found') || msg.includes('Current password is incorrect')) {
-      return sendError(res, 401, msg);
+      return sendError(res, 400, msg);
     }
     if (msg.includes('required') || msg.includes('at least 8')) {
       return sendError(res, 400, msg);
@@ -88,7 +88,7 @@ router.put('/changeemail', requireAuth, async (req, res) => {
   } catch (err) {
     const msg = err.message || 'Email change failed';
     if (msg.includes('not found') || msg.includes('Password is incorrect')) {
-      return sendError(res, 401, msg);
+      return sendError(res, 400, msg);
     }
     if (msg.includes('already in use') || msg.includes('required')) {
       return sendError(res, 400, msg);

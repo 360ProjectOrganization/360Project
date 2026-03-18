@@ -7,27 +7,57 @@ function EditProfileForm(){
     const navigate = useNavigate();
     const [newEmail, setNewEmail] = useState("");
     const [password, setPassword] = useState("");
+    
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [newPassword2, setNewPassword2] = useState("");
+    const [passwordRetype, setPasswordRetype] = useState("");
+
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
     async function handleNewEmail(e){
         e.preventDefault();
+        
+        if(newEmail === "") {
+            setEmailError("New Email Field Blank")
+            return;
+        }else if(password === ""){
+            setEmailError("Current Password is Required");
+            return;
+        }else if(!newEmail.includes("@") || !newEmail.includes(".")){
+            setEmailError("Please enter valid email address");
+            return;
+        }
+
         try {
             const payload = {
                 newEmail,
                 password
             };
             await authApi.changeEmail(payload);
+            setEmailError("");
             window.location.reload();
         } catch (error) {
             console.log(error);
+            setEmailError("Incorrect Password");
         }
     }
 
     async function handleNewPassword(e){
         e.preventDefault();
-        if(newPassword != newPassword2) return;
+        let pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$");
+
+        if(currentPassword === "" || newPassword === "" || passwordRetype === ""){
+            setPasswordError("One or more password fields is empty");
+            return;
+        }else if(!pattern.test(newPassword)){
+            setPasswordError("Password Does not Meet Criteria");
+            return;
+        }else if(newPassword != passwordRetype){
+            setPasswordError("Password and Retyped Password Don't Match");
+            return;
+        }
+
         try {
             const payload = {
                 currentPassword,
@@ -39,7 +69,8 @@ function EditProfileForm(){
             clearToken();
             window.location.reload();
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            setPasswordError("Incorrect Old Password");
         }
     }
 
@@ -56,16 +87,15 @@ function EditProfileForm(){
                             placeholder="abc@example.com"
                             onChange={(e) => setNewEmail(e.target.value)}
                         />
-
                         <br />
+
                         <label>Password: </label>
                         <input 
                             type="password"
                             placeholder="password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-
-                        <br />
+                        <p className="error-text">{emailError}</p>
                         <button 
                             id="change-email-button"
                             onClick={handleNewEmail}
@@ -76,6 +106,7 @@ function EditProfileForm(){
 
                     <div className="update-section">
                         <p>Change Password</p>
+                        <p>Format: Atleast 1 uppercase, 1 lowercase, 1 number, 8+ length</p>
                         <label>Old Password: </label>
                         <input 
                             type="password"
@@ -96,10 +127,10 @@ function EditProfileForm(){
                         <input 
                             type="password"
                             placeholder="retype new password"
-                            onChange={(e) => setNewPassword2(e.target.value)}
+                            onChange={(e) => setPasswordRetype(e.target.value)}
                         />
                         <br />
-
+                        <p className="error-text">{passwordError}</p>
                         <button 
                             id="change-password-button"
                             onClick={handleNewPassword}
