@@ -35,7 +35,9 @@ function EditProfileForm(){
                 password
             };
             await authApi.changeEmail(payload);
-            setEmailError("");
+            // Force user to sign in again
+            navigate("/");
+            clearToken();
             window.location.reload();
         } catch (error) {
             console.log(error);
