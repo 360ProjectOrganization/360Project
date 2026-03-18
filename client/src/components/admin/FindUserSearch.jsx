@@ -7,13 +7,13 @@ export default function({setFilter,setFilterType}){
         setFilter(e.target.value);
     })
     return(
-        <section>
-            <label htmlFor="">Search By:</label>
-            <select name="" id="" onChange={changeFilterType}>
+        <section className="master-text-admin admin-selector-row-container">
+            <h3>Search By:</h3>
+            <select name="" id="" onChange={changeFilterType} className="spacing-betteween-input-admin selectors-admin">
                 <option value="name">Username</option>
                 <option value="type">Type</option>
             </select>
-            <input type="text" name="" id="searchTextInput" placeholder="..." onChange={changeFilter}/>
+            <input type="text" name="" id="searchTextInput" placeholder="..." onChange={changeFilter} className="spacing-betteween-input-admin input-box-admin"/>
         </section>
     )
 }

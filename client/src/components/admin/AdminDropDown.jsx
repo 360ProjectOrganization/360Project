@@ -10,8 +10,7 @@ export default function AdminDropDown({setPage}){
     });
     return(
         <section>
-            <h3>Admin Portal</h3>
-            <select onChange={changePage}>
+            <select onChange={changePage} className="selectors-admin">
                 <option value="Find Users">Find Users</option>
                 <option value="New Admin">New Admin</option>
                 <option value="Analytics">Analytics</option>

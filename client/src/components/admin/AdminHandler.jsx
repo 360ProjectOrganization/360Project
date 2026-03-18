@@ -4,6 +4,8 @@ import CreateNewAdminForm from "./CreateNewAdminForm"
 import FindUserSearch from "./FindUserSearch";
 import FindUsers from "./FindUsers";
 import Analytics from "./Analytics"
+import "./admin.css"
+import "../home/Home.css"
 
 export default function AdminHandler(){
     const[page, setPage] = useState("Find Users");
@@ -12,8 +14,9 @@ export default function AdminHandler(){
     const [loading, setLoading] = useState(true);
     return(
         <section>
-            <section>
-                
+            
+            <section className="subnav-container-admin">
+                <h2 className="master-text-admin">Admin Portal</h2>
                 <AdminDropDown setPage={setPage}/>
                 {page === "Find Users" && loading === false && (<FindUserSearch setFilter = {setFilter} setFilterType={setFilterType}/>)}
             </section>
