@@ -1,0 +1,53 @@
+.analytics{
+    text-align: center;
+}
+.card-selector-admin{
+    border-radius: 8px;
+    width: 40%;
+    align-self: center;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.card-admin-button{
+    width: 40%;
+    align-self: center;
+    padding: 10px 0px;
+    background-color: var(--color-cta-primary);
+    color:white;
+}
+.card-admin-button:hover {
+    background-color: var(--color-cta-secondary);
+}
+.subnav-container-admin {
+    display: flex;
+    gap: 40px;
+
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-divider);
+    flex-wrap: nowrap;
+}
+.master-text-admin{
+    padding-left: 10px;
+}
+.admin-selector-row-container{
+    display: flex;
+    align-items: center;
+
+}
+.spacing-betteween-input-admin{
+    margin: 8px;
+}
+.selectors-admin{
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.input-box-admin{
+    border-radius: 8px;
+    border-width: 1px;
+    padding: 11px 41px 11px 11px;
+}
