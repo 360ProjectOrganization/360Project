@@ -64,10 +64,10 @@ router.put('/changepassword', requireAuth, async (req, res) => {
     res.json(user);
   } catch (err) {
     const msg = err.message || 'Password change failed';
-    if (msg.includes('not found') || msg.includes('Current password is incorrect')) {
-      return sendError(res, 400, msg);
+    if (msg.includes('not found')) {
+      return sendError(res, 404, msg);
     }
-    if (msg.includes('required') || msg.includes('at least 8')) {
+    if (msg.includes('required') || msg.includes('at least 8') || msg.includes('Current password is incorrect')) {
       return sendError(res, 400, msg);
     }
     sendGenericError(res, err);
@@ -87,10 +87,10 @@ router.put('/changeemail', requireAuth, async (req, res) => {
     res.json(user);
   } catch (err) {
     const msg = err.message || 'Email change failed';
-    if (msg.includes('not found') || msg.includes('Password is incorrect')) {
-      return sendError(res, 400, msg);
+    if (msg.includes('not found')) {
+      return sendError(res, 404, msg);
     }
-    if (msg.includes('already in use') || msg.includes('required')) {
+    if (msg.includes('already in use') || msg.includes('required') || msg.includes('Password is incorrect')) {
       return sendError(res, 400, msg);
     }
     sendGenericError(res, err);
