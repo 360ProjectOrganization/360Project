@@ -8,18 +8,18 @@ function UploadResumeForm(){
     const [id, setId] = useState("");
     const [file, setFile] = useState("");
 
-        useEffect(() => {
-            const available_token = getToken();
-            if(available_token){
-                setToken(available_token);
-            };
-        }, [])
+    useEffect(() => {
+        const available_token = getToken();
+        if(available_token){
+            setToken(available_token);
+        };
+    }, [])
     
-        useEffect(() => {
-            if(!token) return;
-            const decoded = jwtDecode(token);
-            setId(decoded.id);
-        }, [token, id])
+    useEffect(() => {
+        if(!token) return;
+        const decoded = jwtDecode(token);
+        setId(decoded.id);
+    }, [token, id])
 
     async function submitResume(e){
         e.preventDefault();
