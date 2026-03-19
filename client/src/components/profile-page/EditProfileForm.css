@@ -9,19 +9,18 @@
         font-size: 0.75em;
         background-color: var(--color-cta-primary);
         color: antiquewhite;
+        cursor: pointer;
     }
-
     label {
         font-size: 0.75em;
     }
-
     input {
         margin: 0 0 1em 1em;
         padding: 0.5em 0.5em 0.75em 0.5em;
         border-radius: 10px;
-        width: 20em
+        border: 2px solid grey;
+        width: 20em;
     }
-
     p {
         font-size: 0.8em;
     }
@@ -34,7 +33,7 @@
 }
 
 .error-text{
-    font-size: 0.75em;
+    font-size: 0.65em;
     color: red;
     text-align: center;
 }

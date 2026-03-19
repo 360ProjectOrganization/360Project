@@ -1,8 +1,8 @@
-import Header from "../components/header/Header.jsx"
-import "../styles/ProfilePage.css"
-import { useState, useEffect } from "react"
+import Header from "../components/header/Header.jsx";
+import "../styles/ProfilePage.css";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js"
+import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js";
 import Card from "../components/common/Card.jsx";
 import Modal from "../components/common/Modal.jsx";
 import UploadResumeForm from "../components/profile-page/UploadResumeForm.jsx";
@@ -151,6 +151,7 @@ function ProfilePage () {
                 return;
             }
             window.open(url, "_blank");
+            setResumeError("");
         } catch (error) {
             console.log(error);
             setResumeError("Error occured getting resume");
@@ -179,7 +180,7 @@ function ProfilePage () {
                                     <a>Upload Resume</a>
                                 </button>
                                 <button id="download-resume" onClick={displayResume}>
-                                    <a>Download Resume</a>
+                                    <a>View Resume</a>
                                 </button>
                                 <p>{resumeError}</p>
                             </> :""}
@@ -205,7 +206,6 @@ function ProfilePage () {
             <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"}>
                 <UploadResumeForm />
             </Modal>
-
             <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
                 <EditProfileForm />
             </Modal>

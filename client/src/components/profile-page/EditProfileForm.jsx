@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { authApi, clearToken } from "../../utils/api";
-import "./EditProfileForm.css"
+import "./EditProfileForm.css";
 
 function EditProfileForm(){
     const navigate = useNavigate();
@@ -19,13 +19,13 @@ function EditProfileForm(){
         e.preventDefault();
         
         if(newEmail === "") {
-            setEmailError("New Email Field Blank")
-            return;
-        }else if(password === ""){
-            setEmailError("Current Password is Required");
+            setEmailError("New Email Field Blank");
             return;
         }else if(!newEmail.includes("@") || !newEmail.includes(".")){
             setEmailError("Please enter valid email address");
+            return;
+        }else if(password === ""){
+            setEmailError("Current Password is Required");
             return;
         }
 
@@ -81,8 +81,7 @@ function EditProfileForm(){
             <div id="edit-profile-section">
                 <form id="edit-profile-form">
                     <div className="update-section">
-                        <p>Change Email</p>
-                        
+                        <p><strong>Change Email</strong></p>
                         <label>New Email: </label>
                         <input 
                             type="email" 
@@ -90,7 +89,6 @@ function EditProfileForm(){
                             onChange={(e) => setNewEmail(e.target.value)}
                         />
                         <br />
-
                         <label>Password: </label>
                         <input 
                             type="password"
@@ -107,7 +105,7 @@ function EditProfileForm(){
                     </div>
 
                     <div className="update-section">
-                        <p>Change Password</p>
+                        <p><strong>Change Password</strong></p>
                         <p>Format: Atleast 1 uppercase, 1 lowercase, 1 number, 8+ length</p>
                         <label>Old Password: </label>
                         <input 
@@ -115,7 +113,6 @@ function EditProfileForm(){
                             placeholder="password"
                             onChange={(e) => setCurrentPassword(e.target.value)}
                         />
-
                         <br />
                         <label>New Password: </label>
                         <input 
@@ -124,7 +121,6 @@ function EditProfileForm(){
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
                         <br />
-
                         <label>Retype New Password: </label>
                         <input 
                             type="password"
@@ -145,5 +141,4 @@ function EditProfileForm(){
         </>
     )
 }
-
 export default EditProfileForm;
