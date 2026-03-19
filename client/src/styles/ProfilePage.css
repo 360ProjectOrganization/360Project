@@ -12,10 +12,15 @@
     width: 20%;
 }
 
-#profile-picture-section img {
-    width: 14em;
-    height: 14em;
-    border-radius: 120px;
+#profile-picture-section {
+    img {
+        width: 14em;
+        height: 14em;
+        border-radius: 120px;
+    }
+    img:hover{
+        cursor: pointer;
+    }
 }
 
 #profile-details {

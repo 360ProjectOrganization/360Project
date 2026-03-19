@@ -7,7 +7,6 @@ function UploadResumeForm(){
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [file, setFile] = useState("");
-    const [resumeError, setResumeError] = useState("");
 
         useEffect(() => {
             const available_token = getToken();
@@ -30,7 +29,6 @@ function UploadResumeForm(){
             window.location.reload();
         } catch(err) {
             console.log(err);
-            setResumeError("Error Uploading Resume");
         }
     }
 

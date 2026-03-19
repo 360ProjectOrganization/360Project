@@ -1,0 +1,25 @@
+#upload-pfp-form{
+    text-align: center;
+}
+
+::file-selector-button {
+    padding: 1em 3em 1em 3em;
+    border-radius: 10px;
+    background-color: var(--color-cta-primary);
+    cursor: pointer;
+    color: antiquewhite;
+    font-size: 1.10em;
+}
+
+::file-selector-button:hover{
+    background-color: var(--color-cta-secondary);
+    cursor: pointer;
+}
+
+#submit-pfp {
+    margin-top: 2em;
+    padding: 0.5em 1em 0.5em 1em;
+    background-color: var(--color-title-alt);
+    color: white;
+    font-size: 1.10em;
+}

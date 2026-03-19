@@ -7,6 +7,7 @@ import Card from "../components/common/Card.jsx";
 import Modal from "../components/common/Modal.jsx";
 import UploadResumeForm from "../components/profile-page/UploadResumeForm.jsx";
 import EditProfileForm from "../components/profile-page/EditProfileForm.jsx";
+import UploadPfpForm from "../components/profile-page/UploadPfpForm.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -23,6 +24,7 @@ function ProfilePage () {
 
     const [uploadResume, setUploadResume] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
+    const [uploadPfp, setUploadPfp] = useState(false);
     const [resumeError, setResumeError] = useState("");
 
     // Token
@@ -163,7 +165,7 @@ function ProfilePage () {
             <Header />
             <section id="profile-container">
                 <section id="profile-picture-section">
-                    <img src={image} alt="pfp"/>
+                    <img src={image} alt="pfp" onClick={() => setUploadPfp(true)}/>
                 </section>
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
@@ -208,6 +210,9 @@ function ProfilePage () {
             </Modal>
             <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
                 <EditProfileForm />
+            </Modal>
+            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Edit Profile Picture"}>
+                <UploadPfpForm />
             </Modal>
         </>
     )
