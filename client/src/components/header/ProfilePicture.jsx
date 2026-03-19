@@ -61,9 +61,10 @@ function ProfilePicture() {
                     src={image}
                     alt="pfp"
                     style={{
-                            width: "3em",
+                            width: "3.5em",
+                            height:"3.5em",
                             padding: "0.5em",
-                            borderRadius: "40px"
+                            borderRadius: "6em"
                         }}
                 ></img>
             </div>

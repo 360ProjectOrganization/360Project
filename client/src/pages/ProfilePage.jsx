@@ -1,9 +1,13 @@
-import Header from "../components/header/Header.jsx"
-import "../styles/ProfilePage.css"
-import { useState, useEffect } from "react"
+import Header from "../components/header/Header.jsx";
+import "../styles/ProfilePage.css";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js"
+import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js";
 import Card from "../components/common/Card.jsx";
+import Modal from "../components/common/Modal.jsx";
+import UploadResumeForm from "../components/profile-page/UploadResumeForm.jsx";
+import EditProfileForm from "../components/profile-page/EditProfileForm.jsx";
+import UploadPfpForm from "../components/profile-page/UploadPfpForm.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -17,6 +21,11 @@ function ProfilePage () {
 
     const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
     const [jobInfo, setJobInfo] = useState([]);
+
+    const [uploadResume, setUploadResume] = useState(false);
+    const [editProfile, setEditProfile] = useState(false);
+    const [uploadPfp, setUploadPfp] = useState(false);
+    const [resumeError, setResumeError] = useState("");
 
     // Token
     useEffect(() => {
@@ -91,7 +100,7 @@ function ProfilePage () {
     // Narrow down application to related company
     useEffect(() => {
         if(!jobsAppliedTo) return;
-        const id_arr = []
+        const id_arr = [];
         async function getCompanyIDs(){
             const allCompanies = await companyApi.getAll();
             for(let i = 0; i < allCompanies.length; i++){
@@ -102,14 +111,14 @@ function ProfilePage () {
                     id_arr.push(allCompanies[i]._id);
                 }
             }
-            setCompanyId(id_arr)
+            setCompanyId(id_arr);
         }
         getCompanyIDs();
     }, [jobsAppliedTo])
 
     // Match applicant ids with logged in id
     useEffect(() => {
-        const jobs_arr = []
+        const jobs_arr = [];
         async function getJobInfo(){
             for(let i = 0; i <companyId.length; i++){
                 const companyPostings = await companyApi.getJobPostings(companyId[i]);
@@ -134,12 +143,29 @@ function ProfilePage () {
         getJobInfo();
     }, [companyId])
 
+    async function displayResume(e){
+        e.preventDefault();
+        const url = applicantApi.getResumeViewUrl(id);
+        try {
+            const response = await fetch(url);
+            if(response.status === 404){
+                setResumeError("No resume available for download");
+                return;
+            }
+            window.open(url, "_blank");
+            setResumeError("");
+        } catch (error) {
+            console.log(error);
+            setResumeError("Error occured getting resume");
+        }
+    }
+    
     return (
         <>
             <Header />
             <section id="profile-container">
                 <section id="profile-picture-section">
-                    <img src={image} alt="pfp"/>
+                    <img src={image} alt="pfp" onClick={() => setUploadPfp(true)}/>
                 </section>
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
@@ -147,17 +173,18 @@ function ProfilePage () {
                         role != "administrator" ? <p><strong>Email: </strong>{email}</p> : ""
                     }
                     <span id="profile-button-layout">
-                        <button id="edit-profile">
+                        <button id="edit-profile" onClick={() => setEditProfile(true)}>
                             <a>Edit Profile</a>
                         </button>
                         {role === "applicant" ?
                             <>
-                                <button id="upload-resume">
+                                <button id="upload-resume" onClick={() => setUploadResume(true)}>
                                     <a>Upload Resume</a>
                                 </button>
-                                <button id="download-resume">
-                                    <a>Download Resume</a>
+                                <button id="download-resume" onClick={displayResume}>
+                                    <a>View Resume</a>
                                 </button>
+                                <p>{resumeError}</p>
                             </> :""}
                     </span>
                 </section>
@@ -177,6 +204,16 @@ function ProfilePage () {
                         })}
                     </div>
                 </section> : "" }
+
+            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"}>
+                <UploadResumeForm />
+            </Modal>
+            <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
+                <EditProfileForm />
+            </Modal>
+            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Edit Profile Picture"}>
+                <UploadPfpForm />
+            </Modal>
         </>
     )
 };
