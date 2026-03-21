@@ -81,6 +81,34 @@ const jobPostingRepository = {
     const byId = Object.fromEntries(applicants.map((a) => [a._id.toString(), a]));
     return recentIds.map((id) => byId[id.toString()]).filter(Boolean);
   },
+  
+  async addCommentToJob(jobId, data) {
+    const job = await JobPosting.findById(jobId).lean();
+    if (!job) return null;
+    const comment = await JobPosting.findByIdAndUpdate(jobId, { $push: { comments: data } }, { new: true }).lean();
+    return comment;
+  },
+  
+  async updateComment(jobId, commentId, data) {
+    const job = await JobPosting.findById(jobId).lean();
+    if (!job) return null;
+    const comment = await JobPosting.findByIdAndUpdate(jobId, { $set: { 'comments.$[comment]': data } }, { new: true, arrayFilters: [{ 'comment._id': commentId }] }).lean();
+    return comment;
+  },
+  
+  async deleteComment(jobId, commentId) {
+    const job = await JobPosting.findById(jobId).lean();
+    if (!job) return null;
+    const comment = await JobPosting.findByIdAndUpdate(jobId, { $pull: { comments: { _id: commentId } } }, { new: true }).lean();
+    return comment;
+  },
+  
+  async findCommentsByJobId(jobId) {
+    const job = await JobPosting.findById(jobId).select('comments').lean();
+    if (!job || !job.comments?.length) return [];
+    return job.comments;
+  },  
+  
 };
 
 module.exports = jobPostingRepository;

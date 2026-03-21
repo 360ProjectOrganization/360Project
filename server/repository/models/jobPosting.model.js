@@ -16,6 +16,13 @@ const jobPostingSchema = new mongoose.Schema({
   publishedAt: { type: Date },
   closedAt: { type: Date },
   applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Applicant' }],
+  comments: [{
+    content: { type: String, trim: true },
+    author: { type: mongoose.Schema.Types.ObjectId, refPath: 'authorModel' },
+    authorModel: { type: String, enum: ['Applicant', 'Company', 'Administrator'], required: true },
+    createdAt: { type: Date, default: Date.now },
+    editedAt: { type: Date },
+  }],
 }, { timestamps: true });
 
 jobPostingSchema.statics.STATUSES = JOB_STATUSES;
