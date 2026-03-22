@@ -123,6 +123,13 @@
     height: 100%;
 }
 
+.job-details-content {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-height: 0;
+}
+
 .job-details-bottom {
     margin-top: auto;
     padding: 0 30px;
@@ -139,6 +146,61 @@
     padding: 28px 30px 0 30px;
     font-size: 16px;
     line-height: 1.5;
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    border-right: 2px solid var(--color-card-shadow);
+}
+
+.job-details-comments {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 30px 0 30px;
+    overflow: hidden;
+}
+
+.job-details-comments h3 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+}
+
+.add-comment-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.comment-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--color-card-bg);
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 60px;
+}
+
+.comment-input:focus {
+    border-color: var(--color-cta-secondary);
+    outline: none;
+}
+
+.comment-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-card-shadow);
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.job-details-comments-list {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .job-info-modal,

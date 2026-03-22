@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { jobPostingApi } from "../../utils/api.js";
 import { formatDate, getTagColor } from "../../utils/formatHelpers.js";
+import JobComments from "./JobComments.jsx";
 
 export default function JobDetailsForm({ posting, role, userId, isAuthenticated, onSuccess, onCancel }) {
     const navigate = useNavigate();
@@ -62,19 +63,23 @@ export default function JobDetailsForm({ posting, role, userId, isAuthenticated,
 
     return (
         <section className="job-details-container">
-            <section className="job-details-info">
-                <p className="job-info-modal"><strong>Company:</strong> {posting.companyName}</p>
-                <p className="job-info-modal"><strong>Location:</strong> {posting.location}</p>
-                <p className="job-description-modal"><strong>Description:</strong> {posting.description}</p> {/* should display the full description (not cut off) */}
-                <p className="job-tags">
-                    <strong>Tags:</strong> {posting.tags?.length ? posting.tags.map((tag) => {
-                        const { bg, text } = getTagColor(tag);
-                        return (
-                            <span key={tag} className="tag" style={{ backgroundColor: bg, color: text }}>{tag}</span>
-                        );
-                    }) : "—"}
-                </p>
-            </section>
+            <div className="job-details-content">
+                <section className="job-details-info">
+                    <p className="job-info-modal"><strong>Company:</strong> {posting.companyName}</p>
+                    <p className="job-info-modal"><strong>Location:</strong> {posting.location}</p>
+                    <p className="job-description-modal"><strong>Description:</strong> {posting.description}</p> {/* should display the full description (not cut off) */}
+                    <p className="job-tags">
+                        <strong>Tags:</strong> {posting.tags?.length ? posting.tags.map((tag) => {
+                            const { bg, text } = getTagColor(tag);
+                            return (
+                                <span key={tag} className="tag" style={{ backgroundColor: bg, color: text }}>{tag}</span>
+                            );
+                        }) : "—"}
+                    </p>
+                </section>
+
+                <JobComments jobId={posting._id} isAuthenticated={isAuthenticated} />
+            </div>
 
             <div className="job-details-bottom">
                 <p className="home-jp-date">Posted: {formatDate(posting.publishedAt)}</p>

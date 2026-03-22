@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET: api/job-postings/:id/comments (must be before /:id)
+// GET: api/job-postings/:id/comments
 router.get('/:id/comments', async (req, res) => {
   try {
     const comments = await jobPostingService.findCommentsByJobId(req.params.id);
@@ -48,13 +48,7 @@ router.post('/:id/comments', requireAuth, async (req, res) => {
 router.patch('/:id/comments/:commentId', requireAuth, async (req, res) => {
   try {
     const { content } = req.body;
-    const job = await jobPostingService.updateComment(
-      req.params.id,
-      req.params.commentId,
-      content,
-      req.user.id,
-      req.user.role
-    );
+    const job = await jobPostingService.updateComment(req.params.id, req.params.commentId, content, req.user.id, req.user.role);
     res.json(job);
   } catch (err) {
     if (err.message === 'Comment not found') {
