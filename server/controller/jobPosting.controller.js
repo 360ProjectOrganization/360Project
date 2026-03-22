@@ -40,6 +40,9 @@ router.post('/:id/comments', requireAuth, async (req, res) => {
     if (err.message === 'Failed to add comment' || err.message === 'Comment is empty' || err.message === 'Invalid user role') {
       return sendError(res, 400, err.message);
     }
+    if (err.message === 'Companies can only comment on their own job postings') {
+      return sendError(res, 403, err.message);
+    }
     res.status(500).json({ error: 'Failed to add comment' });
   }
 });

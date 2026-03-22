@@ -63,7 +63,7 @@ export default function JobComments({ jobId, ownerCompanyId, currentUserId, role
                 ))}
                 {comments.length === 0 && <p>No comments yet.</p>}
             </div>
-            {isAuthenticated && (
+            {isAuthenticated && (role !== "company" || String(ownerCompanyId) === String(currentUserId)) && (
                 <div className="add-comment-row">
                     <textarea
                         value={newComment}

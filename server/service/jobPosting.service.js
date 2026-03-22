@@ -101,6 +101,12 @@ class JobPostingService {
     if (!content?.trim()) throw new Error('Comment is empty');
     const authorType = userRole?.toLowerCase();
     if (!['applicant', 'company', 'administrator'].includes(authorType)) throw new Error('Invalid user role');
+    if (authorType === 'company') {
+      const ownerId = await jobPostingRepository.findCompanyIdByJobId(jobId);
+      if (!ownerId || ownerId !== String(userId)) {
+        throw new Error('Companies can only comment on their own job postings');
+      }
+    }
     const author = authorType === 'administrator' ? 'JobLy Admin' : (await userRepository.findDisplayName(authorType, userId)) || 'Unknown';
     const commentData = { authorId: userId, author, content: content.trim() };
     const job = await jobPostingRepository.addCommentToJob(jobId, commentData);
