@@ -252,7 +252,14 @@
     font-size: 15px;
 }
 
-.comment-edit-btn {
+.comment-action-btns {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.comment-edit-btn,
+.comment-delete-btn {
     padding-left: 10px;
     padding-right: 10px;
     background: none;
@@ -261,9 +268,18 @@
     font-weight: 500;
 }
 
-.comment-edit-btn:hover {
+.comment-edit-btn:hover,
+.comment-delete-btn:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+
+.comment-delete-btn {
+    color: #c53030;
+}
+
+.comment-delete-btn:hover {
+    color: #9b2c2c;
 }
 
 .comment-edit-area {
@@ -416,4 +432,37 @@
     margin-bottom: 15px;
     border-radius: 4px;
     font-size: 14px;
+}
+
+/* Delete confirmation modal (matches CompanyPortal pattern) */
+.delete-modal-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding: 20px 20px 0 20px;
+    text-align: center;
+}
+
+.delete-modal-content .modal-actions {
+    margin-top: auto;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    border-top: 1px solid var(--color-divider);
+}
+
+.delete-modal-content .modal-actions .form-action-btn {
+    padding: 8px 25px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--color-icon-dark);
+    color: var(--color-text-on-dark);
+}
+
+.delete-modal-content .modal-actions .form-action-btn:hover {
+    background-color: var(--color-cta-secondary);
 }

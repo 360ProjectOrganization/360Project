@@ -175,6 +175,9 @@ export const jobPostingApi = {
 
   updateComment: (jobId, commentId, content) =>
     apiRequest(`/job-postings/${jobId}/comments/${commentId}`, { method: 'PATCH', body: { content } }),
+
+  deleteComment: (jobId, commentId) =>
+    apiRequest(`/job-postings/${jobId}/comments/${commentId}`, { method: 'DELETE' }),
 };
 
 // admin API methods

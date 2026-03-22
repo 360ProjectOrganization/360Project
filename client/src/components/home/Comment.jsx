@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { formatDate } from "../../utils/formatHelpers.js";
 
-export default function Comment({ comment, currentUserId, isFromJobOwner, onSaveEdit }) {
-    const canEdit = currentUserId && String(comment.authorId) === String(currentUserId);
+export default function Comment({ comment, currentUserId, role, isFromJobOwner, onSaveEdit, onDeleteClick }) {
+    const isOwner = currentUserId && String(comment.authorId) === String(currentUserId);
+    const canEdit = isOwner;
+    const canDelete = role === "administrator" || ((role === "applicant" || role === "company") && isOwner);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(comment.content);
@@ -46,8 +48,15 @@ export default function Comment({ comment, currentUserId, isFromJobOwner, onSave
                     </em>
                 </div>
 
-                {canEdit && !isEditing && (
-                    <button className="comment-edit-btn" onClick={() => { setEditedContent(comment.content); setIsEditing(true); }}>Edit</button>
+                {!isEditing && (canEdit || canDelete) && (
+                    <div className="comment-action-btns">
+                        {canEdit && (
+                            <button className="comment-edit-btn" onClick={() => { setEditedContent(comment.content); setIsEditing(true); }}>Edit</button>
+                        )}
+                        {canDelete && (
+                            <button className="comment-delete-btn" onClick={() => onDeleteClick?.(comment)}>Delete</button>
+                        )}
+                    </div>
                 )}
             </div>
 

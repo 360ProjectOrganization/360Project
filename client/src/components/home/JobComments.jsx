@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { jobPostingApi } from "../../utils/api.js";
+import Modal from "../common/Modal.jsx";
 import Comment from "./Comment.jsx";
 
 
-export default function JobComments({ jobId, ownerCompanyId, currentUserId, isAuthenticated }) {
+export default function JobComments({ jobId, ownerCompanyId, currentUserId, role, isAuthenticated }) {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [newComment, setNewComment] = useState("");
+    const [commentToDelete, setCommentToDelete] = useState(null);
 
     async function fetchComments() {
         if (!jobId) return;
@@ -44,12 +46,20 @@ export default function JobComments({ jobId, ownerCompanyId, currentUserId, isAu
         await fetchComments();
     }
 
+    async function handleDeleteConfirm() {
+        const id = commentToDelete?._id;
+        if (!jobId || !id) return;
+        await jobPostingApi.deleteComment(jobId, id);
+        await fetchComments();
+        setCommentToDelete(null);
+    }
+
     return (
         <section className="job-details-comments">
             <h3>Comments</h3>
             <div className="job-details-comments-list">
                 {comments.map((c) => (
-                    <Comment key={c._id} comment={c} currentUserId={currentUserId} isFromJobOwner={ownerCompanyId && String(c.authorId) === String(ownerCompanyId)} onSaveEdit={handleSaveEdit} />
+                    <Comment key={c._id} comment={c} currentUserId={currentUserId} role={role} isFromJobOwner={ownerCompanyId && String(c.authorId) === String(ownerCompanyId)} onSaveEdit={handleSaveEdit} onDeleteClick={(comment) => setCommentToDelete(comment)} />
                 ))}
                 {comments.length === 0 && <p>No comments yet.</p>}
             </div>
@@ -65,6 +75,18 @@ export default function JobComments({ jobId, ownerCompanyId, currentUserId, isAu
                     <button onClick={handleAddComment} disabled={loading || !newComment.trim()} className="job-details-add-comment-btn">Comment</button>
                 </div>
             )}
+
+            <Modal isOpen={!!commentToDelete} onClose={() => setCommentToDelete(null)} title="Delete Comment" size="small">
+                {commentToDelete && (
+                    <div className="delete-modal-content">
+                        <p>Are you sure you want to delete this comment?</p>
+                        <div className="modal-actions">
+                            <button className="form-action-btn" type="button" onClick={() => setCommentToDelete(null)}>Cancel</button>
+                            <button className="form-action-btn" type="button" onClick={handleDeleteConfirm}>Confirm</button>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </section>
     );
 }
