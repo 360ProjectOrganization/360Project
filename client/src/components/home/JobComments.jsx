@@ -38,12 +38,18 @@ export default function JobComments({ jobId, ownerCompanyId, currentUserId, isAu
         }
     }
 
+    async function handleSaveEdit(commentId, content) {
+        if (!jobId) return;
+        await jobPostingApi.updateComment(jobId, commentId, content);
+        await fetchComments();
+    }
+
     return (
         <section className="job-details-comments">
             <h3>Comments</h3>
             <div className="job-details-comments-list">
                 {comments.map((c) => (
-                    <Comment key={c._id} comment={c} currentUserId={currentUserId} isFromJobOwner={ownerCompanyId && String(c.authorId) === String(ownerCompanyId)} />
+                    <Comment key={c._id} comment={c} currentUserId={currentUserId} isFromJobOwner={ownerCompanyId && String(c.authorId) === String(ownerCompanyId)} onSaveEdit={handleSaveEdit} />
                 ))}
                 {comments.length === 0 && <p>No comments yet.</p>}
             </div>

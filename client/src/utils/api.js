@@ -172,6 +172,9 @@ export const jobPostingApi = {
   
   addComment: (jobId, data) =>
     apiRequest(`/job-postings/${jobId}/comments`, { method: 'POST', body: data }),
+
+  updateComment: (jobId, commentId, content) =>
+    apiRequest(`/job-postings/${jobId}/comments/${commentId}`, { method: 'PATCH', body: { content } }),
 };
 
 // admin API methods

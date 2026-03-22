@@ -266,6 +266,64 @@
     text-decoration: underline;
 }
 
+.comment-edit-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.comment-edit-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 2px solid var(--color-cta-secondary-darker);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    resize: vertical;
+    min-height: 60px;
+}
+
+.comment-edit-textarea:focus {
+    outline: none;
+    border-color: var(--color-cta-secondary);
+}
+
+.comment-edit-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.comment-save-btn,
+.comment-cancel-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.comment-save-btn {
+    background-color: var(--color-cta-secondary);
+    color: white;
+    border: none;
+}
+
+.comment-save-btn:hover {
+    background-color: var(--color-cta-secondary-darker);
+}
+
+.comment-cancel-btn {
+    background: none;
+    color: var(--color-cta-secondary-darker);
+    border: 2px solid var(--color-cta-secondary-darker);
+}
+
+.comment-cancel-btn:hover {
+    background-color: rgba(123, 74, 46, 0.08);
+}
+
 .job-details-comments-list {
     overflow-y: auto;
     flex: 1;

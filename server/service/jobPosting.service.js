@@ -101,8 +101,8 @@ class JobPostingService {
     if (!content?.trim()) throw new Error('Comment is empty');
     const authorType = userRole?.toLowerCase();
     if (!['applicant', 'company', 'administrator'].includes(authorType)) throw new Error('Invalid user role');
-    const author = await userRepository.findDisplayName(authorType, userId);
-    const commentData = { authorId: userId, author: author || 'Unknown', content: content.trim() };
+    const author = authorType === 'administrator' ? 'JobLy Admin' : (await userRepository.findDisplayName(authorType, userId)) || 'Unknown';
+    const commentData = { authorId: userId, author, content: content.trim() };
     const job = await jobPostingRepository.addCommentToJob(jobId, commentData);
     if (!job) throw new Error('Failed to add comment');
     return job;

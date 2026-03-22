@@ -1,7 +1,31 @@
+import { useState } from "react";
 import { formatDate } from "../../utils/formatHelpers.js";
 
-export default function Comment({ comment, currentUserId, isFromJobOwner }) {
+export default function Comment({ comment, currentUserId, isFromJobOwner, onSaveEdit }) {
     const canEdit = currentUserId && String(comment.authorId) === String(currentUserId);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedContent, setEditedContent] = useState(comment.content);
+
+    const wasEdited = comment.editedAt && String(comment.editedAt) !== String(comment.createdAt);
+
+    const handleCancel = () => {
+        setEditedContent(comment.content);
+        setIsEditing(false);
+    };
+
+    const handleSave = async () => {
+        const trimmedContent = editedContent.trim();
+        if (!trimmedContent || !onSaveEdit) return;
+
+        try {
+            await onSaveEdit(comment._id, trimmedContent);
+            setIsEditing(false);
+        }
+        catch (error) {
+            console.error("Failed to update comment:", error);
+        }
+    };
 
     return (
         <div className={`comment-item ${isFromJobOwner ? "owner-comment" : ""}`}>
@@ -16,13 +40,28 @@ export default function Comment({ comment, currentUserId, isFromJobOwner }) {
                             <span className="comment-role-badge comment-role-badge--admin">Admin</span>
                         )}
                     </div>
-                    <em className="comment-date">{formatDate(comment.createdAt)}</em>
+                    <em className="comment-date">
+                        {formatDate(comment.createdAt)}
+                        {wasEdited && <> · Edited {formatDate(comment.editedAt)}</>}
+                    </em>
                 </div>
 
-                {canEdit && <button className="comment-edit-btn">Edit</button>}
+                {canEdit && !isEditing && (
+                    <button className="comment-edit-btn" onClick={() => { setEditedContent(comment.content); setIsEditing(true); }}>Edit</button>
+                )}
             </div>
 
-            <p>{comment.content}</p>
+            {isEditing ? (
+                <div className="comment-edit-area">
+                    <textarea className="comment-edit-textarea" value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
+                    <div className="comment-edit-actions">
+                        <button className="comment-save-btn" onClick={handleSave}>Save</button>
+                        <button className="comment-cancel-btn" onClick={handleCancel}>Cancel</button>
+                    </div>
+                </div>
+            ) : (
+                <p>{comment.content}</p>
+            )}
         </div>
     );
 }
