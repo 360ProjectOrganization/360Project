@@ -21,6 +21,21 @@ const userRepository = {
     return await Model.findById(id).select('_id').lean();
   },
 
+  async findDisplayName(role, id) {
+    const Model = this.getModel(role);
+    const doc = await Model.findById(id).select('name email').lean();
+    if (!doc) return null;
+    return doc.name || doc.email || 'Unknown';
+  },
+
+  async findRoleById(id) {
+    if (!id) return null;
+    if (await Administrator.exists({ _id: id })) return 'administrator';
+    if (await Company.exists({ _id: id })) return 'company';
+    if (await Applicant.exists({ _id: id })) return 'applicant';
+    return null;
+  },
+
   async findByIdForPfp(role, id) {
     const Model = this.getModel(role);
     return await Model.findById(id).select('pfp pfpContentType');

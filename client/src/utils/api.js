@@ -164,7 +164,20 @@ export const jobPostingApi = {
   getRecentApplications: (id, limit) => {
     const qs = limit != null ? `?limit=${limit}` : '';
     return apiRequest(`/job-postings/${id}/applications${qs}`);
-  },
+    },
+  
+  getComments: (id) => {
+    return apiRequest(`/job-postings/${id}/comments`);
+    },
+  
+  addComment: (jobId, data) =>
+    apiRequest(`/job-postings/${jobId}/comments`, { method: 'POST', body: data }),
+
+  updateComment: (jobId, commentId, content) =>
+    apiRequest(`/job-postings/${jobId}/comments/${commentId}`, { method: 'PATCH', body: { content } }),
+
+  deleteComment: (jobId, commentId) =>
+    apiRequest(`/job-postings/${jobId}/comments/${commentId}`, { method: 'DELETE' }),
 };
 
 // admin API methods

@@ -17,6 +17,72 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET: api/job-postings/:id/comments
+router.get('/:id/comments', async (req, res) => {
+  try {
+    const comments = await jobPostingService.findCommentsByJobId(req.params.id);
+    res.json(comments);
+  } catch (err) {
+    if (err.message === 'Failed to retrieve comments') {
+      return sendError(res, 404, 'Job posting not found');
+    }
+    res.status(500).json({ error: 'Failed to fetch comments' });
+  }
+});
+
+// POST: api/job-postings/:id/comments
+router.post('/:id/comments', requireAuth, async (req, res) => {
+  try {
+    const { content } = req.body;
+    const job = await jobPostingService.addCommentToJob(req.params.id, content, req.user.id, req.user.role);
+    res.status(201).json(job);
+  } catch (err) {
+    if (err.message === 'Failed to add comment' || err.message === 'Comment is empty' || err.message === 'Invalid user role') {
+      return sendError(res, 400, err.message);
+    }
+    if (err.message === 'Companies can only comment on their own job postings') {
+      return sendError(res, 403, err.message);
+    }
+    res.status(500).json({ error: 'Failed to add comment' });
+  }
+});
+
+// PATCH: api/job-postings/:id/comments/:commentId
+router.patch('/:id/comments/:commentId', requireAuth, async (req, res) => {
+  try {
+    const { content } = req.body;
+    const job = await jobPostingService.updateComment(req.params.id, req.params.commentId, content, req.user.id, req.user.role);
+    res.json(job);
+  } catch (err) {
+    if (err.message === 'Comment not found') {
+      return sendError(res, 404, err.message);
+    }
+    if (err.message === 'Comment is empty') {
+      return sendError(res, 400, err.message);
+    }
+    if (err.message === 'You can only edit your own comments') {
+      return sendError(res, 403, err.message);
+    }
+    res.status(500).json({ error: 'Failed to update comment' });
+  }
+});
+
+// DELETE: api/job-postings/:id/comments/:commentId
+router.delete('/:id/comments/:commentId', requireAuth, async (req, res) => {
+  try {
+    await jobPostingService.deleteComment(req.params.id, req.params.commentId, req.user.id, req.user.role);
+    res.json({ deleted: true });
+  } catch (err) {
+    if (err.message === 'Comment not found') {
+      return sendError(res, 404, err.message);
+    }
+    if (err.message === 'You can only delete your own comments') {
+      return sendError(res, 403, err.message);
+    }
+    res.status(500).json({ error: 'Failed to delete comment' });
+  }
+});
+
 // GET: api/job-postings/:id
 router.get('/:id', async (req, res) => {
   try {
