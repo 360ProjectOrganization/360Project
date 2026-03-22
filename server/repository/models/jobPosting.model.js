@@ -18,8 +18,8 @@ const jobPostingSchema = new mongoose.Schema({
   applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Applicant' }],
   comments: [{
     content: { type: String, trim: true },
-    author: { type: mongoose.Schema.Types.ObjectId, refPath: 'authorModel' },
-    authorModel: { type: String, enum: ['Applicant', 'Company', 'Administrator'], required: true },
+    authorId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    author: { type: String, trim: true },
     createdAt: { type: Date, default: Date.now },
     editedAt: { type: Date },
   }],

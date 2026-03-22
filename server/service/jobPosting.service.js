@@ -1,6 +1,7 @@
 // Business logic for job postings
 const jobPostingRepository = require('../repository/jobPosting.repository');
 const applicantRepository = require('../repository/applicant.repository');
+const userRepository = require('../repository/user.repository');
 const JobPosting = require('../repository/models/jobPosting.model');
 
 const STATUSES = JobPosting.STATUSES || ['ACTIVE', 'UNPUBLISHED', 'CLOSED'];
@@ -94,6 +95,50 @@ class JobPostingService {
       throw new Error('You have already applied to this job');
     }
     return result.job;
+  }
+
+  async addCommentToJob(jobId, content, userId, userRole) {
+    if (!content?.trim()) throw new Error('Comment is empty');
+    const authorType = userRole?.toLowerCase();
+    if (!['applicant', 'company', 'administrator'].includes(authorType)) throw new Error('Invalid user role');
+    const author = await userRepository.findDisplayName(authorType, userId);
+    const commentData = { authorId: userId, author: author || 'Unknown', content: content.trim() };
+    const job = await jobPostingRepository.addCommentToJob(jobId, commentData);
+    if (!job) throw new Error('Failed to add comment');
+    return job;
+  }
+
+  async updateComment(jobId, commentId, content, userId, userRole) {
+    if (!content?.trim()) throw new Error('Comment is empty');
+    const job = await jobPostingRepository.findById(jobId);
+    if (!job) throw new Error('Comment not found');
+    const comment = (job.comments || []).find((c) => c._id?.toString() === String(commentId));
+    if (!comment) throw new Error('Comment not found');
+    const isAdmin = userRole?.toLowerCase() === 'administrator';
+    const isOwner = comment.authorId?.toString() === String(userId);
+    if (!isAdmin && !isOwner) throw new Error('You can only edit your own comments');
+    const updated = await jobPostingRepository.updateComment(jobId, commentId, { content: content.trim() });
+    if (!updated) throw new Error('Comment not found');
+    return updated;
+  }
+
+  async deleteComment(jobId, commentId, userId, userRole) {
+    const job = await jobPostingRepository.findById(jobId);
+    if (!job) throw new Error('Comment not found');
+    const comment = (job.comments || []).find((c) => c._id?.toString() === String(commentId));
+    if (!comment) throw new Error('Comment not found');
+    const isAdmin = userRole?.toLowerCase() === 'administrator';
+    const isOwner = comment.authorId?.toString() === String(userId);
+    if (!isAdmin && !isOwner) throw new Error('You can only delete your own comments');
+    const deleted = await jobPostingRepository.deleteComment(jobId, commentId);
+    if (!deleted) throw new Error('Comment not found');
+    return deleted;
+  }
+
+  async findCommentsByJobId(jobId) {
+    const comments = await jobPostingRepository.findCommentsByJobId(jobId);
+    if (!comments) throw new Error('Failed to retrieve comments');
+    return comments;
   }
 }
 

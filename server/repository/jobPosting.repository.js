@@ -92,8 +92,16 @@ const jobPostingRepository = {
   async updateComment(jobId, commentId, data) {
     const job = await JobPosting.findById(jobId).lean();
     if (!job) return null;
-    const comment = await JobPosting.findByIdAndUpdate(jobId, { $set: { 'comments.$[comment]': data } }, { new: true, arrayFilters: [{ 'comment._id': commentId }] }).lean();
-    return comment;
+    const update = {
+      'comments.$[comment].content': data.content,
+      'comments.$[comment].editedAt': new Date(),
+    };
+    const updated = await JobPosting.findByIdAndUpdate(
+      jobId,
+      { $set: update },
+      { new: true, arrayFilters: [{ 'comment._id': commentId }] }
+    ).lean();
+    return updated;
   },
   
   async deleteComment(jobId, commentId) {
@@ -107,8 +115,7 @@ const jobPostingRepository = {
     const job = await JobPosting.findById(jobId).select('comments').lean();
     if (!job || !job.comments?.length) return [];
     return job.comments;
-  },  
-  
+  },
 };
 
 module.exports = jobPostingRepository;
