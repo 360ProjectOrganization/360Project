@@ -12,6 +12,9 @@ export default function Comment({ comment, currentUserId, isFromJobOwner }) {
                         {isFromJobOwner && (
                             <span className="comment-role-badge">Employer</span>
                         )}
+                        {comment.authorRole === 'administrator' && (
+                            <span className="comment-role-badge comment-role-badge--admin">Admin</span>
+                        )}
                     </div>
                     <em className="comment-date">{formatDate(comment.createdAt)}</em>
                 </div>

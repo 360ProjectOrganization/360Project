@@ -138,7 +138,14 @@ class JobPostingService {
   async findCommentsByJobId(jobId) {
     const comments = await jobPostingRepository.findCommentsByJobId(jobId);
     if (!comments) throw new Error('Failed to retrieve comments');
-    return comments;
+    const authorIds = [...new Set(comments.map((c) => c.authorId?.toString()).filter(Boolean))];
+    const roleByAuthor = Object.fromEntries(
+      await Promise.all(authorIds.map(async (id) => [id, await userRepository.findRoleById(id)]))
+    );
+    return comments.map((c) => ({
+      ...c,
+      authorRole: roleByAuthor[c.authorId?.toString()] ?? null,
+    }));
   }
 }
 

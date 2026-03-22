@@ -243,6 +243,11 @@
     vertical-align: middle;
 }
 
+.comment-role-badge--admin {
+    color: #5c4a7b;
+    background-color: #e4dfec;
+}
+
 .comment-date {
     font-size: 15px;
 }
