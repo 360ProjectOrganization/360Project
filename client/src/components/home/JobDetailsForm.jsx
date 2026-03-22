@@ -78,7 +78,7 @@ export default function JobDetailsForm({ posting, role, userId, isAuthenticated,
                     </p>
                 </section>
 
-                <JobComments jobId={posting._id} isAuthenticated={isAuthenticated} />
+                <JobComments jobId={posting._id} ownerCompanyId={posting.companyId} currentUserId={userId} isAuthenticated={isAuthenticated} />
             </div>
 
             <div className="job-details-bottom">

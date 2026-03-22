@@ -3,7 +3,7 @@ import { jobPostingApi } from "../../utils/api.js";
 import Comment from "./Comment.jsx";
 
 
-export default function JobComments({ jobId, isAuthenticated }) {
+export default function JobComments({ jobId, ownerCompanyId, currentUserId, isAuthenticated }) {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [newComment, setNewComment] = useState("");
@@ -41,6 +41,12 @@ export default function JobComments({ jobId, isAuthenticated }) {
     return (
         <section className="job-details-comments">
             <h3>Comments</h3>
+            <div className="job-details-comments-list">
+                {comments.map((c) => (
+                    <Comment key={c._id} comment={c} currentUserId={currentUserId} isFromJobOwner={ownerCompanyId && String(c.authorId) === String(ownerCompanyId)} />
+                ))}
+                {comments.length === 0 && <p>No comments yet.</p>}
+            </div>
             {isAuthenticated && (
                 <div className="add-comment-row">
                     <textarea
@@ -50,15 +56,9 @@ export default function JobComments({ jobId, isAuthenticated }) {
                         rows={2}
                         className="comment-input"
                     />
-                    <button onClick={handleAddComment} disabled={loading || !newComment.trim()} className="job-details-add-comment-btn">Add Comment</button>
+                    <button onClick={handleAddComment} disabled={loading || !newComment.trim()} className="job-details-add-comment-btn">Comment</button>
                 </div>
             )}
-            <div className="job-details-comments-list">
-                {comments.map((c) => (
-                    <Comment key={c._id} comment={c} />
-                ))}
-                {comments.length === 0 && <p>No comments yet.</p>}
-            </div>
         </section>
     );
 }
