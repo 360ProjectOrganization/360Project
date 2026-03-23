@@ -14,7 +14,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     const [loadError, setLoadError] = useState(null);
 
     const [isEditOpen, setIsEditOpen] = useState(false);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
 
     const openEdit = (posting) => {
@@ -23,14 +22,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     };
     const closeEdit = () => {
         setIsEditOpen(false);
-        setSelectedPosting(null);
-    };
-    const openDelete = (posting) => {
-        setSelectedPosting(posting);
-        setIsDeleteOpen(true);
-    };
-    const closeDelete = () => {
-        setIsDeleteOpen(false);
         setSelectedPosting(null);
     };
 
@@ -44,14 +35,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         catch (err) {
             console.error("Failed to update status:", err);
         }
-    };
-
-    const handleDeleteConfirm = async () => {
-        const id = selectedPosting?._id;
-        if (!id) return;
-        await jobPostingApi.delete(id);
-        setJobPostings((prev) => prev.filter((p) => p._id !== id));
-        closeDelete();
     };
 
     useEffect(() => {
@@ -112,7 +95,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                     <Card key={p._id} title={p.title} footer={
                         <div className="card-actions">
                             <button className="job-card-edit-btn" onClick={() => openEdit(p)}>Edit</button>
-                            <button className="job-card-delete-btn" onClick={() => openDelete(p)}>Delete</button>
                         </div>
                     }>
                         <p><strong>Location: </strong>{p.location || "—"}</p>
@@ -142,19 +124,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                         );
                     }}
                 />
-            </Modal>
-
-            {/* delete modal */}
-            <Modal isOpen={isDeleteOpen} onClose={closeDelete} title="Delete Job Posting" size="small">
-                {selectedPosting && (
-                    <div className="delete-modal-content">
-                        <p>Are you sure you want to delete <strong>{selectedPosting.title}</strong>?</p>
-                        <div className="modal-actions">
-                            <button className="form-action-btn" type="button" onClick={closeDelete}>Cancel</button>
-                            <button className="form-action-btn" type="button" onClick={handleDeleteConfirm}>Confirm</button>
-                        </div>
-                    </div>
-                )}
             </Modal>
         </section>
     );
