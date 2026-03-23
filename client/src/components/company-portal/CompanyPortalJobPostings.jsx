@@ -4,7 +4,7 @@ import { companyApi, jobPostingApi } from "../../utils/api.js";
 import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import EditJobForm from "./EditJobForm.jsx";
-
+import CloseStatus from "./CloseStatus.jsx";
 
 export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey, editPostingId, onEditPosting }) {
     const location = useLocation();
@@ -16,10 +16,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
 
-    const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
-    const [postingToClose, setPostingToClose] = useState(null);
-    const [closeReason, setCloseReason] = useState(null);
-
     const openEdit = (posting) => {
         setSelectedPosting(posting);
         setIsEditOpen(true);
@@ -29,16 +25,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         setSelectedPosting(null);
     };
 
-    const openCloseModal = (posting) => {
-        setPostingToClose(posting);
-        setCloseReason(null);
-        setIsCloseModalOpen(true);
-    };
-    const closeCloseModal = () => {
-        setIsCloseModalOpen(false);
-        setPostingToClose(null);
-        setCloseReason(null);
-    };
+    const [postingToClose, setPostingToClose] = useState(null);
 
     const handleStatusChange = async (jobId, newStatus, closureReason) => {
         try {
@@ -50,12 +37,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         catch (err) {
             console.error("Failed to update status:", err);
         }
-    };
-
-    const handleClosePosting = async () => {
-        if (!postingToClose || !closeReason) return;
-        await handleStatusChange(postingToClose._id, 'CLOSED', closeReason);
-        closeCloseModal();
     };
 
     useEffect(() => {
@@ -124,7 +105,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                             <strong>Status: </strong>
                             <select className={`pstatus ${p.status.toLowerCase()}`} value={p.status} onChange={(e) => {
                                 const newStatus = e.target.value;
-                                if (newStatus === 'CLOSED') openCloseModal(p);
+                                if (newStatus === 'CLOSED') setPostingToClose(p);
                                 else handleStatusChange(p._id, newStatus);
                             }}>
                                 <option value="ACTIVE">Active</option>
@@ -152,35 +133,8 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
             </Modal>
 
             {/* close posting modal */}
-            <Modal isOpen={isCloseModalOpen} onClose={closeCloseModal} title="Close Job Posting" size="small">
-                {postingToClose && (
-                    <div className="delete-modal-content">
-                        <p className="close-modal-question">Why are you closing <strong>{postingToClose.title}</strong>?</p>
-                        <div className="close-reason-options">
-                            <label>
-                                <input type="radio" name="closureReason" value="FILLED" checked={closeReason === 'FILLED'} onChange={(e) => setCloseReason(e.target.value)} />
-                                Position was filled
-                            </label>
-                            <label>
-                                <input type="radio" name="closureReason" value="UNFILLED" checked={closeReason === 'UNFILLED'} onChange={(e) => setCloseReason(e.target.value)} />
-                                Position is no longer needed
-                            </label>
-                            <label>
-                                <input type="radio" name="closureReason" value="CANCELLED" checked={closeReason === 'CANCELLED'} onChange={(e) => setCloseReason(e.target.value)} />
-                                Duplicate or accidental post
-                            </label>
-                            <label>
-                                <input type="radio" name="closureReason" value="OTHER" checked={closeReason === 'OTHER'} onChange={(e) => setCloseReason(e.target.value)} />
-                                Other
-                            </label>
-                        </div>
-                        <div className="modal-actions">
-                            <button className="form-action-btn" type="button" onClick={closeCloseModal}>Cancel</button>
-                            <button className="form-action-btn" type="button" onClick={handleClosePosting} disabled={!closeReason}>Close Posting</button>
-                        </div>
-                    </div>
-                )}
-            </Modal>
+            <CloseStatus postingToClose={postingToClose} onClose={() => setPostingToClose(null)} onClosePosting={(jobId, closureReason) => handleStatusChange(jobId, 'CLOSED', closureReason)} />
+            
         </section>
     );
 }
