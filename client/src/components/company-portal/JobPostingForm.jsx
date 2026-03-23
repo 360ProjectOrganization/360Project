@@ -7,6 +7,8 @@ export default function JobPostingForm({
     submittingLabel = "Saving...",
     showStatusField = false,
     showTagsField = false,
+    statusResetTrigger = 0,
+    onStatusChange,
     onSubmit,
     onCancel
 }) {
@@ -29,6 +31,10 @@ export default function JobPostingForm({
         setErrors({});
         setSubmitError("");
     }, [initialValues.title, initialValues.location, initialValues.description, initialValues.status, initialValues.tags, showStatusField, showTagsField]);
+
+    useEffect(() => {
+        if (showStatusField) setStatus(initialValues.status ?? "ACTIVE");
+    }, [statusResetTrigger, initialValues.status, showStatusField]);
 
     function handleCancel() {
         setErrors({});
@@ -108,7 +114,11 @@ export default function JobPostingForm({
                     <div className="form-row">
                         <label>Status</label>
                         <div className="input-wrapper">
-                            <select className={`pstatus ${(status || "").toLowerCase()}`} value={status} onChange={(e) => setStatus(e.target.value)}>
+                            <select className={`pstatus ${(status || "").toLowerCase()}`} value={status} onChange={(e) => {
+                                const newStatus = e.target.value;
+                                setStatus(newStatus);
+                                onStatusChange?.(newStatus);
+                            }}>
                                 <option value="ACTIVE">Active</option>
                                 <option value="UNPUBLISHED">Unpublished</option>
                                 <option value="CLOSED">Closed</option>

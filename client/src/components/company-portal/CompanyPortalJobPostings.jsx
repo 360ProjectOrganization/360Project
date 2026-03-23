@@ -31,7 +31,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         try {
             await jobPostingApi.updateStatus(jobId, newStatus, closureReason);
             setJobPostings((prev) =>
-                prev.map((p) => (p._id === jobId ? { ...p, status: newStatus } : p))
+                prev.map((p) => (p._id === jobId ? { ...p, status: newStatus, ...(newStatus === "CLOSED" && closureReason ? { closureReason } : {}) } : p))
             );
         }
         catch (err) {
@@ -119,7 +119,16 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
 
             {/* edit modal */}
             <Modal isOpen={isEditOpen} onClose={closeEdit} title="Edit Job Posting">
-                <EditJobForm posting={selectedPosting} onCancel={closeEdit} onSuccess={(updatedValues) => {
+                <EditJobForm
+                    posting={selectedPosting}
+                    onClosePosting={async (jobId, closureReason) => {
+                        await handleStatusChange(jobId, "CLOSED", closureReason);
+                        if (jobId === selectedPosting?._id) {
+                            setSelectedPosting((prev) => prev ? { ...prev, status: "CLOSED", closureReason } : null);
+                        }
+                    }}
+                    onCancel={closeEdit}
+                    onSuccess={(updatedValues) => {
                         const id = selectedPosting?._id;
                         closeEdit();
                         if (!id) return;
@@ -133,7 +142,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
             </Modal>
 
             {/* close posting modal */}
-            <CloseStatus postingToClose={postingToClose} onClose={() => setPostingToClose(null)} onClosePosting={(jobId, closureReason) => handleStatusChange(jobId, 'CLOSED', closureReason)} />
+            <CloseStatus postingToClose={postingToClose} onClose={() => setPostingToClose(null)} onClosePosting={(jobId, closureReason) => handleStatusChange(jobId, "CLOSED", closureReason)} />
             
         </section>
     );
