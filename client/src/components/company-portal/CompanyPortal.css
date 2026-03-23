@@ -169,8 +169,12 @@
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    padding: 20px 20px 0 20px;
-    text-align: center;
+    padding: 20px 20px 20px 20px;
+    text-align: left;
+}
+
+.close-modal-question {
+    margin: 0;
 }
 
 .delete-modal-content strong {
@@ -180,6 +184,21 @@
 .delete-modal-content .modal-actions {
     margin-top: auto;
     flex-shrink: 0;
+}
+
+.close-reason-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0 32px 0;
+    text-align: left;
+}
+
+.close-reason-options label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
 }
 
 .modal-actions {
