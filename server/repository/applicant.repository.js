@@ -21,7 +21,7 @@ const applicantRepository = {
   },
 
   async hasResume(id) {
-    const doc = await Applicant.findById(id).select('resume').lean();
+    const doc = await Applicant.findById(id).select('resume');
     return doc != null && doc.resume != null && Buffer.isBuffer(doc.resume) && doc.resume.length > 0;
   },
 
