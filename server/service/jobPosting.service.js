@@ -5,6 +5,7 @@ const userRepository = require('../repository/user.repository');
 const JobPosting = require('../repository/models/jobPosting.model');
 
 const STATUSES = JobPosting.STATUSES || ['ACTIVE', 'UNPUBLISHED', 'CLOSED'];
+const CLOSURE_REASONS = JobPosting.CLOSURE_REASONS || ['FILLED', 'UNFILLED', 'CANCELLED'];
 
 function validateStatus(status) {
   if (!status || !STATUSES.includes(status)) {
@@ -12,8 +13,14 @@ function validateStatus(status) {
   }
 }
 
+function validateClosureReason(reason) {
+  if (!reason || !CLOSURE_REASONS.includes(reason)) {
+    throw new Error(`Closure reason is required when closing. Must be one of: ${CLOSURE_REASONS.join(', ')}`);
+  }
+}
+
 function validateJobPayload(data, isPartial = false) {
-  const { title, tags, location, description, status } = data;
+  const { title, tags, location, description, status, closureReason } = data;
   if (!isPartial && (!title || typeof title !== 'string' || !title.trim())) {
     throw new Error('Title is required');
   }
@@ -24,6 +31,7 @@ function validateJobPayload(data, isPartial = false) {
     throw new Error('Tags must be an array');
   }
   if (status !== undefined) validateStatus(status);
+  if (status === 'CLOSED') validateClosureReason(closureReason);
   return true;
 }
 
@@ -50,15 +58,20 @@ class JobPostingService {
     if (data.status !== undefined) {
       validateStatus(data.status);
       update.status = data.status;
+      if (data.status === 'CLOSED') {
+        validateClosureReason(data.closureReason);
+        update.closureReason = data.closureReason;
+      }
     }
     return await jobPostingRepository.update(id, update);
   }
 
-  async updateJobPostingStatus(id, status) {
+  async updateJobPostingStatus(id, status, closureReason) {
     validateStatus(status);
+    if (status === 'CLOSED') validateClosureReason(closureReason);
     const job = await jobPostingRepository.findById(id);
     if (!job) throw new Error('Job posting not found');
-    return await jobPostingRepository.updateStatus(id, status);
+    return await jobPostingRepository.updateStatus(id, status, status === 'CLOSED' ? closureReason : undefined);
   }
 
   async deleteJobPosting(id) {

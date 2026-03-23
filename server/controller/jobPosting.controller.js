@@ -135,7 +135,7 @@ router.put('/:id', requireAuth, async (req, res) => {
     if (err.message === 'Job posting not found' || err.message === 'Job posting not found or access denied') {
       return sendError(res, 404, err.message);
     }
-    if (err.message?.includes('Invalid status') || err.message?.includes('required') || err.message?.includes('must be')) {
+    if (err.message?.includes('Invalid status') || err.message?.includes('Closure reason') || err.message?.includes('required') || err.message?.includes('must be')) {
       return sendError(res, 400, err.message);
     }
     res.status(500).json({ error: 'Failed to update job posting' });
@@ -151,14 +151,14 @@ router.patch('/:id/status', requireAuth, async (req, res) => {
     if (req.user.role === 'company') {
       await jobPostingService.ensureCompanyOwnsJob(req.params.id, req.user.id);
     }
-    const { status } = req.body;
-    const job = await jobPostingService.updateJobPostingStatus(req.params.id, status);
+    const { status, closureReason } = req.body;
+    const job = await jobPostingService.updateJobPostingStatus(req.params.id, status, closureReason);
     res.json(job);
   } catch (err) {
     if (err.message === 'Job posting not found' || err.message === 'Job posting not found or access denied') {
       return sendError(res, 404, err.message);
     }
-    if (err.message?.includes('Invalid status')) {
+    if (err.message?.includes('Invalid status') || err.message?.includes('Closure reason')) {
       return sendError(res, 400, err.message);
     }
     res.status(500).json({ error: 'Failed to update job status' });
@@ -168,11 +168,8 @@ router.patch('/:id/status', requireAuth, async (req, res) => {
 // DELETE: api/job-postings/:id
 router.delete('/:id', requireAuth, async (req, res) => {
   try {
-    if (!canModifyJob(req)) {
-      return sendError(res, 403, 'Only the company that owns this job or an administrator can delete it');
-    }
-    if (req.user.role === 'company') {
-      await jobPostingService.ensureCompanyOwnsJob(req.params.id, req.user.id);
+    if (req.user.role !== 'administrator') {
+      return sendError(res, 403, 'Only administrators can delete job postings. Companies should close postings instead.');
     }
     await jobPostingService.deleteJobPosting(req.params.id);
     res.json({ deleted: true });

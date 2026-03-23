@@ -30,24 +30,35 @@ const jobPostingRepository = {
   },
 
   async update(id, data) {
-    const update = { ...data };
-    if (data.status === 'ACTIVE') update.publishedAt = new Date();
-    if (data.status === 'CLOSED') update.closedAt = new Date();
+    const setUpdate = { ...data };
+    if (data.status === 'ACTIVE') setUpdate.publishedAt = new Date();
+    if (data.status === 'CLOSED') setUpdate.closedAt = new Date();
+    const updateOp = { $set: setUpdate };
+    if (data.status === 'ACTIVE' || data.status === 'UNPUBLISHED') {
+      updateOp.$unset = { closureReason: 1 };
+    }
     const job = await JobPosting.findByIdAndUpdate(
       id,
-      { $set: update },
+      updateOp,
       { new: true, runValidators: true }
     ).lean();
     return job;
   },
 
-  async updateStatus(id, status) {
-    const update = { status };
-    if (status === 'ACTIVE') update.publishedAt = new Date();
-    if (status === 'CLOSED') update.closedAt = new Date();
+  async updateStatus(id, status, closureReason) {
+    const setUpdate = { status };
+    if (status === 'ACTIVE') setUpdate.publishedAt = new Date();
+    if (status === 'CLOSED') {
+      setUpdate.closedAt = new Date();
+      setUpdate.closureReason = closureReason;
+    }
+    const updateOp = { $set: setUpdate };
+    if (status === 'ACTIVE' || status === 'UNPUBLISHED') {
+      updateOp.$unset = { closureReason: 1 };
+    }
     const job = await JobPosting.findByIdAndUpdate(
       id,
-      { $set: update },
+      updateOp,
       { new: true, runValidators: true }
     ).lean();
     return job;
