@@ -33,13 +33,13 @@ const jobPostingRepository = {
     const setUpdate = { ...data };
     if (data.status === 'ACTIVE') setUpdate.publishedAt = new Date();
     if (data.status === 'CLOSED') setUpdate.closedAt = new Date();
-    const updateOp = { $set: setUpdate };
+    const update = { $set: setUpdate };
     if (data.status === 'ACTIVE' || data.status === 'UNPUBLISHED') {
-      updateOp.$unset = { closureReason: 1 };
+      update.$unset = { closureReason: 1, closedAt: 1 };
     }
     const job = await JobPosting.findByIdAndUpdate(
       id,
-      updateOp,
+      update,
       { new: true, runValidators: true }
     ).lean();
     return job;
@@ -52,13 +52,13 @@ const jobPostingRepository = {
       setUpdate.closedAt = new Date();
       setUpdate.closureReason = closureReason;
     }
-    const updateOp = { $set: setUpdate };
+    const update = { $set: setUpdate };
     if (status === 'ACTIVE' || status === 'UNPUBLISHED') {
-      updateOp.$unset = { closureReason: 1 };
+      update.$unset = { closureReason: 1, closedAt: 1 };
     }
     const job = await JobPosting.findByIdAndUpdate(
       id,
-      updateOp,
+      update,
       { new: true, runValidators: true }
     ).lean();
     return job;
