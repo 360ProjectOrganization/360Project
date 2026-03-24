@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const JOB_STATUSES = ['ACTIVE', 'UNPUBLISHED', 'CLOSED'];
+const JOB_CLOSURE_REASONS = ['FILLED', 'UNFILLED', 'CANCELLED', 'OTHER'];
 
 const jobPostingSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
@@ -13,6 +14,7 @@ const jobPostingSchema = new mongoose.Schema({
     enum: JOB_STATUSES,
     default: 'ACTIVE',
   },
+  closureReason: { type: String, enum: JOB_CLOSURE_REASONS },
   publishedAt: { type: Date },
   closedAt: { type: Date },
   applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Applicant' }],
@@ -26,7 +28,9 @@ const jobPostingSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 jobPostingSchema.statics.STATUSES = JOB_STATUSES;
+jobPostingSchema.statics.CLOSURE_REASONS = JOB_CLOSURE_REASONS;
 
 const JobPosting = mongoose.model('JobPosting', jobPostingSchema);
 JobPosting.STATUSES = JOB_STATUSES;
+JobPosting.CLOSURE_REASONS = JOB_CLOSURE_REASONS;
 module.exports = JobPosting;

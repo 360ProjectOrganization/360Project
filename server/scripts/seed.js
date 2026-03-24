@@ -62,18 +62,18 @@ async function seed() {
   const jobPostings = await JobPosting.insertMany([
     // TechCorp
     { title: 'Senior Frontend Developer', tags: ['React', 'JavaScript'], location: 'Remote', description: 'Build great UIs.', status: 'ACTIVE', publishedAt: daysAgo(14) },
-    { title: 'Backend Engineer', tags: ['Node.js', 'MongoDB'], location: 'Vancouver', description: 'APIs and databases.', status: 'CLOSED', publishedAt: daysAgo(45), closedAt: daysAgo(10) },
+    { title: 'Backend Engineer', tags: ['Node.js', 'MongoDB'], location: 'Vancouver', description: 'APIs and databases.', status: 'CLOSED', closureReason: 'FILLED', publishedAt: daysAgo(45), closedAt: daysAgo(10) },
     { title: 'DevOps Engineer', tags: ['AWS', 'Docker', 'Kubernetes'], location: 'Remote', description: 'Infrastructure and CI/CD.', status: 'ACTIVE', publishedAt: daysAgo(7) },
     // StartupXYZ
-    { title: 'Full Stack Developer', tags: ['React', 'Node.js'], location: 'Hybrid', description: 'End-to-end development.', status: 'CLOSED', publishedAt: daysAgo(60), closedAt: daysAgo(30) },
+    { title: 'Full Stack Developer', tags: ['React', 'Node.js'], location: 'Hybrid', description: 'End-to-end development.', status: 'CLOSED', closureReason: 'UNFILLED', publishedAt: daysAgo(60), closedAt: daysAgo(30) },
     { title: 'Junior Frontend Developer', tags: ['HTML', 'CSS', 'JavaScript'], location: 'Vancouver', description: 'Learn and grow with us.', status: 'ACTIVE', publishedAt: daysAgo(3) },
     { title: 'Product Manager', tags: ['Agile', 'Roadmap'], location: 'Remote', description: 'Define the vision.', status: 'UNPUBLISHED' },
     // DataFlow Inc
     { title: 'Data Engineer', tags: ['Python', 'Spark', 'SQL'], location: 'Toronto', description: 'Build data pipelines.', status: 'ACTIVE', publishedAt: daysAgo(21) },
-    { title: 'ML Engineer', tags: ['Python', 'TensorFlow'], location: 'Remote', description: 'Production ML systems.', status: 'CLOSED', publishedAt: daysAgo(90), closedAt: daysAgo(20) },
+    { title: 'ML Engineer', tags: ['Python', 'TensorFlow'], location: 'Remote', description: 'Production ML systems.', status: 'CLOSED', closureReason: 'FILLED', publishedAt: daysAgo(90), closedAt: daysAgo(20) },
     { title: 'Analytics Lead', tags: ['SQL', 'Tableau'], location: 'Hybrid', description: 'Drive insights.', status: 'ACTIVE', publishedAt: daysAgo(5) },
     // CloudNine
-    { title: 'Cloud Architect', tags: ['AWS', 'Terraform'], location: 'Remote', description: 'Design cloud systems.', status: 'CLOSED', publishedAt: daysAgo(30), closedAt: daysAgo(2) },
+    { title: 'Cloud Architect', tags: ['AWS', 'Terraform'], location: 'Remote', description: 'Design cloud systems.', status: 'CLOSED', closureReason: 'UNFILLED', publishedAt: daysAgo(30), closedAt: daysAgo(2) },
     { title: 'Security Engineer', tags: ['Security', 'Compliance'], location: 'Vancouver', description: 'Secure our platform.', status: 'ACTIVE', publishedAt: daysAgo(14) },
     { title: 'SRE', tags: ['Linux', 'Monitoring'], location: 'Remote', description: 'Reliability and observability.', status: 'ACTIVE', publishedAt: daysAgo(1) },
   ]);

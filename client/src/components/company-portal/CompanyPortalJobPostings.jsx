@@ -4,7 +4,7 @@ import { companyApi, jobPostingApi } from "../../utils/api.js";
 import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import EditJobForm from "./EditJobForm.jsx";
-
+import CloseStatus from "./CloseStatus.jsx";
 
 export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey, editPostingId, onEditPosting }) {
     const location = useLocation();
@@ -14,7 +14,6 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     const [loadError, setLoadError] = useState(null);
 
     const [isEditOpen, setIsEditOpen] = useState(false);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
 
     const openEdit = (posting) => {
@@ -25,33 +24,23 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         setIsEditOpen(false);
         setSelectedPosting(null);
     };
-    const openDelete = (posting) => {
-        setSelectedPosting(posting);
-        setIsDeleteOpen(true);
-    };
-    const closeDelete = () => {
-        setIsDeleteOpen(false);
-        setSelectedPosting(null);
-    };
 
-    const handleStatusChange = async (jobId, newStatus) => {
+    const [postingToClose, setPostingToClose] = useState(null);
+
+    const handleStatusChange = async (jobId, newStatus, closureReason) => {
         try {
-            await jobPostingApi.updateStatus(jobId, newStatus);
+            await jobPostingApi.updateStatus(jobId, newStatus, closureReason);
+            if (newStatus === "CLOSED") {
+                window.location.reload();
+                return;
+            }
             setJobPostings((prev) =>
-                prev.map((p) => (p._id === jobId ? { ...p, status: newStatus } : p))
+                prev.map((p) => (p._id === jobId ? { ...p, status: newStatus, ...(newStatus === "CLOSED" && closureReason ? { closureReason } : {}) } : p))
             );
         }
         catch (err) {
             console.error("Failed to update status:", err);
         }
-    };
-
-    const handleDeleteConfirm = async () => {
-        const id = selectedPosting?._id;
-        if (!id) return;
-        await jobPostingApi.delete(id);
-        setJobPostings((prev) => prev.filter((p) => p._id !== id));
-        closeDelete();
     };
 
     useEffect(() => {
@@ -112,14 +101,17 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                     <Card key={p._id} title={p.title} footer={
                         <div className="card-actions">
                             <button className="job-card-edit-btn" onClick={() => openEdit(p)}>Edit</button>
-                            <button className="job-card-delete-btn" onClick={() => openDelete(p)}>Delete</button>
                         </div>
                     }>
                         <p><strong>Location: </strong>{p.location || "—"}</p>
                         <p><strong>Description: </strong>{p.description || "—"}</p>
                         <p>
                             <strong>Status: </strong>
-                            <select className={`pstatus ${p.status.toLowerCase()}`} value={p.status} onChange={(e) => handleStatusChange(p._id, e.target.value)}>
+                            <select className={`pstatus ${p.status.toLowerCase()}`} value={p.status} onChange={(e) => {
+                                const newStatus = e.target.value;
+                                if (newStatus === 'CLOSED') setPostingToClose(p);
+                                else handleStatusChange(p._id, newStatus);
+                            }}>
                                 <option value="ACTIVE">Active</option>
                                 <option value="UNPUBLISHED">Unpublished</option>
                                 <option value="CLOSED">Closed</option>
@@ -131,7 +123,16 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
 
             {/* edit modal */}
             <Modal isOpen={isEditOpen} onClose={closeEdit} title="Edit Job Posting">
-                <EditJobForm posting={selectedPosting} onCancel={closeEdit} onSuccess={(updatedValues) => {
+                <EditJobForm
+                    posting={selectedPosting}
+                    onClosePosting={async (jobId, closureReason) => {
+                        await handleStatusChange(jobId, "CLOSED", closureReason);
+                        if (jobId === selectedPosting?._id) {
+                            setSelectedPosting((prev) => prev ? { ...prev, status: "CLOSED", closureReason } : null);
+                        }
+                    }}
+                    onCancel={closeEdit}
+                    onSuccess={(updatedValues) => {
                         const id = selectedPosting?._id;
                         closeEdit();
                         if (!id) return;
@@ -144,18 +145,9 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                 />
             </Modal>
 
-            {/* delete modal */}
-            <Modal isOpen={isDeleteOpen} onClose={closeDelete} title="Delete Job Posting" size="small">
-                {selectedPosting && (
-                    <div className="delete-modal-content">
-                        <p>Are you sure you want to delete <strong>{selectedPosting.title}</strong>?</p>
-                        <div className="modal-actions">
-                            <button className="form-action-btn" type="button" onClick={closeDelete}>Cancel</button>
-                            <button className="form-action-btn" type="button" onClick={handleDeleteConfirm}>Confirm</button>
-                        </div>
-                    </div>
-                )}
-            </Modal>
+            {/* close posting modal */}
+            <CloseStatus postingToClose={postingToClose} onClose={() => setPostingToClose(null)} onClosePosting={(jobId, closureReason) => handleStatusChange(jobId, "CLOSED", closureReason)} />
+            
         </section>
     );
 }

@@ -155,8 +155,8 @@ export const jobPostingApi = {
   update: (id, payload) =>
     apiRequest(`/job-postings/${id}`, { method: 'PUT', body: payload }),
 
-  updateStatus: (id, status) =>
-    apiRequest(`/job-postings/${id}/status`, { method: 'PATCH', body: { status } }),
+  updateStatus: (id, status, closureReason) =>
+    apiRequest(`/job-postings/${id}/status`, { method: 'PATCH', body: closureReason != null ? { status, closureReason } : { status } }),
 
   delete: (id) =>
     apiRequest(`/job-postings/${id}`, { method: 'DELETE' }),

@@ -29,17 +29,19 @@ const companyRepository = {
   async findAnalyticsByCompanyId(companyId) {
     const company = await Company.findById(companyId).select('jobPostings').lean();
     if (!company || !company.jobPostings?.length) {
-      return { totalJobs: 0, closedJobs: 0, avgPostingDurationDays: 0, fillRate: 0 };
+      return { totalJobs: 0, closedJobs: 0, filledCount: 0, unfilledCount: 0, avgPostingDurationDays: 0, fillRate: 0 };
     }
 
     const jobs = await JobPosting.find({ _id: { $in: company.jobPostings } })
-      .select('status publishedAt closedAt applicants')
+      .select('status closureReason publishedAt closedAt')
       .lean();
 
     const now = new Date();
     const published = jobs.filter((j) => j.publishedAt);
     const closed = jobs.filter((j) => j.status === 'CLOSED');
-    const filled = closed.filter((j) => j.applicants?.length > 0);
+    const filled = closed.filter((j) => j.closureReason === 'FILLED');
+    const unfilled = closed.filter((j) => j.closureReason === 'UNFILLED');
+    const meaningful = filled.length + unfilled.length;
 
     let totalDurationMs = 0;
     let durationCount = 0;
@@ -53,13 +55,15 @@ const companyRepository = {
       ? Math.round((totalDurationMs / durationCount) / (1000 * 60 * 60 * 24) * 10) / 10
       : 0;
 
-    const fillRate = published.length > 0
-      ? Math.round((filled.length / published.length) * 100 * 10) / 10
+    const fillRate = meaningful > 0
+      ? Math.round((filled.length / meaningful) * 1000) / 10
       : 0;
 
     return {
       totalJobs: jobs.length,
       closedJobs: closed.length,
+      filledCount: filled.length,
+      unfilledCount: unfilled.length,
       avgPostingDurationDays,
       fillRate,
     };
