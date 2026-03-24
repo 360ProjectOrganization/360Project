@@ -30,6 +30,10 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     const handleStatusChange = async (jobId, newStatus, closureReason) => {
         try {
             await jobPostingApi.updateStatus(jobId, newStatus, closureReason);
+            if (newStatus === "CLOSED") {
+                window.location.reload();
+                return;
+            }
             setJobPostings((prev) =>
                 prev.map((p) => (p._id === jobId ? { ...p, status: newStatus, ...(newStatus === "CLOSED" && closureReason ? { closureReason } : {}) } : p))
             );
