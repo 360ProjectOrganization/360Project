@@ -107,7 +107,11 @@ class AuthService {
       if (process.env.NODE_ENV !== 'production') console.log('[auth] password mismatch for:', emailNorm);
       throw new Error('Invalid email or password.');
     }
-
+    console.log(doc.status);
+    const hasActiveStatus = doc.status === undefined || doc.status === "active";
+    if (!hasActiveStatus) {
+      throw new Error('Account is inactive. Please contact support.');
+    }
     const token = issueToken(doc, r);
     return { user: toSafeUser(doc), token };
   }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { adminApi, applicantApi, companyApi, getAuthUser } from "../../utils/api";
+import { adminApi, applicantApi, authApi, companyApi, getAuthUser } from "../../utils/api";
 import UserCard from "./UserCard";
 import "../common/Card.css"
 import EditAdmin from "./EditAdmin";
@@ -43,6 +43,15 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
         loadData();
     }, []);
 
+    const updateStatus = async(id, type, status) => {
+        try{
+            await adminApi.changeUserStatus(type, id, status);
+        }catch(e){
+            console.log("Error",e);
+        }
+    }
+
+
     //Search allCards for all the includes in filter based on filterType
     useEffect(()=>{
             if(!filter){
@@ -81,7 +90,10 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
         <>
             {!loading&& (<section className="job-postings-layout">
                 {filteredCards.map((card)=>(
-                    <UserCard key ={card._id} id = {card._id}email={card.email} name = {card.name} type= {card.type} status = {"active"} deleteUser={deleteUser} xButtonSwitch ={xButtonSwitch} setEditAccountInfo = {setEditAccountInfo}/>
+                    <UserCard key ={card._id} id = {card._id}email={card.email} name = {card.name} type= 
+                    {card.type} status = {card.status} deleteUser={deleteUser} xButtonSwitch ={xButtonSwitch} setEditAccountInfo = {setEditAccountInfo}
+                    updateStatus = {updateStatus}
+                    />
                     ))}
             </section>)}
             {!xButton &&editAccountInfo&&(<EditAdmin setXButton={xButtonSwitch}  userDetails={editAccountInfo} allCards={allCards} setAllCards={setAllCards} setFilteredCards={setFilteredCards}/>)}

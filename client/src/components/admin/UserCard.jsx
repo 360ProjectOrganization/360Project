@@ -1,12 +1,12 @@
 import { adminApi } from "../../utils/api"
 
-export default function UserCard({id,name,type,status, email, deleteUser, xButtonSwitch, setEditAccountInfo}){
+export default function UserCard({id,name,type,status, email, deleteUser, xButtonSwitch, setEditAccountInfo, updateStatus}){
     return(
         <section className="card-container">
             <h1 className="card-title">{name}</h1>
             <p className="card-body">Type: {type}</p>
             <p className="card-body">Email: {email}</p>
-            <select name="" id="" className="card-actions card-selector-admin">
+            <select name="" id="" className="card-actions card-selector-admin" onChange={(e)=>updateStatus(id, type, e.target.value)} defaultValue={status}>
                 <option value="active">active</option>
                 <option value="inactive">inactive</option>
             </select>

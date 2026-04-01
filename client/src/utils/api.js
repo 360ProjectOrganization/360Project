@@ -198,6 +198,13 @@ export const adminApi = {
     apiRequest('/admin/allJobPostingAnalytics'),
   editUser: (id, data) =>
     apiRequest(`/admin/${id}/edit`, { method: 'POST', body: data }),
+  changeUserStatus: (role, id, status) =>
+    apiRequest(`/admin/${role}/${id}/status`, { 
+      method: 'PATCH', 
+      body: JSON.stringify({ status }), 
+      headers: { 'Content-Type': 'application/json' }
+    }),
+
 };
 
 
