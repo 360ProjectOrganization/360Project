@@ -59,7 +59,9 @@ const authRepository = {
 
   // create an administrator
   async createAdministrator(data) {
+    console.log("Creating administrator with data:", data);
     return await Administrator.create({
+      name: data.name.trim(),
       email: data.email.trim().toLowerCase(),
       password: data.password,
     });

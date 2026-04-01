@@ -1,3 +1,4 @@
+
 // home of API calls for the backend
 const API_BASE = '/api';
 
@@ -189,6 +190,21 @@ export const adminApi = {
     form.append('file', file);
     return apiRequest(`/admin/${id}/pfp`, { method: 'PUT', body: form });
   },
+  deleteAdmin: (id) =>
+    apiRequest(`/admin/${id}/delete`, { method: 'POST' }),
+  getAllAdmins: () =>
+    apiRequest('/admin/'),
+  getAllCompanyAnalytics: () =>
+    apiRequest('/admin/allJobPostingAnalytics'),
+  editUser: (id, data) =>
+    apiRequest(`/admin/${id}/edit`, { method: 'POST', body: data }),
+  changeUserStatus: (role, id, status) =>
+    apiRequest(`/admin/${role}/${id}/status`, { 
+      method: 'PATCH', 
+      body: JSON.stringify({ status }), 
+      headers: { 'Content-Type': 'application/json' }
+    }),
+
 };
 
 

@@ -28,6 +28,9 @@ class UserService {
     if (!exists) throw new Error('User not found');
     return await userRepository.updatePfp(role, id, buffer, contentType);
   }
+  async changeStatus(role, id, status) {
+    return await userRepository.changeUserStatus(role, id, status);
+  }
 
   async deleteAccount(role, id) {
     const exists = await userRepository.findById(role, id);

@@ -8,6 +8,27 @@
     padding: 5px 10px;
     cursor: pointer;
 }
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px); 
+}
+.Exit-Button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 5px;
+}
 .card-admin-button{
     width: 40%;
     align-self: center;
@@ -50,4 +71,153 @@
     border-radius: 8px;
     border-width: 1px;
     padding: 11px 41px 11px 11px;
+}
+.registerCardAdmin {
+    width: min(440px, 90vw);
+    background: var(--color-card-bg-alt);
+    border-radius: 16px;
+    padding: 32px 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    border: 1px solid var(--color-icon-dark);
+    box-shadow: 0 10px 25px var(--color-card-shadow);
+}
+
+.registerCardAdmin h2 {
+    text-align: center;
+    width: auto;
+    font-weight: normal;
+    margin-bottom: 10px;
+    color: var(--color-title)
+}
+
+.roleText {
+    font-weight: bold;
+}
+
+.registerCardAdmin form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.registerCardAdmin form section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.registerCardAdmin label {
+    font-size: 17px;
+    justify-content: center;
+}
+
+.registerCardAdmin input {
+    box-sizing: border-box;
+    width: 100%;
+    height:32px;
+    padding: 0 8px;
+    border: 1px solid var(--color-divider);
+    border-radius: 8px;
+    background: var(--color-card-bg);
+}
+
+.registerCardAdmin input::placeholder {
+    color: var(--color-text-placeholder);
+}
+
+.registerCardAdmin input:focus {
+    outline: none;
+    border-color: var(--color-cta-primary);
+}
+
+.passwordWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.passwordWrapper input {
+    padding-right: 36px;
+}
+
+.togglePassword {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-body);
+
+    /* override registerCardAdmin button so that this stays small */
+    width: auto;
+    height: auto;
+    min-width: unset;
+    margin: 0;
+    background: transparent;
+    font-size: 14px;
+}
+
+.togglePassword:hover {
+    color: var(--color-title);
+}
+
+.registerCardAdmin button[type="submit"] {
+    width: 60%;
+    height: 48px;
+    background: var(--color-cta-primary);
+    color: white;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+.registerCardAdmin button[type="submit"]:hover {
+    background: var(--color-cta-secondary);
+}
+
+.registerCardAdmin .register-card-link-button {
+    display: inline-block;
+    width: 60%;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    background: var(--color-cta-primary);
+    color: white;
+    font-size: 15px;
+    margin-top: 20px;
+    border-radius: 14px;
+    text-decoration: none;
+}
+.registerCardAdmin .register-card-link-button:hover {
+    background: var(--color-cta-secondary);
+    color: white;
+}
+
+.registerCardAdmin p {
+    margin: 0;
+    text-align: center;
+    font-size: 15px;
+}
+
+.registerCardAdmin a {
+    color: var(--color-cta-secondary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.registerCardAdmin a:hover {
+    text-decoration: underline;
+}
+.registerCardAdmin .error {
+    margin: 0;
+    font-size: 15px;
+    color: #c0392b;
 }

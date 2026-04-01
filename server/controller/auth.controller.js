@@ -44,6 +44,9 @@ router.post('/login', async (req, res) => {
     if (msg.includes('Invalid email or password')) {
       return sendError(res, 401, msg);
     }
+    if (msg.includes('Account is inactive')) {
+      return sendError(res, 403, msg);
+    }
     if (msg.includes('Invalid role') || msg.includes('required')) {
       return sendError(res, 400, msg);
     }
