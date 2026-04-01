@@ -1,3 +1,4 @@
+
 // home of API calls for the backend
 const API_BASE = '/api';
 
@@ -193,6 +194,8 @@ export const adminApi = {
     apiRequest(`/admin/${id}/delete`, { method: 'POST' }),
   getAllAdmins: () =>
     apiRequest('/admin/'),
+  getAllCompanyAnalytics: () =>
+    apiRequest('/admin/allJobPostingAnalytics'),
 };
 
 

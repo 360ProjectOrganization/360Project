@@ -6,13 +6,16 @@ import { useState } from "react";
 export default function CreateNewAdminForm(){
 
     const [errors, setErrors] = useState({});
+    const [createdAdmin, setCreatedAdmin] = useState(false);
 
     const {register, handleSubmit, reset} = useForm();
-    const onSubmit = ((newAdminInfo)=>{
+    const onSubmit = (async (newAdminInfo)=>{
         try {
-            setErrors(validateRegisterForm({name: newAdminInfo.username, email: newAdminInfo.email, password: newAdminInfo.password, confirmPassword: newAdminInfo.confirmPassword}, "administrator"));
+            setErrors({});
+            const inputError = validateRegisterForm({name: newAdminInfo.username, email: newAdminInfo.email, password: newAdminInfo.password, confirmPassword: newAdminInfo.confirmPassword}, "administrator");
+            setErrors(inputError);
             if (Object.keys(inputErrors).length > 0) {
-            return;
+               return;
             }   
             const payload = {
                 role:  "administrator",
@@ -21,9 +24,12 @@ export default function CreateNewAdminForm(){
                 name: newAdminInfo.username
             };
             console.log("Creating new admin with payload:", payload);
-            authApi.register(payload);
+            await authApi.register(payload);
             console.log("New admin created successfully");
             reset();
+            setCreatedAdmin(true);
+            await delay(2000);
+            setCreatedAdmin(false);
         } catch (err) {
             console.error("Error creating new admin:", err);
         }
@@ -41,6 +47,7 @@ export default function CreateNewAdminForm(){
             <input type="password" name="" id=""placeholder="Confirm Password" {...register("confirmPassword", {required:{value: true}})}  />
             {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
             <button type="submit">Create New Admin</button>
+            {createdAdmin && <p className="success">New admin created successfully!</p>}
         </form>
         </section>
     )

@@ -16,6 +16,16 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch administrators' });
   }
 });
+// GET: api/admin/allJobPostingAnalytics
+router.get('/allJobPostingAnalytics', async (req, res) => {
+    try {
+      const analytics = await adminService.findAllAnalytics();
+      res.json(analytics);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to fetch job posting analytics' });
+    }
+  });
 
 // GET: api/admin/:id/pfp
 router.get('/:id/pfp', async (req, res) => {
