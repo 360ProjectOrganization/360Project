@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { applicantApi, companyApi } from "../../utils/api";
+import { adminApi, applicantApi, companyApi, getAuthUser } from "../../utils/api";
 import UserCard from "./UserCard";
 import "../common/Card.css"
 
@@ -20,7 +20,12 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
                 ...user,
                 type: "company"
             }));
-            const allUsers = [...applicantUsers, ...companyUsers];
+            const adminResponse = await adminApi.getAllAdmins();
+            const adminUsers = adminResponse.map((user)=>({
+                ...user,
+                type: "admin"
+            }));
+            const allUsers = [...applicantUsers, ...companyUsers, ...adminUsers];
             setFilteredCards(allUsers);
             setAllCards(allUsers)
             setLoading(false);
@@ -33,22 +38,44 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
 
     //Search allCards for all the includes in filter based on filterType
     useEffect(()=>{
-        if(!filter){
-        setFilteredCards(allCards);
-        return;
-    }
+            if(!filter){
+            setFilteredCards(allCards.filter((user)=>user._id !==getAuthUser()._id));
+            return;
+        }
 
-    setFilteredCards(
-        allCards.filter((user)=>
-           user[filterType]?.toLowerCase().includes(filter.toLowerCase())
-        )
-    );
-}, [filter, filterType, allCards]);
+        setFilteredCards(
+            allCards.filter((user)=>
+            user[filterType]?.toLowerCase().includes(filter.toLowerCase())&&(user._id !==getAuthUser()._id)
+            )
+        );
+    
+    }, [filter, filterType, allCards]);
+    const deleteUser = async(id, type) => {
+        console.log("delete user", id, type);
+        const updated = allCards.filter((user) => user._id !== id&& allCards.filter((user)=>user._id !==getAuthUser()._id));
+        setAllCards(updated);
+        setFilteredCards(updated);
+        try{
+            if(type === 'admin'){
+                await adminApi.deleteAdmin(id);
+            
+            }
+            else if(type === 'applicant'){
+                await applicantApi.deleteAccount(id);
+            }
+            else if(type === 'company'){
+                await companyApi.deleteAccount(id);
+            }
+        }catch(e){
+            console.log("Error",e);
+        }
+
+    }
     return(
         <>
             {!loading&& (<section className="job-postings-layout">
                 {filteredCards.map((card)=>(
-                    <UserCard key ={card.id} id = {card.id} name = {card.name} type= {card.type} status = {"active"}/>
+                    <UserCard key ={card._id} id = {card._id} name = {card.name} type= {card.type} status = {"active"} deleteUser={deleteUser}/>
                     ))}
             </section>)}
             {filteredCards.length === 0 && (<p>No Users match your search. </p>)}

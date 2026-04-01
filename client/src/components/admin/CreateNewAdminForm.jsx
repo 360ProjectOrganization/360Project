@@ -1,9 +1,21 @@
 import { useForm } from "react-hook-form"
+import { authApi } from "../../utils/api";
 
 export default function CreateNewAdminForm(){
     const {register, handleSubmit} = useForm();
     const onSubmit = ((newAdminInfo)=>{
-        console.log(newAdminInfo)
+        try {
+            const payload = {
+                role:  "administrator",
+                email: newAdminInfo.email,
+                password: newAdminInfo.password,
+                name: newAdminInfo.username
+            };
+            authApi.register(payload);
+            console.log("New admin created successfully");
+        } catch (err) {
+            console.error("Error creating new admin:", err);
+        }
     })
     return(
         <section className="registerPage">

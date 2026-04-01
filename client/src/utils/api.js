@@ -189,6 +189,10 @@ export const adminApi = {
     form.append('file', file);
     return apiRequest(`/admin/${id}/pfp`, { method: 'PUT', body: form });
   },
+  deleteAdmin: (id) =>
+    apiRequest(`/admin/${id}/delete`, { method: 'POST' }),
+  getAllAdmins: () =>
+    apiRequest('/admin/'),
 };
 
 

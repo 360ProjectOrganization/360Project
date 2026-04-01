@@ -1,4 +1,6 @@
-export default function UserCard({id,name,type,status}){
+import { adminApi } from "../../utils/api"
+
+export default function UserCard({id,name,type,status, deleteUser}){
     return(
         <section className="card-container">
             <h1 className="card-title">{name}</h1>
@@ -8,7 +10,7 @@ export default function UserCard({id,name,type,status}){
                 <option value="inactive">inactive</option>
             </select>
             <button className="card-actions card-admin-button">Edit</button>
-            <button className="card-actions card-admin-button">Delete</button>
+            <button className="card-actions card-admin-button" onClick={() => deleteUser(id, type)}>Delete</button>
         </section>
     )
 }
