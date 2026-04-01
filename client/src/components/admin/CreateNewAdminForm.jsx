@@ -4,6 +4,7 @@ import { validateRegisterForm } from "../../utils/validation/validateRegisterFor
 import { useState } from "react";
 
 export default function CreateNewAdminForm(){
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const [errors, setErrors] = useState({});
     const [createdAdmin, setCreatedAdmin] = useState(false);
@@ -14,7 +15,7 @@ export default function CreateNewAdminForm(){
             setErrors({});
             const inputError = validateRegisterForm({name: newAdminInfo.username, email: newAdminInfo.email, password: newAdminInfo.password, confirmPassword: newAdminInfo.confirmPassword}, "administrator");
             setErrors(inputError);
-            if (Object.keys(inputErrors).length > 0) {
+            if (Object.keys(inputError).length > 0) {
                return;
             }   
             const payload = {
