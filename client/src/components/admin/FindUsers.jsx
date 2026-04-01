@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react"
-import { applicantApi, companyApi } from "../../utils/api";
+import { adminApi, applicantApi, authApi, companyApi, getAuthUser } from "../../utils/api";
 import UserCard from "./UserCard";
 import "../common/Card.css"
+import EditAdmin from "./EditAdmin";
 
 export default function FindUsers({filterType, filter, loading, setLoading}){
     const [filteredCards, setFilteredCards] = useState([]);
     const [allCards, setAllCards] = useState([]);
+    const [xButton, setXButton] = useState(true);
+    const [editAccountInfo, setEditAccountInfo] = useState({});
+    const xButtonSwitch = (()=>{
+        setXButton((prev)=>!prev);
+    })
     //Load all users into allCards and filteredCards
     useEffect(() => {
         const loadData = (async ()=>{
@@ -20,9 +26,15 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
                 ...user,
                 type: "company"
             }));
-            const allUsers = [...applicantUsers, ...companyUsers];
+            const adminResponse = await adminApi.getAllAdmins();
+            const adminUsers = adminResponse.map((user)=>({
+                ...user,
+                type: "admin"
+            }));
+            const allUsers = [...applicantUsers, ...companyUsers, ...adminUsers];
             setFilteredCards(allUsers);
-            setAllCards(allUsers)
+            setAllCards(allUsers);
+            console.log("Loaded users:", allUsers);
             setLoading(false);
         }catch(e){
             console.log("Error",e);
@@ -31,28 +43,62 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
         loadData();
     }, []);
 
-    //Search allCards for all the includes in filter based on filterType
-    useEffect(()=>{
-        if(!filter){
-        setFilteredCards(allCards);
-        return;
+    const updateStatus = async(id, type, status) => {
+        try{
+            await adminApi.changeUserStatus(type, id, status);
+        }catch(e){
+            console.log("Error",e);
+        }
     }
 
-    setFilteredCards(
-        allCards.filter((user)=>
-           user[filterType]?.toLowerCase().includes(filter.toLowerCase())
-        )
-    );
-}, [filter, filterType, allCards]);
+
+    //Search allCards for all the includes in filter based on filterType
+    useEffect(()=>{
+            if(!filter){
+            setFilteredCards(allCards.filter((user)=>user._id !==getAuthUser()._id));
+            return;
+        }
+
+        setFilteredCards(
+            allCards.filter((user)=>
+            user[filterType]?.toLowerCase().includes(filter.toLowerCase())&&(user._id !==getAuthUser()._id)
+            )
+        );
+    
+    }, [filter, filterType, allCards]);
+    const deleteUser = async(id, type) => {
+        const updated = allCards.filter((user) => user._id !== id&& allCards.filter((user)=>user._id !==getAuthUser()._id));
+        setAllCards(updated);
+        setFilteredCards(updated);
+        try{
+            if(type === 'admin'){
+                await adminApi.deleteAdmin(id);
+            
+            }
+            else if(type === 'applicant'){
+                await applicantApi.deleteAccount(id);
+            }
+            else if(type === 'company'){
+                await companyApi.deleteAccount(id);
+            }
+        }catch(e){
+            console.log("Error",e);
+        }
+
+    }
     return(
         <>
             {!loading&& (<section className="job-postings-layout">
                 {filteredCards.map((card)=>(
-                    <UserCard key ={card.id} id = {card.id} name = {card.name} type= {card.type} status = {"active"}/>
+                    <UserCard key ={card._id} id = {card._id}email={card.email} name = {card.name} type= 
+                    {card.type} status = {card.status} deleteUser={deleteUser} xButtonSwitch ={xButtonSwitch} setEditAccountInfo = {setEditAccountInfo}
+                    updateStatus = {updateStatus}
+                    />
                     ))}
             </section>)}
+            {!xButton &&editAccountInfo&&(<EditAdmin setXButton={xButtonSwitch}  userDetails={editAccountInfo} allCards={allCards} setAllCards={setAllCards} setFilteredCards={setFilteredCards}/>)}
             {filteredCards.length === 0 && (<p>No Users match your search. </p>)}
-            {loading && (<p>Loading....</p>)}
+            {loading &&(<p>Loading....</p>)}
         </>
     )
 }

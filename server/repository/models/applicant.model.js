@@ -4,6 +4,7 @@ const passwordHashPlugin = require("./plugins/passwordHash.plugin.js");
 
 const applicantSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+  status:{type: String, default: "active"},
   name: { type: String, required: true, trim: true },
   password: { type: String, required: true },
   pfp: { type: Buffer },

@@ -27,6 +27,12 @@ const userRepository = {
     if (!doc) return null;
     return doc.name || doc.email || 'Unknown';
   },
+  async changeUserStatus(role, id, status) {
+    const Model = this.getModel(role);
+    const result = await Model.findByIdAndUpdate(id, { status }, { new: true }).select('-password -pfp -resume -resumeContentType').lean();
+    if (!result) throw new Error('User not found');
+    return result;
+  },
 
   async findRoleById(id) {
     if (!id) return null;

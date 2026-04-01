@@ -3,7 +3,7 @@ import "./HeaderButton.css"
 function AdminPortalButton () {
     return (
         <button className="header-button-admin">
-            <a href="/"> {/* To be added later */}
+            <a href="/admin">
                 Admin Portal
             </a>
         </button>

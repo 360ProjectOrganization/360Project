@@ -81,7 +81,9 @@ class AuthService {
     }
 
     if (r === 'administrator') {
-      const doc = await authRepository.createAdministrator({ email, password: data.password });
+      const name = (data.name || '').trim();
+      if (!name) throw new Error('Administrator name is required.');
+      const doc = await authRepository.createAdministrator({ name, email, password: data.password });
       const token = issueToken(doc, r);
       return { user: toSafeUser(doc), token };
     }
@@ -105,7 +107,11 @@ class AuthService {
       if (process.env.NODE_ENV !== 'production') console.log('[auth] password mismatch for:', emailNorm);
       throw new Error('Invalid email or password.');
     }
-
+    console.log(doc.status);
+    const hasActiveStatus = doc.status === undefined || doc.status === "active";
+    if (!hasActiveStatus) {
+      throw new Error('Account is inactive. Please contact support.');
+    }
     const token = issueToken(doc, r);
     return { user: toSafeUser(doc), token };
   }
@@ -144,6 +150,18 @@ class AuthService {
     }
 
     doc.email = emailNorm;
+    await doc.save();
+    return toSafeUser(doc);
+  }
+  async changeName(id, role, newName, password) {
+    const r = validateRole(role);
+    if (!id) throw new Error('User id is required.');
+    if (!password) throw new Error('Password is required to change name.');
+    const doc = await authRepository.findDocumentById(id, r);
+    if (!doc) throw new Error('User not found.');
+    const match = await doc.comparePassword(password);
+    if (!match) throw new Error('Password is incorrect.');
+    doc.name = newName.trim();
     await doc.save();
     return toSafeUser(doc);
   }
