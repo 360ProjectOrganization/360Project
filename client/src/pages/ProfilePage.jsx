@@ -2,7 +2,7 @@ import Header from "../components/header/Header.jsx";
 import "../styles/ProfilePage.css";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js";
+import { getToken, applicantApi, companyApi, adminApi, jobPostingApi } from "../utils/api.js";
 import Card from "../components/common/Card.jsx";
 import Modal from "../components/common/Modal.jsx";
 import UploadResumeForm from "../components/profile-page/UploadResumeForm.jsx";
@@ -17,15 +17,12 @@ function ProfilePage () {
     const [email, setEmail] = useState("");
     const [image, setImage] = useState("");
 
-    const [companyId, setCompanyId] = useState([]);
-
-    const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
-    const [jobInfo, setJobInfo] = useState([]);
-
     const [uploadResume, setUploadResume] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
     const [uploadPfp, setUploadPfp] = useState(false);
     const [resumeError, setResumeError] = useState("");
+
+    const [appliedTo, setAppliedTo] = useState("");
 
     // Token
     useEffect(() => {
@@ -51,7 +48,6 @@ function ProfilePage () {
                     const fetchApplicanInfo = await applicantApi.getById(id);
                     setEnrolledName(fetchApplicanInfo.name);
                     setEmail(fetchApplicanInfo.email);
-                    setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
                     break;
                 case "company":
                     const fetchCompanyInfo = await companyApi.getById(id);
@@ -93,55 +89,39 @@ function ProfilePage () {
                 }
             }
         }
-        getUserName();
-        getUserPfp();
-    }, [id])
-
-    // Narrow down application to related company
-    useEffect(() => {
-        if(!jobsAppliedTo) return;
-        const id_arr = [];
-        async function getCompanyIDs(){
-            const allCompanies = await companyApi.getAll();
-            for(let i = 0; i < allCompanies.length; i++){
-                const postings = allCompanies[i].jobPostings;
-                const match = (job) => jobsAppliedTo.includes(job);
-                const matchExists = postings.some(match);
-                if(matchExists){
-                    id_arr.push(allCompanies[i]._id);
-                }
-            }
-            setCompanyId(id_arr);
-        }
-        getCompanyIDs();
-    }, [jobsAppliedTo])
-
-    // Match applicant ids with logged in id
-    useEffect(() => {
-        const jobs_arr = [];
-        async function getJobInfo(){
-            for(let i = 0; i <companyId.length; i++){
-                const companyPostings = await companyApi.getJobPostings(companyId[i]);
-                for(let j = 0; j <companyPostings.length; j++){
-                    const postingApplicants = companyPostings[j].applicants;
-                    const matchApplicant = (applicantId) => id.includes(applicantId);
-                    const applicantMatchExists = postingApplicants.some(matchApplicant);
-                    if(applicantMatchExists){
-                        jobs_arr.push({
-                            ...jobInfo,
-                            id: companyPostings[j]._id,
-                            title: companyPostings[j].title,
-                            location: companyPostings[j].location,
-                            description: companyPostings[j].description,
-                            status: companyPostings[j].status
-                        })
+        async function getAppliedTo(){
+            const job_ids = []
+            const jobs_arr = []
+            if(id && role === "applicant"){
+                const postings = await jobPostingApi.getAll();
+                for(let i = 0; i < postings.length; i++){
+                    const job_applicants = postings[i].applicants;
+                    for(let j = 0; j < job_applicants.length; j++){
+                        if(job_applicants[j] === id){
+                            job_ids.push(postings[i]._id);
+                            break;
+                        }
                     }
                 }
+
+                for(let i = 0; i < job_ids.length; i++){
+                    const job_posting_info = await jobPostingApi.getById(job_ids[i])
+                    jobs_arr.push({
+                        id: job_posting_info._id,
+                        title: job_posting_info.title,
+                        location: job_posting_info.location,
+                        description: job_posting_info.description,
+                        status: job_posting_info.status
+                    })
+                }
             }
-            setJobInfo(jobs_arr);
+            setAppliedTo(jobs_arr);
         }
-        getJobInfo();
-    }, [companyId])
+        getUserName();
+        getUserPfp();
+        getAppliedTo();
+    }, [id])
+
 
     async function displayResume(e){
         e.preventDefault();
@@ -193,7 +173,7 @@ function ProfilePage () {
                 <section id="applied-to-container">
                     <h2 id="applied-to-text">My Recent Job Applications</h2>
                     <div id="job-cards">
-                        {jobInfo.map((p) => {
+                        {appliedTo.map((p) => {
                             return (
                                 <Card key={p._id} title={p.title} footer={""}>
                                     <p><strong>Location: </strong>{p.location || "—"}</p>
