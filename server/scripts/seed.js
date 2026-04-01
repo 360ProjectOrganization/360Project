@@ -105,6 +105,7 @@ async function seed() {
 
   // create an admin
   await Administrator.create({
+    name: 'Admin User',
     email: 'admin@jobly.com',
     password: 'admin123',
   });

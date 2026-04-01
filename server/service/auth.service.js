@@ -81,7 +81,9 @@ class AuthService {
     }
 
     if (r === 'administrator') {
-      const doc = await authRepository.createAdministrator({ email, password: data.password });
+      const name = (data.name || '').trim();
+      if (!name) throw new Error('Administrator name is required.');
+      const doc = await authRepository.createAdministrator({ name, email, password: data.password });
       const token = issueToken(doc, r);
       return { user: toSafeUser(doc), token };
     }
