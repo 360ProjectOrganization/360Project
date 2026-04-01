@@ -145,7 +145,7 @@ function ProfilePage () {
             <Header />
             <section id="profile-container">
                 <section id="profile-picture-section">
-                    <img src={image} alt="pfp" onClick={() => setUploadPfp(true)}/>
+                    <img src={image} alt="pfp"/>
                 </section>
                 <section id="profile-details">
                     <h1>{enrolledName}</h1>
@@ -154,15 +154,18 @@ function ProfilePage () {
                     }
                     <span id="profile-button-layout">
                         <button id="edit-profile" onClick={() => setEditProfile(true)}>
-                            <a>Edit Profile</a>
+                            Edit Profile
                         </button>
                         {role === "applicant" ?
                             <>
                                 <button id="upload-resume" onClick={() => setUploadResume(true)}>
-                                    <a>Upload Resume</a>
+                                    Upload Resume
+                                </button>
+                                <button id="upload-profile-picture" onClick={() => setUploadPfp(true)}>
+                                    Upload Profile Picture
                                 </button>
                                 <button id="download-resume" onClick={displayResume}>
-                                    <a>View Resume</a>
+                                    View Resume
                                 </button>
                                 <p>{resumeError}</p>
                             </> :""}
