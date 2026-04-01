@@ -196,6 +196,8 @@ export const adminApi = {
     apiRequest('/admin/'),
   getAllCompanyAnalytics: () =>
     apiRequest('/admin/allJobPostingAnalytics'),
+  editUser: (id, data) =>
+    apiRequest(`/admin/${id}/edit`, { method: 'POST', body: data }),
 };
 
 

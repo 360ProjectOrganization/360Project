@@ -149,5 +149,17 @@ class AuthService {
     await doc.save();
     return toSafeUser(doc);
   }
+  async changeName(id, role, newName, password) {
+    const r = validateRole(role);
+    if (!id) throw new Error('User id is required.');
+    if (!password) throw new Error('Password is required to change name.');
+    const doc = await authRepository.findDocumentById(id, r);
+    if (!doc) throw new Error('User not found.');
+    const match = await doc.comparePassword(password);
+    if (!match) throw new Error('Password is incorrect.');
+    doc.name = newName.trim();
+    await doc.save();
+    return toSafeUser(doc);
+  }
 }
 module.exports = new AuthService();

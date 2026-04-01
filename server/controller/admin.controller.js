@@ -63,4 +63,17 @@ router.post('/:id/delete', async (req, res) => {
   }
 });
 
+router.post('/:id/edit', async (req, res) => {
+  try {
+    const { name, email, role, password} = req.body;
+    const result = await adminService.updateAdmin(req.params.id, { name, email, role, password });
+    res.json(result);
+  } catch (error) {
+    if (error.message === 'User not found') return res.status(404).json({ error: error.message });
+    res.status(500).json({ error: 'Failed to update administrator' });
+    console.log(error);
+  }
+});
+
+
 module.exports = router;

@@ -39,11 +39,11 @@ export default function CreateNewAdminForm(){
         <section className="registerPage">
             <form onSubmit={handleSubmit(onSubmit)} className="registerCard ">
             <h2 className="roleText">Create New Admin</h2>
-            <input type="text" name="" id="" placeholder="Username" {...register("username", {required:{value: true}})}/>
+            <input type="text" name="" id="" placeholder="Username" {...register("username")}/>
             {errors.name && <p className="error">{errors.name}</p>}
-            <input type="email" name="" id="" placeholder="Email" {...register("email", {required:{value: true}})} />
+            <input type="email" name="" id="" placeholder="Email" {...register("email")}/>
             {errors.email && <p className="error">{errors.email}</p>}
-            <input type="password" name="" id=""placeholder="Password" {...register("password", {required:{value: true}})}  />
+            <input type="password" name="" id=""placeholder="Password" {...register("password")}/>
             {errors.password && <p className="error">{errors.password}</p>}
             <input type="password" name="" id=""placeholder="Confirm Password" {...register("confirmPassword", {required:{value: true}})}  />
             {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}

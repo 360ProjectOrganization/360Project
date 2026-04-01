@@ -2,10 +2,16 @@ import { useEffect, useState } from "react"
 import { adminApi, applicantApi, companyApi, getAuthUser } from "../../utils/api";
 import UserCard from "./UserCard";
 import "../common/Card.css"
+import EditAdmin from "./EditAdmin";
 
 export default function FindUsers({filterType, filter, loading, setLoading}){
     const [filteredCards, setFilteredCards] = useState([]);
     const [allCards, setAllCards] = useState([]);
+    const [xButton, setXButton] = useState(true);
+    const [editAccountInfo, setEditAccountInfo] = useState({});
+    const xButtonSwitch = (()=>{
+        setXButton((prev)=>!prev);
+    })
     //Load all users into allCards and filteredCards
     useEffect(() => {
         const loadData = (async ()=>{
@@ -27,7 +33,8 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
             }));
             const allUsers = [...applicantUsers, ...companyUsers, ...adminUsers];
             setFilteredCards(allUsers);
-            setAllCards(allUsers)
+            setAllCards(allUsers);
+            console.log("Loaded users:", allUsers);
             setLoading(false);
         }catch(e){
             console.log("Error",e);
@@ -51,7 +58,6 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
     
     }, [filter, filterType, allCards]);
     const deleteUser = async(id, type) => {
-        console.log("delete user", id, type);
         const updated = allCards.filter((user) => user._id !== id&& allCards.filter((user)=>user._id !==getAuthUser()._id));
         setAllCards(updated);
         setFilteredCards(updated);
@@ -75,11 +81,12 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
         <>
             {!loading&& (<section className="job-postings-layout">
                 {filteredCards.map((card)=>(
-                    <UserCard key ={card._id} id = {card._id} name = {card.name} type= {card.type} status = {"active"} deleteUser={deleteUser}/>
+                    <UserCard key ={card._id} id = {card._id}email={card.email} name = {card.name} type= {card.type} status = {"active"} deleteUser={deleteUser} xButtonSwitch ={xButtonSwitch} setEditAccountInfo = {setEditAccountInfo}/>
                     ))}
             </section>)}
+            {!xButton &&editAccountInfo&&(<EditAdmin setXButton={xButtonSwitch}  userDetails={editAccountInfo} allCards={allCards} setAllCards={setAllCards} setFilteredCards={setFilteredCards}/>)}
             {filteredCards.length === 0 && (<p>No Users match your search. </p>)}
-            {loading && (<p>Loading....</p>)}
+            {loading &&(<p>Loading....</p>)}
         </>
     )
 }
