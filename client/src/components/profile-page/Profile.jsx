@@ -27,8 +27,6 @@ function ProfilePage () {
     const [uploadPfp, setUploadPfp] = useState(false);
     const [resumeError, setResumeError] = useState("");
 
-    const [loadingMessage, setLoadingMessage] = useState("");
-
     useEffect(() => {
         const available_token = getToken();
         if(available_token){
@@ -41,8 +39,6 @@ function ProfilePage () {
         const decoded = jwtDecode(token);
         setRole(decoded.role);
         setId(decoded.id)
-
-        if(role === "applicant") setLoadingMessage("Loading Jobs Applied To...");
     }, [token, role])
 
     useEffect(() => {
@@ -145,7 +141,6 @@ function ProfilePage () {
             setJobInfo(jobs_arr);
         }
         getJobInfo();
-        setLoadingMessage("");
     }, [companyId])
 
     async function displayResume(e){
@@ -199,7 +194,6 @@ function ProfilePage () {
             {role === "applicant" ? 
                 <section id="applied-to-container">
                     <h2 id="applied-to-text">My Recent Job Applications</h2>
-                    <h2>{loadingMessage}</h2>
                     <div id="job-cards">
                         {jobInfo.map((p) => {
                             return (
