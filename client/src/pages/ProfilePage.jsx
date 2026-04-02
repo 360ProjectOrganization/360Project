@@ -2,7 +2,7 @@ import Header from "../components/header/Header.jsx";
 import "../styles/ProfilePage.css";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi, companyApi, adminApi, jobPostingApi } from "../utils/api.js";
+import { getToken, applicantApi, companyApi, adminApi } from "../utils/api.js";
 import Card from "../components/common/Card.jsx";
 import Modal from "../components/common/Modal.jsx";
 import UploadResumeForm from "../components/profile-page/UploadResumeForm.jsx";
@@ -17,14 +17,16 @@ function ProfilePage () {
     const [email, setEmail] = useState("");
     const [image, setImage] = useState("");
 
+    const [companyId, setCompanyId] = useState([]);
+    const [companyName, setCompanyName] = useState([]);
+    const [jobsAppliedTo, setJobsAppliedTo] = useState([]);
+    const [jobInfo, setJobInfo] = useState([]);
+
     const [uploadResume, setUploadResume] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
     const [uploadPfp, setUploadPfp] = useState(false);
     const [resumeError, setResumeError] = useState("");
 
-    const [appliedTo, setAppliedTo] = useState("");
-
-    // Token
     useEffect(() => {
         const available_token = getToken();
         if(available_token){
@@ -32,7 +34,6 @@ function ProfilePage () {
         };
     }, [])
 
-    // Set Role
     useEffect(() => {
         if(!token) return;
         const decoded = jwtDecode(token);
@@ -40,7 +41,6 @@ function ProfilePage () {
         setId(decoded.id)
     }, [token, role])
 
-    // Set pfp and user details
     useEffect(() => {
         async function getUserName(){
             switch (role){
@@ -48,6 +48,7 @@ function ProfilePage () {
                     const fetchApplicanInfo = await applicantApi.getById(id);
                     setEnrolledName(fetchApplicanInfo.name);
                     setEmail(fetchApplicanInfo.email);
+                    setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
                     break;
                 case "company":
                     const fetchCompanyInfo = await companyApi.getById(id);
@@ -89,39 +90,58 @@ function ProfilePage () {
                 }
             }
         }
-        async function getAppliedTo(){
-            const job_ids = []
-            const jobs_arr = []
-            if(id && role === "applicant"){
-                const postings = await jobPostingApi.getAll();
-                for(let i = 0; i < postings.length; i++){
-                    const job_applicants = postings[i].applicants;
-                    for(let j = 0; j < job_applicants.length; j++){
-                        if(job_applicants[j] === id){
-                            job_ids.push(postings[i]._id);
-                            break;
-                        }
-                    }
-                }
-
-                for(let i = 0; i < job_ids.length; i++){
-                    const job_posting_info = await jobPostingApi.getById(job_ids[i])
-                    jobs_arr.push({
-                        id: job_posting_info._id,
-                        title: job_posting_info.title,
-                        location: job_posting_info.location,
-                        description: job_posting_info.description,
-                        status: job_posting_info.status
-                    })
-                }
-            }
-            setAppliedTo(jobs_arr);
-        }
         getUserName();
         getUserPfp();
-        getAppliedTo();
     }, [id])
 
+    // Narrow down application to related company
+    useEffect(() => {
+        if(!jobsAppliedTo) return;
+        const id_arr = [];
+        const company_name = [];
+        async function getCompanyIDs(){
+            const allCompanies = await companyApi.getAll();
+            for(let i = 0; i < allCompanies.length; i++){
+                const postings = allCompanies[i].jobPostings;
+                const match = (job) => jobsAppliedTo.includes(job);
+                const matchExists = postings.some(match);
+                if(matchExists){
+                    id_arr.push(allCompanies[i]._id);
+                    company_name.push(allCompanies[i].name)
+                }
+            }
+            setCompanyId(id_arr);
+            setCompanyName(company_name);
+        }
+        getCompanyIDs();
+    }, [jobsAppliedTo])
+
+    // Match applicant ids with logged in id
+    useEffect(() => {
+        const jobs_arr = [];
+        async function getJobInfo(){
+            for(let i = 0; i <companyId.length; i++){
+                const companyPostings = await companyApi.getJobPostings(companyId[i]);
+                for(let j = 0; j <companyPostings.length; j++){
+                    const postingApplicants = companyPostings[j].applicants;
+                    const matchApplicant = (applicantId) => id.includes(applicantId);
+                    const applicantMatchExists = postingApplicants.some(matchApplicant);
+                    if(applicantMatchExists && companyPostings[j].status === "ACTIVE"){
+                        jobs_arr.push({
+                            id: companyPostings[j]._id,
+                            company: companyName[i],
+                            title: companyPostings[j].title,
+                            location: companyPostings[j].location,
+                            description: companyPostings[j].description,
+                            status: companyPostings[j].status
+                        })
+                    }
+                }
+            }
+            setJobInfo(jobs_arr);
+        }
+        getJobInfo();
+    }, [companyId])
 
     async function displayResume(e){
         e.preventDefault();
@@ -176,9 +196,10 @@ function ProfilePage () {
                 <section id="applied-to-container">
                     <h2 id="applied-to-text">My Recent Job Applications</h2>
                     <div id="job-cards">
-                        {appliedTo.map((p) => {
+                        {jobInfo.map((p) => {
                             return (
                                 <Card key={p._id} title={p.title} footer={""}>
+                                    <p><strong>Company: </strong>{p.company || "—"}</p>
                                     <p><strong>Location: </strong>{p.location || "—"}</p>
                                     <p><strong>Description: </strong>{p.description || "—"}</p>
                                     <p><strong>Status: </strong>{p.status}</p>
@@ -188,13 +209,13 @@ function ProfilePage () {
                     </div>
                 </section> : "" }
 
-            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"}>
+            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"} size={"small"}>
                 <UploadResumeForm />
             </Modal>
             <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
                 <EditProfileForm />
             </Modal>
-            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Edit Profile Picture"}>
+            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Edit Profile Picture"} size={"small"}>
                 <UploadPfpForm />
             </Modal>
         </>

@@ -17,7 +17,7 @@
 }
 
 #submit-resume {
-    margin-top: 2em;
+    margin: 2em 0 2em 0;
     padding: 0.5em 1em 0.5em 1em;
     background-color: var(--color-title-alt);
     color: white;
