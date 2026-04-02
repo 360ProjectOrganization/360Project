@@ -1,4 +1,3 @@
-import Header from "../header/Header.jsx";
 import "./Profile.css";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
@@ -8,6 +7,7 @@ import Modal from "../common/Modal.jsx";
 import UploadResumeForm from "./UploadResumeForm.jsx";
 import EditProfileForm from "./EditProfileForm.jsx";
 import UploadPfpForm from "./UploadPfpForm.jsx";
+import ResumeOptionsForm from "./ResumeOptionsForm.jsx";
 
 function ProfilePage () {
     const [token, setToken] = useState("");
@@ -25,7 +25,7 @@ function ProfilePage () {
     const [uploadResume, setUploadResume] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
     const [uploadPfp, setUploadPfp] = useState(false);
-    const [resumeError, setResumeError] = useState("");
+    const [resumeOptions, setResumeOptions] = useState(false);
 
     useEffect(() => {
         const available_token = getToken();
@@ -142,23 +142,6 @@ function ProfilePage () {
         }
         getJobInfo();
     }, [companyId])
-
-    async function displayResume(e){
-        e.preventDefault();
-        const url = applicantApi.getResumeViewUrl(id);
-        try {
-            const response = await fetch(url);
-            if(response.status === 404){
-                setResumeError("No resume available for download");
-                return;
-            }
-            window.open(url, "_blank");
-            setResumeError("");
-        } catch (error) {
-            console.log(error);
-            setResumeError("Error occured getting resume");
-        }
-    }
     
     return (
         <>
@@ -183,10 +166,9 @@ function ProfilePage () {
                                 <button id="upload-profile-picture" onClick={() => setUploadPfp(true)}>
                                     Upload Profile Picture
                                 </button>
-                                <button id="download-resume" onClick={displayResume}>
+                                <button id="download-resume" onClick={() => setResumeOptions(true)}>
                                     View Resume
                                 </button>
-                                <p>{resumeError}</p>
                             </> :""}
                     </span>
                 </section>
@@ -216,6 +198,9 @@ function ProfilePage () {
             </Modal>
             <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Edit Profile Picture"} size={"small"}>
                 <UploadPfpForm />
+            </Modal>
+            <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Resume Viewing Options"} size={"small"}>
+                <ResumeOptionsForm />
             </Modal>
         </>
     )
