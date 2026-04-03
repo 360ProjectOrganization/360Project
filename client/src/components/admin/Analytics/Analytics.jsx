@@ -3,10 +3,12 @@ import "../admin.css"
 import { adminApi } from "../../../utils/api";
 import JobPostings from "./JobPostings";
 import NumberOfUsers from "./NumberOfUsers";
+import JobFillRate from "./JobFillRate";
 export default function Analytics({whichAnalyticsData}){
     const [numJobPostings, setNumJobPostings] = useState(0);
-    const [jobFillRate, setJobFillRate] = useState(0);
     const [numUsersByDate, setNumUsersByDate] = useState([]);
+    const [numJobFilled, setNumJobFilled] = useState(0);
+    const [numJobUnfilled, setNumJobUnfilled] = useState(0);
     const [userNumber, setUserNumber] = useState(0);
     const [jobPostingsByDate, setJobPostingsByDate] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,15 +20,16 @@ export default function Analytics({whichAnalyticsData}){
           try {
             const data = await adminApi.getAllCompanyAnalytics();
             setNumJobPostings(data.numJobPostings);
-            setJobFillRate(data.jobFillRate);
             setUserNumber(data.numUsers);
             setJobPostingsByDate(data.jobPostingsByDate);
             setNumUsersByDate(data.allAccountsByDate);
             setAdminAccountsByDate(data.adminAccountsByDate);
             setCompanyAccountsByDate(data.companyAccountsByDate);
+            setNumJobFilled(data.filledJobs);
+            setNumJobUnfilled(data.unfilledJobs);
             setApplicantAccountsByDate(data.applicantAccountsByDate);
+
             setLoading(false);  
-            console.log(data)
 
           } catch (err) {
             console.error("Error fetching analytics:", err);
@@ -36,13 +39,14 @@ export default function Analytics({whichAnalyticsData}){
 
     return(
         <>
-         {!loading && whichAnalyticsData === "jobPostings" && (<JobPostings jobPostingsByDate={jobPostingsByDate} numJobPostings={numJobPostings}/>)}
+         {!loading && whichAnalyticsData === "jobPostings" && (<JobPostings jobPostingsByDate={{jobPostingsByDate: jobPostingsByDate}} numJobPostings={numJobPostings}/>)}
          {!loading && whichAnalyticsData === "numUsers" && (<NumberOfUsers usersByDate={
           {numUsersByDate: numUsersByDate,
             adminAccountsByDate: adminAccountsByDate,
             companyAccountsByDate: companyAccountsByDate,
             applicantAccountsByDate: applicantAccountsByDate
-          }} numUsers={{userNumber}}/>)}
+          }} numUsers={userNumber}/>)}
+          {!loading && whichAnalyticsData === "jobFillRate" && (<JobFillRate jobFillRate={[numJobFilled, numJobUnfilled]}/>)}
         </>
     )
 }

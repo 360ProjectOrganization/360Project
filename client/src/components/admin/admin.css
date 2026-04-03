@@ -234,6 +234,15 @@
     width: 80vw;
     max-width: 1200px;
 }
+.pieChart-container {
+    height: 50vh; 
+    width: 50vh;
+    max-height: 400px;
+    max-width: 400px;
+    
+    margin: 20px auto;
+    position: relative;
+}
 .barChart-container canvas {
     display: block !important;
     margin: 0 auto;

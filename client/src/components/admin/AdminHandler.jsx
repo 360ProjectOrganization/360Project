@@ -25,11 +25,14 @@ export default function AdminHandler(){
                 <AdminDropDown setPage={setPage}/>
                 {page === "Find Users" && loading === false && (<FindUserSearch setFilter = {setFilter} setFilterType={setFilterType}/>)}
                 {page === "Analytics" && loading === false && (
-                    <select name="" id="" onChange={handleAnalyticsChange}>
-                        <option value="jobPostings">Job Postings</option>
-                        <option value="jobFillRate">Job Fill Rate</option>
-                        <option value="numUsers">Number of Users</option>
-                    </select>
+                     <section className="master-text-admin admin-selector-row-container">
+                        <h3 htmlFor="analytics-select" >Select Analytics Data:</h3>
+                        <select name="analytics-select" id="analytics-select" className="spacing-betteween-input-admin selectors-admin"onChange={handleAnalyticsChange}>
+                            <option value="jobPostings">Job Postings</option>
+                            <option value="jobFillRate">Job Fill Rate</option>
+                            <option value="numUsers">Number of Users</option>
+                        </select>
+                    </section>
 
                 )}
             </section>
