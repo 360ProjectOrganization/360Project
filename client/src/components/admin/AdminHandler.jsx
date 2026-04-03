@@ -22,7 +22,7 @@ export default function AdminHandler(){
             
             <section className="subnav-container-admin">
                 <h2 className="master-text-admin">Admin Portal</h2>
-                <AdminDropDown setPage={setPage}/>
+                <AdminDropDown setPage={setPage} setWhichAnalyticsData ={setWhichAnalyticsData} setFilterType = {setFilterType}/>
                 {page === "Find Users" && loading === false && (<FindUserSearch setFilter = {setFilter} setFilterType={setFilterType}/>)}
                 {page === "Analytics" && loading === false && (
                      <section className="master-text-admin admin-selector-row-container">
