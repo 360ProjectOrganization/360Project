@@ -1,11 +1,13 @@
-export default function AdminDropDown({setPage}){
+export default function AdminDropDown({setPage, setWhichAnalyticsData, setFilterType}){
     const changePage = (e=>{
         if(e.target.value === "Find Users" ){
             setPage("Find Users");
+            setFilterType("name");
         }else if(e.target.value === "New Admin"){
             setPage("New Admin");
         }else if(e.target.value === "Analytics"){
             setPage("Analytics");
+            setWhichAnalyticsData("jobPostings");
         }
     });
     return(
