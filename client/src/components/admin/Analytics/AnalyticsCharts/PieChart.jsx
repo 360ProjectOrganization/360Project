@@ -7,7 +7,6 @@ export default function PieChart({pieChartTitle,chartData, chartLabels, chartBac
     const data = {
     labels: chartLabels,
     datasets: [{
-        label: pieChartTitle,
         data: chartData,
         backgroundColor: chartBackgroundColor,
         borderWidth: 1,
@@ -38,6 +37,7 @@ export default function PieChart({pieChartTitle,chartData, chartLabels, chartBac
                 align: 'center',
             },
             legend: { position: "top" },
+            title: { display: true, text: pieChartTitle, font: {font: "Source Serif Pro, Georgia, serif", size: 20}, color: "#383533" },
         },
     };
     return(
