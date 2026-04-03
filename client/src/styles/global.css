@@ -118,6 +118,25 @@ button {
     border-color: var(--color-cta-primary);
 }
 
+.registerCard input[type="file"] {
+    height: auto;
+    min-height: 2.75rem;
+    padding: 8px;
+    cursor: pointer;
+    line-height: normal;
+}
+
+.registerCard .imageInputSection img {
+    display: block;
+    margin: 0 auto;
+    width: 140px;
+    height: 140px;
+    border: 2px solid var(--color-cta-secondary-darker);
+    border-radius: 120px;
+    margin-top: 16px;
+    margin-bottom: 0px;
+}
+
 .passwordWrapper {
     position: relative;
     width: 100%;
@@ -158,7 +177,7 @@ button {
     background: var(--color-cta-primary);
     color: white;
     font-size: 15px;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .registerCard button[type="submit"]:hover {
