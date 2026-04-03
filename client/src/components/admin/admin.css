@@ -221,3 +221,60 @@
     font-size: 15px;
     color: #c0392b;
 }
+
+.barChart-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    overflow: hidden
+}
+
+.barChart-container {
+    width: 80vw;
+    max-width: 1200px;
+}
+.barChart-container canvas {
+    display: block !important;
+    margin: 0 auto;
+    width: 100% !important;
+    height: auto !important;
+}
+.stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px auto 40px auto;
+    width: 90%;
+    max-width: 1000px;
+}
+
+.stat-card {
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-divider);
+    border-radius: 12px;
+    padding: 20px;
+    min-width: 180px;
+    text-align: center;
+    box-shadow: 0 4px 6px var(--color-card-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px var(--color-card-shadow);
+}
+
+.stat-label {
+    margin: 0;
+    color: var(--color-title);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.stat-value {
+    margin: 10px 0 0 0;
+    color: var(--color-title-alt);
+    font-weight: 700;
+}

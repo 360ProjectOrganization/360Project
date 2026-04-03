@@ -3,7 +3,7 @@ import AdminDropDown from "./AdminDropDown";
 import CreateNewAdminForm from "./CreateNewAdminForm"
 import FindUserSearch from "./FindUserSearch";
 import FindUsers from "./FindUsers";
-import Analytics from "./Analytics"
+import Analytics from "./Analytics/Analytics"
 import "./admin.css"
 import "../home/Home.css"
 
@@ -12,6 +12,11 @@ export default function AdminHandler(){
     const[filterType, setFilterType] = useState("name")
     const[filter, setFilter] = useState("");
     const [loading, setLoading] = useState(true);
+    const [whichAnalyticsData, setWhichAnalyticsData] = useState("jobPostings");
+
+    const handleAnalyticsChange = (e) => {
+        setWhichAnalyticsData(e.target.value);
+    }
     return(
         <section>
             
@@ -19,11 +24,19 @@ export default function AdminHandler(){
                 <h2 className="master-text-admin">Admin Portal</h2>
                 <AdminDropDown setPage={setPage}/>
                 {page === "Find Users" && loading === false && (<FindUserSearch setFilter = {setFilter} setFilterType={setFilterType}/>)}
+                {page === "Analytics" && loading === false && (
+                    <select name="" id="" onChange={handleAnalyticsChange}>
+                        <option value="jobPostings">Job Postings</option>
+                        <option value="jobFillRate">Job Fill Rate</option>
+                        <option value="numUsers">Number of Users</option>
+                    </select>
+
+                )}
             </section>
             <section>
                 {page === "Find Users"&& (<FindUsers filter = {filter} filterType={filterType}  setFilter = {setFilter} setFilterType={setFilterType} loading={loading} setLoading={setLoading}/>)}
                 {page === "New Admin"&& (<CreateNewAdminForm/>)}
-                {page === "Analytics"&& (<Analytics/>)}
+                {page === "Analytics"&& (<Analytics whichAnalyticsData={whichAnalyticsData}/>)}
             </section>
             
         </section>

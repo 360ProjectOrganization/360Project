@@ -46,8 +46,36 @@ class AdminService {
     const numApplicants = await adminRepository.countAplicants();
     const numCompanies = await adminRepository.countCompanies();
     const numUsers = numAdmins + numApplicants + numCompanies;
+    const jobPostingsByDate = await adminRepository.countAllJobPostingsCreateWithDateCreated();
+
+    //Get all the accounts by date created for admins, applicants, and companies, then combine them by adding their counts for each date (if they exist) and sort them by date
+    const adminAccountsByDate = await adminRepository.countAllAdminAccountsByDateCreated();
+    const applicantAccountsByDate = await adminRepository.countAllApplicantsAccountsByDateCreated();
+    const companyAccountsByDate = await adminRepository.countAllCompaniesAccountsByDateCreated();
+    const accountsByDate = [...adminAccountsByDate, ...applicantAccountsByDate, ...companyAccountsByDate];
+    // THIS IS SUPER INEFFICIENT BUT I DONT CARE ENOUGH TO OPTIMIZE IT RN
+    const totalsByDate = accountsByDate.reduce((acc, curr) => {
+      const { date, count } = curr;
+      acc[date] = (acc[date] || 0) + count;
+      
+      return acc;
+    }, {});
+
+    const allAccountsByDate = Object.keys(totalsByDate).map(date => ({
+        date: date,
+        count: totalsByDate[date]
+    }));
+
     analytics.numUsers = numUsers;
+    analytics.numAdmins = numAdmins;
+    analytics.numApplicants = numApplicants;
+    analytics.numCompanies = numCompanies;
     analytics.jobFillRate = jobFillRate;
+    analytics.jobPostingsByDate = jobPostingsByDate;
+    analytics.allAccountsByDate = allAccountsByDate;
+    analytics.adminAccountsByDate = adminAccountsByDate;
+    analytics.applicantAccountsByDate = applicantAccountsByDate;
+    analytics.companyAccountsByDate = companyAccountsByDate;
     return analytics;
   }
   async updateAdmin(id, data){
