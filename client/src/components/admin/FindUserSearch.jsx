@@ -3,7 +3,6 @@ export default function({setFilter,setFilterType}){
         setFilterType(e.target.value);
     })
     const changeFilter = ((e)=>{
-        console.log(e.target.value)
         setFilter(e.target.value);
     })
     return(
@@ -12,6 +11,7 @@ export default function({setFilter,setFilterType}){
             <select name="" id="" onChange={changeFilterType} className="spacing-betteween-input-admin selectors-admin">
                 <option value="name">Username</option>
                 <option value="type">Type</option>
+                <option value="email">Email</option>
             </select>
             <input type="text" name="" id="searchTextInput" placeholder="..." onChange={changeFilter} className="spacing-betteween-input-admin input-box-admin"/>
         </section>
