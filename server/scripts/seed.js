@@ -11,6 +11,9 @@ const path = require('path');
 const MOCKFILES_DIR = path.join(__dirname, '../repository/models/mockfiles');
 
 async function seed() {
+    // dates for status analytics
+  const now = new Date();
+  const daysAgo = (d) => new Date(now.getTime() - d * 24 * 60 * 60 * 1000);
   await connectDB();
 
   // load default pfp
@@ -34,11 +37,11 @@ async function seed() {
   // create applicants 
   const applicants = [];
   for (const data of [
-    { email: 'alice@example.com', name: 'Alice Chen', password: 'mock123', ...defaultApplicantFields },
-    { email: 'bob@example.com', name: 'Bob Smith', password: 'mock123', ...defaultApplicantFields },
-    { email: 'carol@example.com', name: 'Carol Davis', password: 'mock123', ...defaultApplicantFields },
-    { email: 'dave@example.com', name: 'Dave Wilson', password: 'mock123', ...defaultApplicantFields },
-    { email: 'eve@example.com', name: 'Eve Martinez', password: 'mock123', ...defaultApplicantFields },
+    { email: 'alice@example.com', name: 'Alice Chen', password: 'mock123', ...defaultApplicantFields, createdAt: daysAgo(14)},
+    { email: 'bob@example.com', name: 'Bob Smith', password: 'mock123', ...defaultApplicantFields , createdAt: daysAgo(20)},
+    { email: 'carol@example.com', name: 'Carol Davis', password: 'mock123', ...defaultApplicantFields, createdAt: daysAgo(24) },
+    { email: 'dave@example.com', name: 'Dave Wilson', password: 'mock123', ...defaultApplicantFields, createdAt: daysAgo(3) },
+    { email: 'eve@example.com', name: 'Eve Martinez', password: 'mock123', ...defaultApplicantFields, createdAt: daysAgo(5) },
   ]) {
     applicants.push(await Applicant.create(data));
   }
@@ -46,17 +49,13 @@ async function seed() {
   // create companies
   const companies = [];
   for (const data of [
-    { name: 'TechCorp', email: 'hr@techcorp.com', password: 'mock123' },
-    { name: 'StartupXYZ', email: 'jobs@startupxyz.com', password: 'mock123' },
-    { name: 'DataFlow Inc', email: 'careers@dataflow.io', password: 'mock123' },
-    { name: 'CloudNine', email: 'talent@cloudnine.dev', password: 'mock123' },
+    { name: 'TechCorp', email: 'hr@techcorp.com', password: 'mock123', createdAt: daysAgo(15) },
+    { name: 'StartupXYZ', email: 'jobs@startupxyz.com', password: 'mock123', createdAt: daysAgo(9) },
+    { name: 'DataFlow Inc', email: 'careers@dataflow.io', password: 'mock123', createdAt: daysAgo(1) },
+    { name: 'CloudNine', email: 'talent@cloudnine.dev', password: 'mock123', dateCreated: daysAgo(4) },
   ]) {
     companies.push(await Company.create(data));
   }
-
-  // dates for status analytics
-  const now = new Date();
-  const daysAgo = (d) => new Date(now.getTime() - d * 24 * 60 * 60 * 1000);
 
   // create job postings
   const jobPostings = await JobPosting.insertMany([
@@ -108,6 +107,7 @@ async function seed() {
     name: 'Admin User',
     email: 'admin@jobly.com',
     password: 'admin123',
+    createdAt: daysAgo(5)
   });
 
   console.log('Seed complete: applicants', applicants.length, 'companies', companies.length, 'job postings', jobPostings.length);
