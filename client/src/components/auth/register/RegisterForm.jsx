@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackButton from "../BackButton";
 import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
-import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
+import { authApi, setToken, setAuthUser, applicantApi, companyApi } from "../../../utils/api.js";
 
 export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
     const navigate = useNavigate();
@@ -71,8 +71,27 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
             const response = await authApi.register(payload);
             setToken(response.token);
             setAuthUser(response.user);
+
+            const userId = response.user?._id;
+            let pfpUploadFailed = false;
+            if (pfpFile && userId) {
+                try {
+                    if (isEmployer) {
+                        await companyApi.uploadPfp(userId, pfpFile);
+                    } else {
+                        await applicantApi.uploadPfp(userId, pfpFile);
+                    }
+                } catch (uploadErr) {
+                    console.error(uploadErr);
+                    pfpUploadFailed = true;
+                }
+            }
+
             navigate(returnTo, {
-                state: openPostingId ? { openPostingId } : undefined,
+                state: {
+                    ...(openPostingId ? { openPostingId } : {}),
+                    ...(pfpUploadFailed ? { pfpUploadFailed: true } : {}),
+                },
             });
         }
         catch (err) {
