@@ -22,7 +22,17 @@ export default function JobComments({ jobId, ownerCompanyId, currentUserId, role
         }
     }
 
-    useEffect(() => { fetchComments(); }, [jobId]);
+    useEffect(() => {
+        if (!jobId) return;
+
+        fetchComments();
+
+        const intervalId = setInterval(() => {
+            fetchComments();
+        }, 2000) // every 2 seconds
+
+        return () => clearInterval(intervalId);
+    }, [jobId]);
 
     async function handleAddComment() {
         if (!isAuthenticated || !jobId || !newComment.trim()) return;
