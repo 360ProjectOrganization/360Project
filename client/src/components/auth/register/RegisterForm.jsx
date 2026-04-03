@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackButton from "../BackButton";
 import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
@@ -23,6 +23,24 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const [pfpFile, setPfpFile] = useState(null);
+    const [pfpPreviewUrl, setPfpPreviewUrl] = useState(null);
+
+    useEffect(() => {
+        if (!pfpFile) {
+            setPfpPreviewUrl(null);
+            return;
+        }
+        const url = URL.createObjectURL(pfpFile);
+        setPfpPreviewUrl(url);
+        return () => URL.revokeObjectURL(url);
+    }, [pfpFile]);
+
+    function onPfpChange(e) {
+        const file = e.target.files?.[0];
+        setPfpFile(file ?? null);
+    }
     
     const back = () => {
         setOnRegisterScreen(false);
@@ -106,6 +124,14 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                                 </button>
                             </div>
                             {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+                        </section>
+
+                        <section className="imageInputSection">
+                            <label htmlFor="register-pfp-input" style={{ cursor: "pointer" }}>Choose profile photo</label>
+                            <input type="file" accept="image/*" id="register-pfp-input" onChange={onPfpChange} />
+                            {pfpPreviewUrl && (
+                                <img src={pfpPreviewUrl} alt="Profile preview" width={140} height={140}/>
+                            )}
                         </section>
 
                         {submitError && <p className="error">{submitError}</p>}
