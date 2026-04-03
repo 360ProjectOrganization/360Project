@@ -78,11 +78,13 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                 try {
                     if (isEmployer) {
                         await companyApi.uploadPfp(userId, pfpFile);
-                    } else {
+                    }
+                    else {
                         await applicantApi.uploadPfp(userId, pfpFile);
                     }
-                } catch (uploadErr) {
-                    console.error(uploadErr);
+                }
+                catch (uploadError) {
+                    console.error(uploadError);
                     pfpUploadFailed = true;
                 }
             }
