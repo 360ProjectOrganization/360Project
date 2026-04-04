@@ -1,0 +1,29 @@
+#resume-question-container {
+    text-align: center;
+    h3 {
+        font-size: 1.4em;
+    }
+}
+
+#resume-choice {
+    margin: 0.5em 0 1em 0;
+    padding: 0.5em 1em 0.5em 1em;
+    background-color: var(--color-cta-primary);
+    color: white;
+    font-size: 1.10em;
+}
+
+.resume-radio {
+    font-size: 1.25em;
+}
+
+.radio-container {
+    text-align: left;
+    margin: 1em 0 1em 5.5em;
+}
+
+#error-text {
+    font-size: 1.1em;
+    color: red;
+    text-align: center;
+}

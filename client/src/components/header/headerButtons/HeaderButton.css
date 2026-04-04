@@ -1,4 +1,5 @@
-.logout-button {
+.header-button {
+    color: antiquewhite;
     border-radius: 10px;
     margin: 0 0.5em 0 0.5em;
     padding: 0.5em;
@@ -6,18 +7,7 @@
     background-color: var(--color-cta-primary);
 }
 
-.header-button-company {
-    border-radius: 10px;
-    margin: 0 0.5em 0 0.5em;
-    padding: 0.5em;
-    font-size: 1.10em;
-    background-color: var(--color-cta-primary);
-}
-
-.header-button-admin {
-    border-radius: 10px;
-    margin: 0 0.5em 0 0.5em;
-    padding: 0.5em;
-    font-size: 1.10em;
+.header-button:hover{
     background-color: var(--color-cta-secondary);
+    margin: 0 0.5em 0.2em 0.5em;
 }

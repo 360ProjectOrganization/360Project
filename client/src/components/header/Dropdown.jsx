@@ -11,12 +11,27 @@ function Dropdown () {
     const [token, setToken] = useState("");
     const [role, setRole] = useState("");
     const [id, setId] = useState("");
+    const [dropdownItems, setDropdownItems] = useState([]);
 
     useEffect(() => {
         const available_token = getToken();
         if(available_token){
             setToken(available_token);
         };
+
+        setDropdownItems([
+            {
+                id:1,
+                label: "Login",
+                value: "/Login"
+            },
+            {
+                id: 2,
+                label: "Register",
+                value: "/register"
+            }
+        ]);
+
     }, [])
 
     useEffect(() => {
@@ -28,7 +43,8 @@ function Dropdown () {
         if(role != "administrator"){
             setId(decoded.id);
         }
-    }, [token, role])
+        setDropdownItems([]);
+    }, [token, role]);
     
     useEffect(() => {
         async function getUserName(){
@@ -46,24 +62,6 @@ function Dropdown () {
         getUserName();
     }, [id]);
 
-    let dropdownItems = [
-        {
-            id:1,
-            label: "Login",
-            value: "/Login"
-        },
-        {
-            id: 2,
-            label: "Register",
-            value: "/register"
-        },
-        {
-            id:3,
-            label: "Profile Page",
-            value: token ? "/profile" : "/Login"
-        }
-    ];
-
     return (
         <>
             <section id="profile-section">
@@ -74,17 +72,15 @@ function Dropdown () {
                     onMouseEnter={() => {setDropdownActivated(true);}}
                     onMouseLeave={() => {setDropdownActivated(false);}}
                 >
-                    <button 
-                        className="dropdown-button" 
-                    >
+                    <button className="dropdown-button">
                         {
                             role === "applicant" || role === "company" ? `Welcome, ${enrolledName}`
                             : role === "administrator" ? "Welcome, Admin"
-                            : "Profile"
+                            : "Get Started"
                         }
                     </button>
                     <div className={`dropdown-options ${dropdownActivated ? "visible" : ""}`}>
-                        {dropdownItems.map(option => (
+                        {dropdownItems?.map(option => (
                             <Link to={option.value} key={option.id} className="dropdown-option-button">
                                 {option.label}
                             </Link>

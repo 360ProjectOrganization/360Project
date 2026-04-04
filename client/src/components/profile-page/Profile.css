@@ -18,9 +18,6 @@
         height: 14em;
         border-radius: 120px;
     }
-    img:hover{
-        cursor: pointer;
-    }
 }
 
 #profile-details {
@@ -40,41 +37,51 @@
     }
 }
 
-#edit-profile {
-    padding: 0.5em;
+button {
+    padding: 0.5em 1em 0.5em 1em;
     margin-right: 1em;
-    width: 8em;
+    width: auto;
+    font-size: 1em;
+    color: white;
+}
+
+#edit-profile{
     background-color: var(--color-cta-secondary-darker);
-    a {
-        font-size: 1em;
-        color: white;
-    }
 }
 
-#upload-resume {
-    padding: 0.5em;
-    margin-right: 1em;
-    width: 10em;
+#edit-profile:hover{
+    background-color: var(--color-body);
+}
+
+#upload-resume{
     background-color: var(--color-cta-secondary);
-    a {
-        font-size: 1em;
-        color: white;
-    }
 }
 
-#download-resume {
-    padding: 0.5em;
-    margin-right: 1em;
-    width: 10em;
+#upload-resume:hover{
+    background-color: var(--color-cta-secondary-darker);
+}
+
+#upload-profile-picture{
     background-color: var(--color-cta-primary);
-    a {
-        font-size: 1em;
-        color: white;
-    }
+}
+
+#upload-profile-picture:hover{
+    background-color: var(--color-cta-secondary);
+}
+
+#download-resume{
+    background-color: #c9834d;
+}
+
+#download-resume:hover{
+    background-color: var(--color-cta-primary);
 }
 
 #applied-to-container{
-    padding: 0 5em 0 5em;
+    padding: 0 5em 0 12em;
+    .card-container {
+        width: 100%
+    }
 }
 
 #job-cards{

@@ -3,11 +3,12 @@ import "./Header.css";
 import { getToken } from "../../utils/api.js";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
-import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
 import Logout from "./headerButtons/Logout.jsx";
+import HeaderButton from "./headerButtons/HeaderButton.jsx";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+    let navigate = useNavigate();
     const [token, setToken] = useState("");
     const [role, setRole] = useState("");
 
@@ -28,15 +29,18 @@ function Header() {
     return (
         <>
             <section id="header-container">
-                <section id="jobly-container">
-                    <a href="/">JobLy</a>
+                <section id="jobly-container" onClick={() => navigate("/")}>
+                    JobLy
                 </section>
                 <section id="special-navigation-container">
                     {
-                        role === "company" ? <CompanyPortalButton /> : ""
+                        token ? <HeaderButton title={"Profile Page"} link={"/profile"}/> : ""
                     }
                     {
-                        role === "administrator" ? <AdminPortalButton /> : ""
+                        role === "company" ? <HeaderButton title={"Company Portal"} link={"/company-portal"} /> : ""
+                    }
+                    {
+                        role === "administrator" ? <HeaderButton title={"Admin Portal"} link={"/Admin"} /> : ""
                     }
                 </section>
                 <section id="user-navigation-conatainer">

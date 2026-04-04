@@ -10,13 +10,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10%;
-    margin: 0.5em;
-    a{
-        color: var(--color-title);
-        font-size: 2.5em;
-        font-weight: bold;
-    }
+    max-width: 8%;
+    padding: 0 0.25em 0 0.25em;
+    margin: 0.3em 0.25em 0.5em 0.25em;
+    color: var(--color-title);
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+#jobly-container:hover{
+    cursor: pointer;
+    border-bottom: var(--color-cta-secondary-darker) solid 2px;
+    color: var(--color-cta-secondary-darker);
 }
 
 #special-navigation-container {
