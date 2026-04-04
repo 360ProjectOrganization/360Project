@@ -24,8 +24,8 @@ function ResumeOptionsForm(){
         setId(decoded.id);
     }, [token, role])
 
-    const handleChange = (event) => {
-        setSelectedViewing(event.target.value);
+    function handleChange (e) {
+        setSelectedViewing(e.target.value);
     }
 
     async function displayResume(e){

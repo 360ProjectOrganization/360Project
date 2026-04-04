@@ -15,8 +15,6 @@ function App() {
                 <Route path='/profile' element={<ProfilePage />} />
                 <Route path='/company-portal' element={<CompanyPortalPage />} />
                 <Route path='/Admin' element={<AdminPage />} />
-
-                <Route path='/Admin' element={<AdminPage />} />
             </Routes>
         </div>
     );

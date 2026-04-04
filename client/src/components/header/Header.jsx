@@ -3,9 +3,8 @@ import "./Header.css";
 import { getToken } from "../../utils/api.js";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import CompanyPortalButton from "./headerButtons/CompanyPortalButton.jsx";
-import AdminPortalButton from "./headerButtons/AdminPortalButton.jsx";
 import Logout from "./headerButtons/Logout.jsx";
+import HeaderButton from "./headerButtons/HeaderButton.jsx";
 
 function Header() {
     const [token, setToken] = useState("");
@@ -33,10 +32,13 @@ function Header() {
                 </section>
                 <section id="special-navigation-container">
                     {
-                        role === "company" ? <CompanyPortalButton /> : ""
+                        token ? <HeaderButton title={"Profile Page"} link={"/profile"}/> : ""
                     }
                     {
-                        role === "administrator" ? <AdminPortalButton /> : ""
+                        role === "company" ? <HeaderButton title={"Company Portal"} link={"/company-portal"} /> : ""
+                    }
+                    {
+                        role === "administrator" ? <HeaderButton title={"Admin Portal"} link={"/Admin"} /> : ""
                     }
                 </section>
                 <section id="user-navigation-conatainer">
