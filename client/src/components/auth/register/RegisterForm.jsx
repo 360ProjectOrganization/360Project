@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackButton from "../BackButton";
 import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
-import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
+import { authApi, setToken, setAuthUser, applicantApi, companyApi } from "../../../utils/api.js";
 
 export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
     const navigate = useNavigate();
@@ -23,6 +23,24 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const [pfpFile, setPfpFile] = useState(null);
+    const [pfpPreviewUrl, setPfpPreviewUrl] = useState(null);
+
+    useEffect(() => {
+        if (!pfpFile) {
+            setPfpPreviewUrl(null);
+            return;
+        }
+        const url = URL.createObjectURL(pfpFile);
+        setPfpPreviewUrl(url);
+        return () => URL.revokeObjectURL(url);
+    }, [pfpFile]);
+
+    function onPfpChange(e) {
+        const file = e.target.files?.[0];
+        setPfpFile(file ?? null);
+    }
     
     const back = () => {
         setOnRegisterScreen(false);
@@ -53,8 +71,29 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
             const response = await authApi.register(payload);
             setToken(response.token);
             setAuthUser(response.user);
+
+            const userId = response.user?._id;
+            let pfpUploadFailed = false;
+            if (pfpFile && userId) {
+                try {
+                    if (isEmployer) {
+                        await companyApi.uploadPfp(userId, pfpFile);
+                    }
+                    else {
+                        await applicantApi.uploadPfp(userId, pfpFile);
+                    }
+                }
+                catch (uploadError) {
+                    console.error(uploadError);
+                    pfpUploadFailed = true;
+                }
+            }
+
             navigate(returnTo, {
-                state: openPostingId ? { openPostingId } : undefined,
+                state: {
+                    ...(openPostingId ? { openPostingId } : {}),
+                    ...(pfpUploadFailed ? { pfpUploadFailed: true } : {}),
+                },
             });
         }
         catch (err) {
@@ -106,6 +145,14 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                                 </button>
                             </div>
                             {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+                        </section>
+
+                        <section className="imageInputSection">
+                            <label htmlFor="register-pfp-input" style={{ cursor: "pointer" }}>Choose profile photo</label>
+                            <input type="file" accept="image/*" id="register-pfp-input" onChange={onPfpChange} />
+                            {pfpPreviewUrl && (
+                                <img src={pfpPreviewUrl} alt="Profile preview" width={140} height={140}/>
+                            )}
                         </section>
 
                         {submitError && <p className="error">{submitError}</p>}
