@@ -5,8 +5,10 @@ import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import Logout from "./headerButtons/Logout.jsx";
 import HeaderButton from "./headerButtons/HeaderButton.jsx";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+    let navigate = useNavigate();
     const [token, setToken] = useState("");
     const [role, setRole] = useState("");
 
@@ -27,8 +29,8 @@ function Header() {
     return (
         <>
             <section id="header-container">
-                <section id="jobly-container">
-                    <a href="/">JobLy</a>
+                <section id="jobly-container" onClick={() => navigate("/")}>
+                    JobLy
                 </section>
                 <section id="special-navigation-container">
                     {

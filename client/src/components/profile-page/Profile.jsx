@@ -188,7 +188,8 @@ function ProfilePage () {
                             )
                         })}
                     </div>
-                </section> : "" }
+                </section> 
+            : "" }
 
             <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"} size={"small"}>
                 <UploadResumeForm />
