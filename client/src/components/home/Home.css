@@ -1,28 +1,68 @@
-.subnav-container {
-    gap: 30px;
-}
-
-.home-search {
+.subnav-container.home-filter-bar {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 12px 24px;
+    box-sizing: border-box;
+    padding: 8px 18px;
+}
+
+.home-search-field {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+    flex: 1 1 160px;
+}
+
+.subnav-container.home-filter-bar .home-search-field label {
+    margin: 0 4px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--color-text);
+}
+
+.home-search-input,
+.home-filter-select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     height: 30px;
-    width: 400px;
-}
-
-.home-search label {
-    white-space: nowrap;
-}
-
-.home-search input {
     border: 2px solid var(--color-card-bg);
-    border-radius: 8px;
-    padding-left: 10px;
+    border-radius: 6px;
+    padding: 0 8px;
+    font-size: 14px;
+    background: var(--color-card-bg);
 }
 
-.home-search input:focus {
-    border: 2px solid var(--color-cta-secondary);
+.home-search-input:focus,
+.home-filter-select:focus {
+    border-color: var(--color-cta-secondary);
     outline: none;
+}
+
+.home-filter-clear {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+}
+
+.clear-filters-btn {
+    height: 30px;
+    padding: 0 12px;
+    white-space: nowrap;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--color-cta-primary);
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.clear-filters-btn:hover {
+    background-color: var(--color-cta-secondary);
 }
 
 .home-tags {
@@ -35,18 +75,6 @@
 .home-tags:focus {
     border: 2px solid var(--color-cta-secondary);
     outline: none;
-}
-
-.clear-filters-btn {
-    padding-left: 15px;
-    padding-right: 15px;
-    background-color: var(--color-cta-primary);
-    color: white;
-    font-size: 15px;
-}
-
-.clear-filters-btn:hover {
-    background-color: var(--color-cta-secondary);
 }
 
 .card-container:hover {
