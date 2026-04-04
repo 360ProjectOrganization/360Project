@@ -62,6 +62,20 @@ cd server
 npm run seed
 ```
 
+## Run Tests
+
+Frontend tests (from the `client` directory):
+
+```bash
+cd client
+npm test
+```
+
+Tests use Jest with React Testing Library. The project is configured with:
+- `jest.config.cjs` (Jest config)
+- `babel.config.cjs` (Babel config for JSX transformation)
+- `src/setupTests.js` (Test environment setup)
+
 ## API reference list
 
 Base URL for API: `/api`.

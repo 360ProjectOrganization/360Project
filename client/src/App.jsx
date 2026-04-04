@@ -1,3 +1,4 @@
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
@@ -14,8 +15,6 @@ function App() {
                 <Route path="/Login" element={<LoginPage/>} />
                 <Route path='/profile' element={<ProfilePage />} />
                 <Route path='/company-portal' element={<CompanyPortalPage />} />
-                <Route path='/Admin' element={<AdminPage />} />
-
                 <Route path='/Admin' element={<AdminPage />} />
             </Routes>
         </div>
