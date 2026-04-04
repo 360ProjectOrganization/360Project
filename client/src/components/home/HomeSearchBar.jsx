@@ -1,12 +1,13 @@
 import "../company-portal/CompanyPortal.css";
 import "../home/Home.css";
 
-export default function HomeSearchBar({ role, titleQuery, setTitleQuery, locationQuery, setLocationQuery, selectedTag, setSelectedTag, appliedFilter, setAppliedFilter, tags}) {
+export default function HomeSearchBar({ role, titleQuery, setTitleQuery, locationQuery, setLocationQuery, selectedTag, setSelectedTag, appliedFilter, setAppliedFilter, dateSort, setDateSort, tags}) {
     const clearFilters = () => {
         setTitleQuery("");
         setLocationQuery("");
         setSelectedTag("");
         setAppliedFilter("all");
+        setDateSort("newest");
     };
     
     return (
@@ -27,6 +28,14 @@ export default function HomeSearchBar({ role, titleQuery, setTitleQuery, locatio
                     <option key={tag} value={tag}>{tag}</option>
                 ))}
             </select>
+
+            <section className="home-date">
+                <label>Date Posted</label>
+                <select id="date-sort" className="home-tags" value={dateSort} onChange={(e) => setDateSort(e.target.value)}>
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                </select>
+            </section>
 
             {role !== "administrator" && (
                 <select value={appliedFilter} className="home-tags" onChange={(e) => setAppliedFilter(e.target.value)}>

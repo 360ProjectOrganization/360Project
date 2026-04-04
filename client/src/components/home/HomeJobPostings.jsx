@@ -30,10 +30,17 @@ export default function HomeJobPostings() {
     const [locationQuery, setLocationQuery] = useState("");
     const [selectedTag, setSelectedTag] = useState("");
     const [appliedFilter, setAppliedFilter] = useState("all");
+    const [dateSort, setDateSort] = useState("newest");
     const allTags = [...new Set(jobPostings.flatMap((p) => p.tags || []))].sort(); //flatMap basically turns the set into one single array (instead of an array of arrays)
 
     const activeJobPostings = jobPostings.filter((p) => p.status === "ACTIVE");
-    const filteredJobPostings = filterJobPostings(activeJobPostings, {titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
+    const filteredJobPostings = filterJobPostings(activeJobPostings, { titleQuery, locationQuery, selectedTag, appliedFilter }, { id, role });
+    
+    const sortedJobPostings = [...filteredJobPostings].sort((a, b) => {
+        const date1 = new Date(a.publishedAt);
+        const date2 = new Date(b.publishedAt);
+        return dateSort === "oldest" ? date1 - date2 : date2 - date1;
+    });
 
     const openJobDetails = (posting) => {
         setSelectedPosting(posting);
@@ -123,13 +130,13 @@ export default function HomeJobPostings() {
     
     return (
         <section className="job-postings-container">
-            <HomeSearchBar role={role} titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} tags={allTags} />
+            <HomeSearchBar role={role} titleQuery={titleQuery} setTitleQuery={setTitleQuery} locationQuery={locationQuery} setLocationQuery={setLocationQuery} selectedTag={selectedTag} setSelectedTag={setSelectedTag} appliedFilter={appliedFilter} setAppliedFilter={setAppliedFilter} dateSort={dateSort} setDateSort={setDateSort} tags={allTags} />
 
             <section className="job-postings-layout">
-                {filteredJobPostings.length === 0 ? (
+                {sortedJobPostings.length === 0 ? (
                     <p className="no-results">No job postings match your search.</p>
                 ) : (
-                    filteredJobPostings.map((p) => {
+                    sortedJobPostings.map((p) => {
                         const hasApplied = role === "applicant" && p.applicants?.some((val) => String(val) === id);
                         const isOwnCompanyPost = role === "company" && String(p.companyId) === String(id);
 
