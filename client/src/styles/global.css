@@ -222,3 +222,17 @@ button {
     font-size: 15px;
     color: #c0392b;
 }
+
+.not-found-container {
+    margin-left: 25px;
+    color: black;
+}
+
+.not-found-container a {
+    color: black;
+    text-decoration: underline;
+}
+
+.not-found-container a:hover {
+    color: gray;
+}
