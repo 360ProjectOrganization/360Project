@@ -35,6 +35,9 @@ function ResumeOptionsForm(){
             url = applicantApi.getResumeViewUrl(id);
         }else if(selectedViewing === "download"){
             url = applicantApi.getResumeUrl(id);
+        }else{
+            setResumeErrorMessage("No Option Selected");
+            return;
         }
 
         try {
@@ -45,7 +48,6 @@ function ResumeOptionsForm(){
             }
             window.open(url, "_blank");
         } catch (error) {
-            console.log(error);
             setResumeErrorMessage("Error Ocurred Retrieving Resume");
         }
     }
