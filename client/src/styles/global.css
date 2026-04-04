@@ -224,8 +224,14 @@ button {
 }
 
 .not-found-container {
-    margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
     color: black;
+    font-family: 'Inter', sans-serif;
 }
 
 .not-found-container a {
