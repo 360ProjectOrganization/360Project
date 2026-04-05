@@ -68,3 +68,29 @@
     word-break: break-word;
     min-width: 0;
 }
+
+.comment-edit-area {
+    flex: 1;
+    width: 100%;
+    padding-right: 20px;
+}
+
+.comment-edit-area textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--color-cta-secondary);
+    font-family: inherit;
+}
+
+.delete-btn {
+    background-color: var(--color-icon-dark);
+    color: var(--color-text-on-dark);
+    width: 100px;
+}
+
+.delete-btn:hover {
+    background-color: var(--color-cta-secondary);
+}
