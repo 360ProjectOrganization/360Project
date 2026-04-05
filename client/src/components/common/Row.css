@@ -1,0 +1,10 @@
+.row-container{
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-cta-secondary-darker);
+    min-height: 4em;
+    max-width: 100%;
+    padding-left: 3em;
+}

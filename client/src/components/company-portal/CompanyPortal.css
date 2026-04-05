@@ -225,3 +225,17 @@
     border: none;
     cursor: pointer;
 }
+
+/* VIEW APPLICANTS SECTION */
+
+#job-details-container{
+    padding: 1em 1em 1em 3em;
+    border-bottom: 2px solid var(--color-divider);
+}
+
+.view-applicants-job-details {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+}
+
