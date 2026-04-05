@@ -3,8 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import BackButton from "../BackButton";
 import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 import { useState } from "react";
+import { successEvent } from "../../../utils/toast/successEvent.js";
 
 export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }) {
+    const success = successEvent("Successfully Logged In")
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,6 +36,7 @@ export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }
             navigate(returnTo, {
                 state: openPostingId ? { openPostingId } : undefined,
             });
+            success();
         } catch (error) {
             setErrorMessage(error.message || "Login failed")
         } 

@@ -6,7 +6,7 @@ function Logout() {
     let navigate = useNavigate();
     function handleUserLogout(){
         clearToken();
-        navigate("/")
+        navigate("/");
         window.location.reload();
     };
 

@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 
-export function successEvent(itemString){
+export function successEvent(sentence){
     const accept = () => {
-        toast.success(`${itemString} Successfully Uploaded`, {
-            autoClose: 3500,
+        toast.success(`${sentence}`, {
+            autoClose: 1600,
         });
     }
     return accept;

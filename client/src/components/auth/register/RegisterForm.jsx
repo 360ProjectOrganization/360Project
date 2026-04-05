@@ -3,8 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BackButton from "../BackButton";
 import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
 import { authApi, setToken, setAuthUser, applicantApi, companyApi } from "../../../utils/api.js";
+import { successEvent } from "../../../utils/toast/successEvent.js";
 
 export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
+    const success = successEvent("Successfully Registered");
     const navigate = useNavigate();
     const location = useLocation();
     const returnTo = location.state?.returnTo || "/";
@@ -95,9 +97,11 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                     ...(pfpUploadFailed ? { pfpUploadFailed: true } : {}),
                 },
             });
+            success();
         }
         catch (err) {
             setSubmitError(err.message || "Registration failed");
+
         }
         finally { // doesnt matter if request fails or not
             setLoading(false);

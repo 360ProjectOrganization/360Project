@@ -5,7 +5,7 @@ import { applicantApi, getToken } from "../../utils/api.js";
 import { successEvent } from "../../utils/toast/successEvent.js";
 
 function UploadResumeForm({successfulUpload}){
-    const success = successEvent("Resume");
+    const success = successEvent("Successfully Uploaded Resume");
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [file, setFile] = useState("");
