@@ -11,6 +11,13 @@ export default function UserComments() {
     const [comments, setComments] = useState([]);
     const [commentToDelete, setCommentToDelete] = useState(null);
     const [jobToView, setJobToView] = useState(null);
+    const [dateSort, setDateSort] = useState("newest");
+
+    const sortedComments = [...comments].sort((a, b) => {
+        const date1 = new Date(a.editedAt || a.createdAt);
+        const date2 = new Date(b.editedAt || b.createdAt);
+        return dateSort === "oldest" ? date1 - date2 : date2 - date1;
+    });
 
     async function fetchComments() {
         try {
@@ -80,14 +87,21 @@ export default function UserComments() {
 
     return (
         <section className="comments-container">
-            <h2>My Comments</h2>
+            <section className="comments-container-header">
+                <h2>My Comments</h2>
+                    <select className="comments-filter-select" value={dateSort} onChange={(e) => setDateSort(e.target.value)}>
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                    </select>
+
+            </section>
 
             <div className="comments-list">
                 {loading && <p>Loading...</p>}
 
                 {!loading && comments.length === 0 && <p>No comments yet.</p>}
 
-                {!loading && comments.map((c) => (
+                {!loading && sortedComments.map((c) => (
                     <CommentsCard
                         key={c._id}
                         comment={c}

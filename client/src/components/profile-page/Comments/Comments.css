@@ -3,6 +3,27 @@
     color: var(--color-cta-secondary);
 }
 
+.comments-container-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 60px;
+}
+
+.comments-filter-select {
+    display: flex;
+    height: 30px;
+    width: 100px;
+    border-radius: 8px;
+    border: 1px solid var(--color-cta-secondary-darker);
+}
+
+.comments-filter-select:focus {
+    outline: none;
+    border-color: var(--color-cta-secondary-darker);
+}
+
 .user-comment-card {
     background-color: var(--color-card-bg-alt);
     box-shadow: 0 2px 6px var(--color-card-shadow);
