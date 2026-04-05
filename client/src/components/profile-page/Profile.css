@@ -3,6 +3,7 @@
     flex: 1;
     min-height: 0;
     flex-wrap: wrap;
+    overflow: hidden;
 }
 
 #profile-sidebar {
@@ -14,7 +15,7 @@
     width: 220px;
     flex-shrink: 0;;
     align-items: center;
-    border-right: 2px solid var(--color-cta-secondary);
+    border-right: 2px solid var(--color-divider);
     background-color: var(--color-card-bg);
 }
 
@@ -25,6 +26,10 @@
 }
 
 #profile-btn:hover {
+    background-color: var(--color-title);
+}
+
+#profile-btn.active {
     background-color: var(--color-cta-primary);
 }
 
@@ -32,21 +37,23 @@
     flex: 1;
     min-width: 0;
     display: flex;
+    flex-direction: column;
+
 }
 
 #profile-container {
     width: 100%;
     display: flex;
-    height: 30%;
-    padding: 1em;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1em 2em;
     gap: 1em;
     background-color: var(--color-divider);
 }
 
 #profile-picture-section{
-    align-content: center;
+    flex: 0 0 14em;
     text-align: center;
-    width: 20%;
 }
 
 #profile-picture-section {
@@ -59,15 +66,19 @@
 
 #profile-details {
     color: var(--color-title);
-    align-content: center;
+    flex: 1 1 20em;
+    min-width: 0;
+    color: var(--color-title);
     padding-left: 1em;
-    width: 80%;
     p {
         font-size: 1.25em;
     }
 }
 
 #profile-button-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75em;
     p {
         font-size: 1.1em;
         color: red;
@@ -119,6 +130,7 @@ button {
     .card-container {
         width: 100%
     }
+    padding-left: 50px;
 }
 
 #job-cards{
@@ -129,4 +141,5 @@ button {
 
 #applied-to-text {
     color: var(--color-title);
+    padding-left: 10px;
 }

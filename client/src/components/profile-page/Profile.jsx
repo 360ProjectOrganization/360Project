@@ -148,11 +148,11 @@ function ProfilePage() {
     return (
         <section id="profile-page-layout">
             <aside id="profile-sidebar">
-                <button id="profile-btn" onClick={() => setActiveSection("profile")}>Profile</button>
+                <button id="profile-btn" className={activeSection === "profile" ? "active" : ""} onClick={() => setActiveSection("profile")}>Profile</button>
                 {role === "applicant" && (
                     <>
-                        <button id="profile-btn" onClick={() => setActiveSection("applications")}>My Job Applications</button>
-                        <button id="profile-btn" onClick={() => setActiveSection("comments")}>My Comments</button>
+                        <button id="profile-btn" className={activeSection === "applications" ? "active" : ""} onClick={() => setActiveSection("applications")}>My Job Applications</button>
+                        <button id="profile-btn" className={activeSection === "comments" ? "active" : ""} onClick={() => setActiveSection("comments")}>My Comments</button>
                     </>
                 )}
             </aside>
