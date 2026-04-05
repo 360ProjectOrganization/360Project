@@ -45,6 +45,15 @@
     height: 40px;
 }
 
+.job-card-applicant-btn {
+    color: var(--color-cta-primary);
+    background-color: var(--color-card-bg-alt);
+    border: 2px solid var(--color-cta-secondary-darker);
+    width: 110px;
+    height: 40px;
+    
+}
+
 .job-card-delete-btn {
     background-color: var(--color-cta-primary);
     border: 2px solid var(--color-cta-secondary-darker);
