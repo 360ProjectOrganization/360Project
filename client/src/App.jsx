@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import HomePage from './pages/HomePage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
@@ -14,9 +15,9 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/Login" element={<LoginPage/>} />
-                <Route path='/profile' element={<ProfilePage />} />
-                <Route path='/company-portal' element={<CompanyPortalPage />} />
-                <Route path='/Admin' element={<AdminPage />} />
+                <Route path='/profile' element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                <Route path='/company-portal' element={<ProtectedRoute><CompanyPortalPage /></ProtectedRoute>} />
+                <Route path='/Admin' element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
 
                 <Route path="*" element={<NotFound />} /> {/* !!! MUST BE LAST or it will catch everything */}
             </Routes>
