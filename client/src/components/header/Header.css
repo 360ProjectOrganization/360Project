@@ -1,7 +1,7 @@
 #header {
     font-family: 'Times New Roman', Times, serif;
     background-color: var(--color-page-bg);
-    border-bottom: solid 0.25em var(--color-divider);
+    border-bottom: solid 2px var(--color-divider);
 }
 
 #header-container {

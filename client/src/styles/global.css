@@ -242,3 +242,10 @@ button {
 .not-found-container a:hover {
     color: gray;
 }
+
+
+#profile-page-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
