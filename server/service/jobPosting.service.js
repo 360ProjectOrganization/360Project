@@ -167,8 +167,8 @@ class JobPostingService {
     }));
   }
     
-  async findCommentsByUserId(userId) {
-    const user = await userRepository.findById(userId);
+  async findCommentsByUserId(userId, role) {
+    const user = await userRepository.findById(role, userId);
     if (!user) throw new Error('User not found');
 
     const comments = await jobPostingRepository.findCommentsByUserId(userId);

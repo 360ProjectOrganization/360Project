@@ -171,9 +171,7 @@ export const jobPostingApi = {
     return apiRequest(`/job-postings/${id}/comments`);
     },
   
-  getUserComments: (userId) => {
-    return apiRequest(`/job-postings/comments/${userId}`);
-  },
+  getMyComments: () => apiRequest('/job-postings/comments/me'),
   
   addComment: (jobId, data) =>
     apiRequest(`/job-postings/${jobId}/comments`, { method: 'POST', body: data }),

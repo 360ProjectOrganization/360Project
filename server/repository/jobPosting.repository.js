@@ -136,7 +136,7 @@ const jobPostingRepository = {
 
     if (!jobs) return null;
 
-    const comments = jobs.flatMap((job) => {
+    const comments = jobs.flatMap((job) =>
       (job.comments || [])
         .filter((comment) => comment.authorId?.toString() === String(userId))
         .map((comment) => ({
@@ -144,7 +144,7 @@ const jobPostingRepository = {
           jobId: job._id,
           jobTitle: job.title,
         }))
-    });
+    );
 
     return comments.sort((a, b) => {
       const aTime = new Date(a.editedAt || a.createdAt);

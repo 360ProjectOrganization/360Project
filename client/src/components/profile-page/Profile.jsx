@@ -8,7 +8,7 @@ import UploadResumeForm from "./UploadResumeForm.jsx";
 import EditProfileForm from "./EditProfileForm.jsx";
 import UploadPfpForm from "./UploadPfpForm.jsx";
 import ResumeOptionsForm from "./ResumeOptionsForm.jsx";
-import UserComments from "./UserComments.jsx";
+import UserComments from "./Comments/UserComments.jsx";
 
 function ProfilePage() {
     const [activeSection, setActiveSection] = useState("profile");
