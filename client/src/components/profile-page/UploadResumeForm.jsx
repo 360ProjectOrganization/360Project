@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import "./UploadResumeForm.css";
 import { applicantApi, getToken } from "../../utils/api.js";
+import { successEvent } from "../../utils/toast/successEvent.js";
 
 function UploadResumeForm(){
+    let success = successEvent();
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [file, setFile] = useState("");
@@ -13,20 +15,20 @@ function UploadResumeForm(){
         if(available_token){
             setToken(available_token);
         };
-    }, [])
+    }, []);
     
     useEffect(() => {
         if(!token) return;
         const decoded = jwtDecode(token);
         setId(decoded.id);
-    }, [token, id])
+    }, [token, id]);
 
     async function submitResume(e){
         e.preventDefault();
         try {
             const url = applicantApi.uploadResume(id, file);
             await fetch(url);
-            window.location.reload();
+            success();
         } catch(err) {
             console.log(err);
         }

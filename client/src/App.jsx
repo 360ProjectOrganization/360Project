@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import CompanyPortalPage from './pages/CompanyPortalPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
+import { ToastContainer } from "react-toastify";
 function App() {
     return (
         <div className="app">
@@ -17,6 +18,9 @@ function App() {
                 <Route path='/company-portal' element={<CompanyPortalPage />} />
                 <Route path='/Admin' element={<AdminPage />} />
             </Routes>
+            <div>
+                <ToastContainer position='top-right' />
+            </div>
         </div>
     );
 }
