@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { jobPostingApi } from "../../../utils/api";
 import CommentsCard from "./CommentsCard";
+import "./Comments.css";
 
 export default function UserComments() {
     const [loading, setLoading] = useState(true);
@@ -27,7 +28,9 @@ export default function UserComments() {
 
     return (
         <section className="comments-container">
-            <h3>My Comments</h3>
+            <h2>My Comments</h2>
+
+            
 
             <div className="comments-list">
                 {loading && <p>Loading...</p>}
@@ -35,7 +38,12 @@ export default function UserComments() {
                 {!loading && comments.length === 0 && <p>No comments yet.</p>}
 
                 {!loading && comments.map((c) => (
-                    <CommentsCard key={c._id} jobTitle={c.jobTitle} content={c.content} />
+                    <CommentsCard
+                        key={c._id}
+                        jobTitle={c.jobTitle}
+                        content={c.content}
+                        date={c.editedAt || c.createdAt}
+                    />
                 ))}
             </div>
         </section>

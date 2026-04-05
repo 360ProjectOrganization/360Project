@@ -1,0 +1,45 @@
+.comments-container {
+    padding-left: 60px;
+    color: var(--color-cta-secondary);
+}
+
+.user-comment-card {
+    background-color: var(--color-card-bg-alt);
+    box-shadow: 0 2px 6px var(--color-card-shadow);
+    margin: 10px 60px 10px 0px;
+    border-radius: 8px;
+    padding: 15px;
+    padding-bottom: 0.1em;
+}
+
+.comment-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.user-comment-card hr {
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid var(--color-cta-secondary);
+}
+
+.comment-content {
+    display: flex;
+    gap: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.comment-label {
+    font-weight: 500;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.comment-text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+}
