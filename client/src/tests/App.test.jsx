@@ -10,6 +10,16 @@ jest.mock('../pages/LoginPage', () => () => <div>Login Page</div>)
 jest.mock('../pages/ProfilePage', () => () => <div>Profile Page</div>)
 jest.mock('../pages/CompanyPortalPage', () => () => <div>Company Portal Page</div>)
 jest.mock('../pages/AdminPage', () => () => <div>Admin Page</div>)
+jest.mock('../pages/NotFound', () => () => <div>Not Found Page</div>)
+
+const TOKEN_KEY = 'jobly_token'
+
+const FAKE_ADMIN_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4ifQ.fake-signature'
+const FAKE_COMPANY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiY29tcGFueSJ9.fake-signature'
+
+afterEach(() => {
+    localStorage.clear()
+})
 
 // sets the url to whatever is passed in and renders the app, reusable for tests
 function renderWithRoute(route) {
@@ -19,6 +29,12 @@ function renderWithRoute(route) {
         </MemoryRouter>
     )
 }
+
+test('redirects to login if token is invalid', () => {
+    localStorage.setItem(TOKEN_KEY, 'notatoken')
+    renderWithRoute('/profile')
+    expect(screen.getByText('Login Page')).toBeInTheDocument()
+})
 
 test('renders HomePage on /', () => {
     renderWithRoute('/')
@@ -36,16 +52,51 @@ test('renders LoginPage on /Login', () => {
 })
 
 test('renders ProfilePage on /profile', () => {
+    localStorage.setItem(TOKEN_KEY, FAKE_COMPANY_TOKEN)
     renderWithRoute('/profile')
     expect(screen.getByText('Profile Page')).toBeInTheDocument()
 })
 
+test('block user from opening profile page if they are not authenticated', () => {
+    renderWithRoute('/profile')
+    expect(screen.queryByText('Profile Page')).not.toBeInTheDocument()
+})
+
 test('renders CompanyPortalPage on /company-portal', () => {
+    localStorage.setItem(TOKEN_KEY, FAKE_COMPANY_TOKEN)
     renderWithRoute('/company-portal')
     expect(screen.getByText('Company Portal Page')).toBeInTheDocument()
 })
 
+test('blocks users from company portal if they are not companies', () => {
+    localStorage.setItem(TOKEN_KEY, FAKE_ADMIN_TOKEN)
+    renderWithRoute('/company-portal')
+    expect(screen.getByText('Home Page')).toBeInTheDocument()
+})
+
+test('blocks user from opening company portal page if they are not authenticated', () => {
+    renderWithRoute('/company-portal')
+    expect(screen.getByText('Login Page')).toBeInTheDocument()
+})
+
 test('renders AdminPage on /Admin', () => {
+    localStorage.setItem(TOKEN_KEY, FAKE_ADMIN_TOKEN)
     renderWithRoute('/Admin')
     expect(screen.getByText('Admin Page')).toBeInTheDocument()
+})
+
+test('blocks users from admin page if they are not admins', () => {
+    localStorage.setItem(TOKEN_KEY, FAKE_COMPANY_TOKEN)
+    renderWithRoute('/Admin')
+    expect(screen.queryByText('Admin Page')).not.toBeInTheDocument()
+})
+
+test('block user from opening admin page if they are not authenticated', () => {
+    renderWithRoute('/Admin')
+    expect(screen.queryByText('Admin Page')).not.toBeInTheDocument()
+})
+
+test('opens 404 not found page if user goes to bad navigation', () => {
+    renderWithRoute('/bad')
+    expect(screen.queryByText('Not Found Page')).toBeInTheDocument()
 })

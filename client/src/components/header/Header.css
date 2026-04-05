@@ -1,8 +1,15 @@
+#header {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: var(--color-page-bg);
+    border-bottom: solid 0.25em var(--color-divider);
+}
+
 #header-container {
     font-family: 'Times New Roman', Times, serif;
     display: flex;
-    padding: 0.5em;
-    border-bottom: solid 0.25em var(--color-divider);
+    align-items: center;
+    padding: 0.25em 0.5em 0 0.5em; 
+    padding-bottom: 0;
     background-color: var(--color-page-bg);
 }
 
@@ -11,17 +18,21 @@
     justify-content: center;
     align-items: center;
     max-width: 8%;
-    padding: 0 0.25em 0 0.25em;
-    margin: 0.3em 0.25em 0.5em 0.25em;
+    padding: 0 0.25em;
+    margin: 0.25em;
     color: var(--color-title);
     font-size: 2.5em;
     font-weight: bold;
 }
 
-#jobly-container:hover{
+#jobly-title {
+    display: inline-block;
+}
+
+#jobly-title:hover {
     cursor: pointer;
-    border-bottom: var(--color-cta-secondary-darker) solid 2px;
     color: var(--color-cta-secondary-darker);
+    border-bottom: 2px solid var(--color-cta-secondary-darker);
 }
 
 #special-navigation-container {
@@ -29,7 +40,7 @@
     justify-content: left;
     align-items: center;
     width: 65%;
-    margin: 0.5em;
+    margin: 0.2em 0.5em;
 }
 
 #user-navigation-conatainer {
@@ -37,7 +48,7 @@
     justify-content: right;
     align-items: center;
     width: 25%;
-    margin: 0.5em;
+    margin: 0.2em 0.5em;
 }
 
 a:link {
@@ -51,4 +62,10 @@ a:visited {
 
 a:hover {
     cursor: pointer;
+}
+
+#breadcrumb-container {
+    padding: 0 0.75em 0.3em 0.75em;
+    color: var(--color-title);
+    margin-top: -0.5em;
 }
