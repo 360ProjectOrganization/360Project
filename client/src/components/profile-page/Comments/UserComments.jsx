@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { jobPostingApi } from "../../../utils/api";
 import CommentsCard from "./CommentsCard";
 import "./Comments.css";
 import Modal from "../../common/Modal";
 
 export default function UserComments() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [commentToDelete, setCommentToDelete] = useState(null);
+    const [jobToView, setJobToView] = useState(null);
 
     async function fetchComments() {
         try {
@@ -42,6 +45,17 @@ export default function UserComments() {
         finally {
             setLoading(false);
         }
+    }
+
+    function confirmLeaveProfile() {
+        if (!jobToView?.jobId) {
+            setJobToView(null);
+            return;
+        }
+        navigate("/", {
+            state: { openPostingId: String(jobToView.jobId) },
+        });
+        setJobToView(null);
     }
 
     async function handleDeleteConfirm() {
@@ -79,6 +93,7 @@ export default function UserComments() {
                         comment={c}
                         onSaveEdit={handleSaveEdit}
                         onDeleteClick={(comment) => setCommentToDelete(comment)}
+                        onViewJobPost={(comment) => setJobToView(comment)}
                     />
                 ))}
             </div>
@@ -90,6 +105,25 @@ export default function UserComments() {
                         <div className="modal-actions">
                             <button className="delete-btn" onClick={() => setCommentToDelete(null)}>Cancel</button>
                             <button className="delete-btn" onClick={handleDeleteConfirm} disabled={loading}>Confirm</button>
+                        </div>
+                    </div>
+                )}
+            </Modal>
+
+            <Modal isOpen={!!jobToView} onClose={() => setJobToView(null)} title="Leave profile?" size="small">
+                {jobToView && (
+                    <div className="delete-modal-content">
+                        <p>
+                            You are about to leave your profile and view this job in the listings
+                            {jobToView.jobTitle ? (
+                                <>
+                                    {" "}for <strong>{jobToView.jobTitle}</strong>
+                                </>
+                            ) : null}. Continue?
+                        </p>
+                        <div className="modal-actions">
+                            <button type="button" className="delete-btn" onClick={() => setJobToView(null)}>No, stay</button>
+                            <button type="button" className="delete-btn" onClick={confirmLeaveProfile}>Yes, go to job</button>
                         </div>
                     </div>
                 )}

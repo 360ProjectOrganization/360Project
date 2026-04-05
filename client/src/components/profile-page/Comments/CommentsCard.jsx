@@ -2,7 +2,7 @@ import "./Comments.css";
 import { useState } from "react";
 import { formatDate } from "../../../utils/formatHelpers.js";
 
-export default function CommentsCard({ comment, onSaveEdit, onDeleteClick }) {
+export default function CommentsCard({ comment, onSaveEdit, onDeleteClick, onViewJobPost }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(comment.content || "");
 
@@ -30,7 +30,7 @@ export default function CommentsCard({ comment, onSaveEdit, onDeleteClick }) {
                         <>
                             <button className="comment-btn" onClick={() => setIsEditing(true)}>Edit</button>
                             <button className="comment-btn" onClick={() => onDeleteClick(comment)}>Delete</button>
-                            <button className="comment-btn">View Job Post</button>
+                            <button type="button" className="comment-btn" onClick={() => onViewJobPost?.(comment)}>View Job Post</button>
                         </>   
                     )}
                     

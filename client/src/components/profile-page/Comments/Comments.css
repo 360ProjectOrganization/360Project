@@ -88,7 +88,7 @@
 .delete-btn {
     background-color: var(--color-icon-dark);
     color: var(--color-text-on-dark);
-    width: 100px;
+    width: 130px;
 }
 
 .delete-btn:hover {
