@@ -38,10 +38,11 @@
 }
 
 .job-card-edit-btn {
+    color: var(--color-cta-primary);
     background-color: var(--color-card-bg-alt);
     border: 2px solid var(--color-cta-secondary-darker);
     width: 100px;
-    height: 30px;
+    height: 40px;
 }
 
 .job-card-delete-btn {
