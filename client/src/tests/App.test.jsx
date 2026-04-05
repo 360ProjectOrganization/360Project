@@ -30,6 +30,12 @@ function renderWithRoute(route) {
     )
 }
 
+test('redirects to login if token is invalid', () => {
+    localStorage.setItem(TOKEN_KEY, 'notatoken')
+    renderWithRoute('/profile')
+    expect(screen.getByText('Login Page')).toBeInTheDocument()
+})
+
 test('renders HomePage on /', () => {
     renderWithRoute('/')
     expect(screen.getByText('Home Page')).toBeInTheDocument()
@@ -65,12 +71,12 @@ test('renders CompanyPortalPage on /company-portal', () => {
 test('blocks users from company portal if they are not companies', () => {
     localStorage.setItem(TOKEN_KEY, FAKE_ADMIN_TOKEN)
     renderWithRoute('/company-portal')
-    expect(screen.queryByText('Company Portal Page')).not.toBeInTheDocument()
+    expect(screen.getByText('Home Page')).toBeInTheDocument()
 })
 
-test('block user from opening company portal page if they are not authenticated', () => {
+test('blocks user from opening company portal page if they are not authenticated', () => {
     renderWithRoute('/company-portal')
-    expect(screen.queryByText('Company Portal Page')).not.toBeInTheDocument()
+    expect(screen.getByText('Login Page')).toBeInTheDocument()
 })
 
 test('renders AdminPage on /Admin', () => {
@@ -88,4 +94,9 @@ test('blocks users from admin page if they are not admins', () => {
 test('block user from opening admin page if they are not authenticated', () => {
     renderWithRoute('/Admin')
     expect(screen.queryByText('Admin Page')).not.toBeInTheDocument()
+})
+
+test('opens 404 not found page if user goes to bad navigation', () => {
+    renderWithRoute('/bad')
+    expect(screen.queryByText('Not Found Page')).toBeInTheDocument()
 })
