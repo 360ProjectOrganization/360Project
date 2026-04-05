@@ -8,6 +8,7 @@ import UploadResumeForm from "./UploadResumeForm.jsx";
 import EditProfileForm from "./EditProfileForm.jsx";
 import UploadPfpForm from "./UploadPfpForm.jsx";
 import ResumeOptionsForm from "./ResumeOptionsForm.jsx";
+import UserComments from "./UserComments.jsx";
 
 function ProfilePage() {
     const [activeSection, setActiveSection] = useState("profile");
@@ -210,7 +211,7 @@ function ProfilePage() {
 
                 {activeSection === "comments" && (
                     <section id="comments-container">
-                        YYAYYAYAYAYAYYAY
+                        <UserComments />
                     </section>
                 )}
             </section>
