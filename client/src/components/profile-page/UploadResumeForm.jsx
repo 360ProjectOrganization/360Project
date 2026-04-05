@@ -4,8 +4,8 @@ import "./UploadResumeForm.css";
 import { applicantApi, getToken } from "../../utils/api.js";
 import { successEvent } from "../../utils/toast/successEvent.js";
 
-function UploadResumeForm(){
-    let success = successEvent();
+function UploadResumeForm({successfulUpload}){
+    const success = successEvent("Resume");
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [file, setFile] = useState("");
@@ -28,6 +28,7 @@ function UploadResumeForm(){
         try {
             const url = applicantApi.uploadResume(id, file);
             await fetch(url);
+            successfulUpload(true);
             success();
         } catch(err) {
             console.log(err);

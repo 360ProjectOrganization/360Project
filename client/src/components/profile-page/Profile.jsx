@@ -192,7 +192,7 @@ function ProfilePage () {
             : "" }
 
             <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"} size={"small"}>
-                <UploadResumeForm />
+                <UploadResumeForm successfulUpload={() => setUploadResume(false)}/>
             </Modal>
             <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
                 <EditProfileForm />

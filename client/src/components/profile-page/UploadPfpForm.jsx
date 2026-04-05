@@ -14,14 +14,14 @@ function UploadPfpForm(){
         if(available_token){
             setToken(available_token);
         };
-    }, [])
+    }, []);
     
     useEffect(() => {
         if(!token) return;
         const decoded = jwtDecode(token);
         setRole(decoded.role);
         setId(decoded.id);
-    }, [token, role])
+    }, [token, role]);
 
     async function submitPfp(e){
         e.preventDefault();
