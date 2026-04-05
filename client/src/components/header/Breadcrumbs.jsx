@@ -8,6 +8,9 @@ function formatCrumb(crumb) {
 export default function Breadcrumbs() {
     const { pathname } = useLocation();
 
+    const showBreadcrumbs = ["/profile", "/company-portal", "/Admin"];
+    if (!showBreadcrumbs.includes(pathname)) return null;
+
     const crumbs = pathname.split("/").filter(Boolean);
 
     const items = [{ label: "Home", to: "/" }];
