@@ -1,5 +1,6 @@
 import "./Row.css";
 import { useState } from "react";
+import { applicantApi } from "../../utils/api";
 
 export default function Row({ name, id }){
     const [image, setImage] = useState("");
@@ -13,6 +14,7 @@ export default function Row({ name, id }){
             if(response.status === 200){
                 const imageBlob = await response.blob();
                 const imageObjectURL = URL.createObjectURL(imageBlob);
+                console.log(imageObjectURL);
                 setImage(imageObjectURL);
             }
         }
@@ -23,6 +25,7 @@ export default function Row({ name, id }){
         <section className="row-container">
             <img src={image} alt="pfp"/>
             <h3>{name}</h3>
+            <button id="row-resume-btn">View Resume</button>
         </section>
     )
 }
