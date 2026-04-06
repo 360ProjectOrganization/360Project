@@ -36,7 +36,7 @@ function UploadResumeForm(){
         <>
             <div id="upload-resume-form">
                 <form id="resume-form" onSubmit={submitResume}>
-                    <h3>Please Upload Resume Below:</h3>
+                    <h3>Upload Resume Below:</h3>
                     <br />
                     <input 
                         type="file" 

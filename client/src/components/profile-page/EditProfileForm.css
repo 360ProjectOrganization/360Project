@@ -11,6 +11,9 @@
         color: antiquewhite;
         cursor: pointer;
     }
+    button:hover{
+        background-color: var(--color-cta-secondary);
+    }
     label {
         font-size: 0.75em;
     }

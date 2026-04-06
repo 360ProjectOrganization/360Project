@@ -55,7 +55,7 @@ function ResumeOptionsForm(){
     return (
         <>
             <div id="resume-question-container">
-                <h3>Resume Viewing Choice:</h3>
+                <h3>Resume Viewing:</h3>
                 <div id="radio-buttons-section">
                     <div className="radio-container">
                         <label className="resume-radio">

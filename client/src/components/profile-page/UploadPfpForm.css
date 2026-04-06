@@ -19,7 +19,11 @@
 #submit-pfp {
     margin: 2em 0 2em 0;
     padding: 0.5em 1em 0.5em 1em;
-    background-color: var(--color-cta-primary);
+    background-color: var(--color-cta-secondary-darker);
     color: white;
     font-size: 1.10em;
+}
+
+#submit-pfp:hover{
+    background-color: var(--color-body);
 }

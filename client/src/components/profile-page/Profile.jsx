@@ -197,16 +197,16 @@ function ProfilePage () {
                 </section> 
             : "" }
 
-            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"} size={"small"}>
+            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Resume"} size={"small"}>
                 <UploadResumeForm />
             </Modal>
-            <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
+            <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit"}>
                 <EditProfileForm />
             </Modal>
-            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Edit Profile Picture"} size={"small"}>
+            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Picture"} size={"small"}>
                 <UploadPfpForm />
             </Modal>
-            <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Resume Viewing Options"} size={"small"}>
+            <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Viewing"} size={"small"}>
                 <ResumeOptionsForm />
             </Modal>
         </>
