@@ -7,7 +7,7 @@
     border-bottom: 2px solid var(--color-divider);
     min-height: 4em;
     max-width: 100%;
-    padding-left: 3em;
+    padding-left: 2em;
     img{
         width: 3em;
         height: 3em;
@@ -31,19 +31,22 @@
 #row-info-email{
     display: flex;
     align-items: center;
-    width: 20%;
+    justify-content: right;
+    width: 15%;
 }
 
 #row-info-status{
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 10%;
 }
 
 #row-info-date {
     display: flex;
     align-items: center;
-    width: 20%;
+    justify-content: left;
+    width: 25%;
     p{
         font-size: 1em;
     }
@@ -51,8 +54,8 @@
 
 #row-resume {
     display: flex;
-    width: 20%;
-    justify-content: right;
+    width: 30%;
+    justify-content: center;
 }
 
 

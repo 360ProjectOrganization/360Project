@@ -40,7 +40,7 @@ export default function Row({ name, id, email, status, date }){
                     <p>{status}</p>
                 </div>
                 <div id="row-info-date">
-                    <p>{formatDate(date)}</p>
+                    <p><strong>Applied</strong>: {formatDate(date)}</p>
                 </div>
                 <div id="row-resume">
                     <button id="row-resume-btn" onClick={() => setResumeOptions(true)}>View Resume</button>
