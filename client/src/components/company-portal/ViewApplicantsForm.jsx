@@ -23,6 +23,7 @@ function ViewApplicantsForm({ posting }){
             let applicants = []
             for(let i = 0; i < jobApplicantIds.length; i++){
                 const details = await applicantApi.getById(jobApplicantIds[i]);
+                console.log(details); // REMOVE ME
                 applicants.push({
                     id: details._id,
                     name: details.name,

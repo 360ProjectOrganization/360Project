@@ -96,11 +96,11 @@ async function seed() {
   await JobPosting.findByIdAndUpdate(jobPostings[11]._id, { applicants: [] });
 
   // set jobsAppliedTo on applicants
-  await Applicant.findByIdAndUpdate(applicants[0]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[1]._id, jobPostings[4]._id, jobPostings[7]._id, jobPostings[9]._id] });
-  await Applicant.findByIdAndUpdate(applicants[1]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[1]._id, jobPostings[4]._id, jobPostings[6]._id, jobPostings[9]._id] });
-  await Applicant.findByIdAndUpdate(applicants[2]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[4]._id, jobPostings[7]._id, jobPostings[10]._id] });
-  await Applicant.findByIdAndUpdate(applicants[3]._id, { jobsAppliedTo: [jobPostings[0]._id, jobPostings[4]._id, jobPostings[6]._id, jobPostings[8]._id, jobPostings[9]._id] });
-  await Applicant.findByIdAndUpdate(applicants[4]._id, { jobsAppliedTo: [jobPostings[2]._id, jobPostings[4]._id, jobPostings[7]._id] });
+  await Applicant.findByIdAndUpdate(applicants[0]._id, { jobsAppliedTo: [{job: jobPostings[0]._id, appliedAt: now}, {job: jobPostings[1]._id, appliedAt: now}, {job: jobPostings[4]._id, appliedAt: now}, {job: jobPostings[7]._id, appliedAt: now}, {job: jobPostings[9]._id, appliedAt: now}]});
+  await Applicant.findByIdAndUpdate(applicants[1]._id, { jobsAppliedTo: [{job: jobPostings[0]._id, appliedAt: now}, {job: jobPostings[1]._id, appliedAt: now}, {job: jobPostings[4]._id, appliedAt: now}, {job: jobPostings[6]._id, appliedAt: now}, {job: jobPostings[9]._id, appliedAt: now}]});
+  await Applicant.findByIdAndUpdate(applicants[2]._id, { jobsAppliedTo: [{job: jobPostings[0]._id, appliedAt: now}, {job: jobPostings[4]._id, appliedAt: now}, {job: jobPostings[7]._id, appliedAt: now}, {job: jobPostings[10]._id, appliedAt: now}]});
+  await Applicant.findByIdAndUpdate(applicants[3]._id, { jobsAppliedTo: [{job: jobPostings[0]._id, appliedAt: now}, {job: jobPostings[4]._id, appliedAt: now}, {job: jobPostings[6]._id, appliedAt: now}, {job: jobPostings[8]._id, appliedAt: now}, {job: jobPostings[9]._id, appliedAt: now}]});
+  await Applicant.findByIdAndUpdate(applicants[4]._id, { jobsAppliedTo: [{job: jobPostings[2]._id, appliedAt: now}, {job: jobPostings[4]._id, appliedAt: now}, {job: jobPostings[7]._id, appliedAt: now}]});
 
   // create an admin
   await Administrator.create({
