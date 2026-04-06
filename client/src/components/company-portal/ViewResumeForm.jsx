@@ -9,7 +9,7 @@ function ViewResumeForm({ applicantId }){
 
     useEffect(() => {
         setId(applicantId);
-    }, [])
+    }, []);
 
     function handleChange (e) {
         setSelectedViewing(e.target.value);

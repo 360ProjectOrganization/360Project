@@ -23,7 +23,7 @@ export default function Row({ name, id }){
             }
         }
         getApplicantPfp();
-    }, [])
+    }, []);
 
     return(
         <>

@@ -239,3 +239,7 @@
     gap: 1em;
 }
 
+#applicants-container{
+    height: 20em;
+    overflow-y: scroll;
+}
