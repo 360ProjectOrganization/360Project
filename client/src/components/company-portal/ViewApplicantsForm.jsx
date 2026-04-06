@@ -4,7 +4,6 @@ import { applicantApi } from "../../utils/api";
 import Row from "../common/Row.jsx";
 
 function ViewApplicantsForm({ posting }){
-    const [companyId, setCompanyId] = useState("");
     const [publishedAt, setPublishedAt] = useState("");
     const [jobTitle, setJobTitle] = useState("");
     const [totalApplicants, setTotalApplicants] = useState("");
@@ -13,7 +12,6 @@ function ViewApplicantsForm({ posting }){
 
     useEffect(() => {
         if(!posting) return;
-        setCompanyId(posting._id);
         setPublishedAt(posting.publishedAt);
         setJobTitle(posting.title);
         setTotalApplicants(posting.applicants.length);
@@ -27,7 +25,9 @@ function ViewApplicantsForm({ posting }){
                 const details = await applicantApi.getById(jobApplicantIds[i]);
                 applicants.push({
                     id: details._id,
-                    name: details.name
+                    name: details.name,
+                    status: details.status,
+                    email: details.email
                 });
             }
             setApplicantDetails(applicants);
@@ -35,7 +35,6 @@ function ViewApplicantsForm({ posting }){
         getApplicantDetails();
     }, [jobApplicantIds]);
     
-
     return(
         <>
             <section id="view-applicants-container">
@@ -52,14 +51,12 @@ function ViewApplicantsForm({ posting }){
                         <h3>Posting Published on: </h3>
                         <p>{formatDate(publishedAt)}</p>
                     </span>
-                    
                 </section>
-
                 <section id="applicants-container">
                     {
                         applicantDetails.map((p) => {
                             return(
-                                <Row key={p.id} name={p.name} id={p.id}/>
+                                <Row key={p.id} name={p.name} id={p.id} email={p.email} status={p.status}/>
                             )
                         })
                     }
@@ -68,5 +65,4 @@ function ViewApplicantsForm({ posting }){
         </>
     )
 }
-
 export default ViewApplicantsForm;

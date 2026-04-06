@@ -16,10 +16,38 @@
     h3{
         padding-left: 2em;
     }
+    p{
+        padding-left: 2em;
+        font-size: 1.1em;
+    }
 }
 
+#important-row-info{
+    display: flex;
+    align-items: center;
+    width: 20%;
+}
+
+#row-info-email{
+    display: flex;
+    align-items: center;
+    width: 20%;
+}
+
+#row-info-status{
+    display: flex;
+    align-items: center;
+    width: 15%;
+}
+
+#row-resume {
+    display: flex;
+    width: 35%;
+    justify-content: right;
+}
+
+
 #row-resume-btn{
-    margin-left: 10em;
     width: auto;
     font-size: 1em;
     color: white;

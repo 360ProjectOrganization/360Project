@@ -4,7 +4,7 @@ import { applicantApi } from "../../utils/api";
 import Modal from "./Modal";
 import ViewResumeForm from "../company-portal/ViewResumeForm";
 
-export default function Row({ name, id }){
+export default function Row({ name, id, email, status }){
     const [image, setImage] = useState("");
     const [resumeOptions, setResumeOptions] = useState(false);
     useEffect(() => {
@@ -28,9 +28,19 @@ export default function Row({ name, id }){
     return(
         <>
             <section className="row-container">
-                <img src={image} alt="pfp"/>
-                <h3>{name}</h3>
-                <button id="row-resume-btn" onClick={() => setResumeOptions(true)}>View Resume</button>
+                <div id="important-row-info">
+                    <img src={image} alt="pfp"/>
+                    <h3>{name}</h3>
+                </div>
+                <div id="row-info-email">
+                    <p>{email}</p>
+                </div>
+                <div id="row-info-status">
+                    <p>{status}</p>
+                </div>
+                <div id="row-resume">
+                    <button id="row-resume-btn" onClick={() => setResumeOptions(true)}>View Resume</button>
+                </div>
             </section>
             <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Viewing Options"} size={"small"}>
                 <ViewResumeForm applicantId={id} />
