@@ -51,7 +51,12 @@ function ProfilePage() {
                     const fetchApplicanInfo = await applicantApi.getById(id);
                     setEnrolledName(fetchApplicanInfo.name);
                     setEmail(fetchApplicanInfo.email);
-                    setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
+                    let applicationIds = [];
+                    const jobApplications = fetchApplicanInfo.jobsAppliedTo;
+                    for(let i = 0; i < jobApplications.length; i++){
+                        applicationIds.push(jobApplications[i].job);
+                    }
+                    setJobsAppliedTo(applicationIds);
                     break;
                 case "company":
                     const fetchCompanyInfo = await companyApi.getById(id);
