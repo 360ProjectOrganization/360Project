@@ -55,15 +55,15 @@ function ViewApplicantsForm({ posting }){
             <section id="view-applicants-container">
                 <section id="job-details-container">
                     <span className="view-applicants-job-details">
-                        <h3>Job Title: </h3>
+                        <h3>Job Title:</h3>
                         <p>{jobTitle}</p>
                     </span>
                     <span className="view-applicants-job-details">
-                        <h3>Total Applicants: </h3>
+                        <h3>Total Applicants:</h3>
                         <p><strong>{totalApplicants}</strong></p>
                     </span>
                     <span className="view-applicants-job-details">
-                        <h3>Posting Published on: </h3>
+                        <h3>Posting Published:</h3>
                         <p>{formatDate(publishedAt)}</p>
                     </span>
                 </section>

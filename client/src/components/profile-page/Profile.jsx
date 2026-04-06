@@ -48,7 +48,13 @@ function ProfilePage () {
                     const fetchApplicanInfo = await applicantApi.getById(id);
                     setEnrolledName(fetchApplicanInfo.name);
                     setEmail(fetchApplicanInfo.email);
-                    setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
+
+                    let applicationIds = [];
+                    const jobApplications = fetchApplicanInfo.jobsAppliedTo;
+                    for(let i = 0; i < jobApplications.length; i++){
+                        applicationIds.push(jobApplications[i].job);
+                    }
+                    setJobsAppliedTo(applicationIds);
                     break;
                 case "company":
                     const fetchCompanyInfo = await companyApi.getById(id);
@@ -158,13 +164,13 @@ function ProfilePage () {
                         <button id="edit-profile" onClick={() => setEditProfile(true)}>
                             Edit Profile
                         </button>
+                        <button id="upload-profile-picture" onClick={() => setUploadPfp(true)}>
+                            Upload Profile Picture
+                        </button>
                         {role === "applicant" ?
                             <>
                                 <button id="upload-resume" onClick={() => setUploadResume(true)}>
                                     Upload Resume
-                                </button>
-                                <button id="upload-profile-picture" onClick={() => setUploadPfp(true)}>
-                                    Upload Profile Picture
                                 </button>
                                 <button id="download-resume" onClick={() => setResumeOptions(true)}>
                                     View Resume

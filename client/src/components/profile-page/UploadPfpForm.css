@@ -19,7 +19,7 @@
 #submit-pfp {
     margin: 2em 0 2em 0;
     padding: 0.5em 1em 0.5em 1em;
-    background-color: var(--color-title-alt);
+    background-color: var(--color-cta-primary);
     color: white;
     font-size: 1.10em;
 }
