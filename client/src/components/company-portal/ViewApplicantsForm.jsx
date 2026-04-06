@@ -4,6 +4,7 @@ import { applicantApi } from "../../utils/api";
 import Row from "../common/Row.jsx";
 
 function ViewApplicantsForm({ posting }){
+    const [postingId, setPostingId] = useState("");
     const [publishedAt, setPublishedAt] = useState("");
     const [jobTitle, setJobTitle] = useState("");
     const [totalApplicants, setTotalApplicants] = useState("");
@@ -12,6 +13,7 @@ function ViewApplicantsForm({ posting }){
 
     useEffect(() => {
         if(!posting) return;
+        setPostingId(posting._id);
         setPublishedAt(posting.publishedAt);
         setJobTitle(posting.title);
         setTotalApplicants(posting.applicants.length);
@@ -23,12 +25,24 @@ function ViewApplicantsForm({ posting }){
             let applicants = []
             for(let i = 0; i < jobApplicantIds.length; i++){
                 const details = await applicantApi.getById(jobApplicantIds[i]);
-                console.log(details); // REMOVE ME
+
+                const applicantAppliedTo = details.jobsAppliedTo;
+                
+                let appliedDate = "";
+                for(let j = 0; j < applicantAppliedTo.length; j++){
+                    let posting = applicantAppliedTo[j].job;
+                    if(posting === postingId){
+                        appliedDate = applicantAppliedTo[j].appliedAt;
+                        break;
+                    }
+                }
+                
                 applicants.push({
                     id: details._id,
                     name: details.name,
                     status: details.status,
-                    email: details.email
+                    email: details.email,
+                    date: appliedDate
                 });
             }
             setApplicantDetails(applicants);
@@ -57,7 +71,7 @@ function ViewApplicantsForm({ posting }){
                     {
                         applicantDetails.map((p) => {
                             return(
-                                <Row key={p.id} name={p.name} id={p.id} email={p.email} status={p.status}/>
+                                <Row key={p.id} name={p.name} id={p.id} email={p.email} status={p.status} date={p.date}/>
                             )
                         })
                     }

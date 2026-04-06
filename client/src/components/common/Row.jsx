@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { applicantApi } from "../../utils/api";
 import Modal from "./Modal";
 import ViewResumeForm from "../company-portal/ViewResumeForm";
+import { formatDate } from "../../utils/formatHelpers";
 
-export default function Row({ name, id, email, status }){
+export default function Row({ name, id, email, status, date }){
     const [image, setImage] = useState("");
     const [resumeOptions, setResumeOptions] = useState(false);
     useEffect(() => {
@@ -37,6 +38,9 @@ export default function Row({ name, id, email, status }){
                 </div>
                 <div id="row-info-status">
                     <p>{status}</p>
+                </div>
+                <div id="row-info-date">
+                    <p>{formatDate(date)}</p>
                 </div>
                 <div id="row-resume">
                     <button id="row-resume-btn" onClick={() => setResumeOptions(true)}>View Resume</button>
