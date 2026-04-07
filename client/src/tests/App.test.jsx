@@ -14,7 +14,7 @@ jest.mock('../pages/NotFound', () => () => <div>Not Found Page</div>)
 
 const TOKEN_KEY = 'jobly_token'
 
-const FAKE_ADMIN_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4ifQ.fake-signature'
+const FAKE_ADMIN_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciJ9.fake-signature'
 const FAKE_COMPANY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiY29tcGFueSJ9.fake-signature'
 
 afterEach(() => {
