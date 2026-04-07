@@ -80,12 +80,8 @@ describe('LoginForm', () => {
     test('shows error message when login fails', async () => {
         authApi.login.mockRejectedValue(new Error('Invalid credentials'))
         renderLoginForm('Applicant', '/Login')
-        fireEvent.change(screen.getByPlaceholderText('Email'), {
-            target: { value: 'a@b.com' },
-        })
-        fireEvent.change(screen.getByPlaceholderText('Password'), {
-            target: { value: 'wrong' },
-        })
+        fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'a@b.com' }, })
+        fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'wrong' }, })
         fireEvent.click(screen.getByRole('button', { name: 'Login' }))
         await waitFor(() => {
             expect(screen.getByText('Invalid credentials')).toBeInTheDocument()
