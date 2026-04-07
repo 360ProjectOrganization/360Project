@@ -30,6 +30,23 @@ router.get('/:id/comments', async (req, res) => {
   }
 });
 
+// GET: api/job-postings/comments/me 
+router.get('/comments/me', requireAuth, async (req, res) => {
+  try {
+    const comments = await jobPostingService.findCommentsByUserId(req.user.id, req.user.role);
+    res.json(comments);
+  }
+  catch (err) {
+    if (err.message === 'User not found') {
+      return sendError(res, 404, err.message);
+    }
+    if (err.message === 'Invalid role') {
+      return sendError(res, 400, err.message);
+    }
+    return sendError(res, 500, 'Failed to fetch comments');
+  }
+});
+
 // POST: api/job-postings/:id/comments
 router.post('/:id/comments', requireAuth, async (req, res) => {
   try {

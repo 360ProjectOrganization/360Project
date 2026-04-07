@@ -1,0 +1,117 @@
+.comments-container {
+    padding-left: 60px;
+    color: var(--color-cta-secondary);
+}
+
+.comments-container-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 60px;
+}
+
+.comments-filter-select {
+    display: flex;
+    height: 30px;
+    width: 100px;
+    border-radius: 8px;
+    border: 1px solid var(--color-cta-secondary-darker);
+}
+
+.comments-filter-select:focus {
+    outline: none;
+    border-color: var(--color-cta-secondary-darker);
+}
+
+.user-comment-card {
+    background-color: var(--color-card-bg-alt);
+    box-shadow: 0 2px 6px var(--color-card-shadow);
+    margin: 10px 60px 10px 0px;
+    border-radius: 8px;
+    padding: 15px;
+    padding-bottom: 0.1em;
+}
+
+.comment-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.comment-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-header-left > *:not(:last-child)::after {
+    content: "|";
+    margin-left: 8px;
+}
+
+.comment-btn {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: var(--color-cta-secondary);
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.comment-btn:hover {
+    text-decoration: underline;
+}
+
+.user-comment-card hr {
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid var(--color-cta-secondary);
+}
+
+.comment-content {
+    display: flex;
+    gap: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.comment-label {
+    font-weight: 500;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.comment-text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+}
+
+.comment-edit-area {
+    flex: 1;
+    width: 100%;
+    padding-right: 20px;
+}
+
+.comment-edit-area textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--color-cta-secondary);
+    font-family: inherit;
+}
+
+.delete-btn {
+    background-color: var(--color-icon-dark);
+    color: var(--color-text-on-dark);
+    width: 130px;
+}
+
+.delete-btn:hover {
+    background-color: var(--color-cta-secondary);
+}
