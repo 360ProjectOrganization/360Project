@@ -166,10 +166,12 @@ export const jobPostingApi = {
     const qs = limit != null ? `?limit=${limit}` : '';
     return apiRequest(`/job-postings/${id}/applications${qs}`);
     },
-  
+
   getComments: (id) => {
     return apiRequest(`/job-postings/${id}/comments`);
     },
+  
+  getMyComments: () => apiRequest('/job-postings/comments/me'),
   
   addComment: (jobId, data) =>
     apiRequest(`/job-postings/${jobId}/comments`, { method: 'POST', body: data }),

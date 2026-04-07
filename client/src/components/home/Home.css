@@ -368,6 +368,13 @@
     background-color: rgba(123, 74, 46, 0.08);
 }
 
+.comment-body {
+    margin: 12px 0 12px 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
 .job-details-comments-list {
     overflow-y: auto;
     flex: 1;

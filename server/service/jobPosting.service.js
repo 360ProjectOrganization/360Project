@@ -166,6 +166,24 @@ class JobPostingService {
       authorRole: roleByAuthor[c.authorId?.toString()] ?? null,
     }));
   }
+    
+  async findCommentsByUserId(userId, role) {
+    const user = await userRepository.findById(role, userId);
+    if (!user) throw new Error('User not found');
+
+    const comments = await jobPostingRepository.findCommentsByUserId(userId);
+    if (!comments) throw new Error('Failed to retrieve comments');
+    
+    const authorIds = [...new Set(comments.map((c) => c.authorId?.toString()).filter(Boolean))];
+    const roleByAuthor = Object.fromEntries(
+      await Promise.all(authorIds.map(async (id) => [id, await userRepository.findRoleById(id)]))
+    );
+    
+    return comments.map((c) => ({
+      ...c,
+      authorRole: roleByAuthor[c.authorId?.toString()] ?? null,
+    }));
+  }
 }
 
 module.exports = new JobPostingService();
