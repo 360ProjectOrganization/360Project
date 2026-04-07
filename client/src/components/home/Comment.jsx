@@ -69,7 +69,7 @@ export default function Comment({ comment, currentUserId, role, isFromJobOwner, 
                     </div>
                 </div>
             ) : (
-                <p>{comment.content}</p>
+                <p className="comment-body">{comment.content}</p>
             )}
         </div>
     );
