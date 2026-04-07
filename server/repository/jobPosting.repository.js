@@ -73,12 +73,13 @@ const jobPostingRepository = {
   },
 
   async addApplicantToJob(jobId, applicantId) {
+    const date = new Date();
     const job = await JobPosting.findById(jobId).lean();
     if (!job) return null;
     const alreadyApplied = (job.applicants || []).some((id) => id.toString() === String(applicantId));
     if (alreadyApplied) return { job, alreadyApplied: true };
     await JobPosting.findByIdAndUpdate(jobId, { $addToSet: { applicants: applicantId } });
-    await Applicant.findByIdAndUpdate(applicantId, { $addToSet: { jobsAppliedTo: jobId } });
+    await Applicant.findByIdAndUpdate(applicantId, { $addToSet: { jobsAppliedTo: { job: jobId, appliedAt: date } } });
     return { job: await JobPosting.findById(jobId).lean(), alreadyApplied: false };
   },
 

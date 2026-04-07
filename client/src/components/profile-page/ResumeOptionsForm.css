@@ -13,6 +13,11 @@
     font-size: 1.10em;
 }
 
+#resume-choice:hover{
+    background-color: var(--color-cta-secondary);
+    margin-bottom: 1.1em;
+}
+
 .resume-radio {
     font-size: 1.25em;
 }

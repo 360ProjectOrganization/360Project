@@ -1,0 +1,83 @@
+import { useState, useEffect } from "react";
+import { formatDate } from "../../utils/formatHelpers.js";
+import { applicantApi } from "../../utils/api";
+import Row from "../common/Row.jsx";
+
+function ViewApplicantsForm({ posting }){
+    const [postingId, setPostingId] = useState("");
+    const [publishedAt, setPublishedAt] = useState("");
+    const [jobTitle, setJobTitle] = useState("");
+    const [totalApplicants, setTotalApplicants] = useState("");
+    const [jobApplicantIds, setJobApplicantsIds] = useState([]);
+    const [applicantDetails, setApplicantDetails] = useState([]);
+
+    useEffect(() => {
+        if(!posting) return;
+        setPostingId(posting._id);
+        setPublishedAt(posting.publishedAt);
+        setJobTitle(posting.title);
+        setTotalApplicants(posting.applicants.length);
+        setJobApplicantsIds(posting.applicants);
+    }, []);
+
+    useEffect(() => {
+        async function getApplicantDetails(){
+            let applicants = []
+            for(let i = 0; i < jobApplicantIds.length; i++){
+                const details = await applicantApi.getById(jobApplicantIds[i]);
+
+                const applicantAppliedTo = details.jobsAppliedTo;
+                
+                let appliedDate = "";
+                for(let j = 0; j < applicantAppliedTo.length; j++){
+                    let posting = applicantAppliedTo[j].job;
+                    if(posting === postingId){
+                        appliedDate = applicantAppliedTo[j].appliedAt;
+                        break;
+                    }
+                }
+                
+                applicants.push({
+                    id: details._id,
+                    name: details.name,
+                    status: details.status,
+                    email: details.email,
+                    date: appliedDate
+                });
+            }
+            setApplicantDetails(applicants);
+        }
+        getApplicantDetails();
+    }, [jobApplicantIds]);
+    
+    return(
+        <>
+            <section id="view-applicants-container">
+                <section id="job-details-container">
+                    <span className="view-applicants-job-details">
+                        <h3>Job Title:</h3>
+                        <p>{jobTitle}</p>
+                    </span>
+                    <span className="view-applicants-job-details">
+                        <h3>Total Applicants:</h3>
+                        <p><strong>{totalApplicants}</strong></p>
+                    </span>
+                    <span className="view-applicants-job-details">
+                        <h3>Posting Published:</h3>
+                        <p>{formatDate(publishedAt)}</p>
+                    </span>
+                </section>
+                <section id="applicants-container">
+                    {
+                        applicantDetails.map((p) => {
+                            return(
+                                <Row key={p.id} name={p.name} id={p.id} email={p.email} status={p.status} date={p.date}/>
+                            )
+                        })
+                    }
+                </section>
+            </section>
+        </>
+    )
+}
+export default ViewApplicantsForm;

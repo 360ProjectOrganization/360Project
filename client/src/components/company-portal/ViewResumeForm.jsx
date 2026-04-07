@@ -1,28 +1,15 @@
-import { useState, useEffect } from "react";
-import "./ResumeOptionsForm.css";
-import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi } from "../../utils/api.js";
+import { useEffect, useState } from "react";
+import "../profile-page/ResumeOptionsForm.css"
+import { applicantApi } from "../../utils/api.js";
 
-function ResumeOptionsForm(){
+function ViewResumeForm({ applicantId }){
     const [selectedViewing, setSelectedViewing] = useState("");
-    const [token, setToken] = useState("");
-    const [id, setId] = useState("");
-    const [role, setRole] = useState("");
     const [resumeErrorMessage, setResumeErrorMessage] = useState("");
+    const [id, setId] = useState("");
 
     useEffect(() => {
-        const available_token = getToken();
-        if(available_token){
-            setToken(available_token);
-        };
-    }, [])
-    
-    useEffect(() => {
-        if(!token) return;
-        const decoded = jwtDecode(token);
-        setRole(decoded.role);
-        setId(decoded.id);
-    }, [token, role])
+        setId(applicantId);
+    }, []);
 
     function handleChange (e) {
         setSelectedViewing(e.target.value);
@@ -43,7 +30,7 @@ function ResumeOptionsForm(){
         try {
             const response = await fetch(url);
             if(response.status === 404){
-                setResumeErrorMessage("Upload a Resume First Before Viewing");
+                setResumeErrorMessage("Applicant Has no Resume");
                 return;
             }
             window.open(url, "_blank");
@@ -55,7 +42,7 @@ function ResumeOptionsForm(){
     return (
         <>
             <div id="resume-question-container">
-                <h3>Resume Viewing:</h3>
+                <h3>Resume Viewing Choice:</h3>
                 <div id="radio-buttons-section">
                     <div className="radio-container">
                         <label className="resume-radio">
@@ -91,4 +78,4 @@ function ResumeOptionsForm(){
     )
 }
 
-export default ResumeOptionsForm;
+export default ViewResumeForm;

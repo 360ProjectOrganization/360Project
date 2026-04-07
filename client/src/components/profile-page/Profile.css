@@ -102,19 +102,19 @@ button {
 }
 
 #upload-resume{
-    background-color: var(--color-cta-secondary);
-}
-
-#upload-resume:hover{
-    background-color: var(--color-cta-secondary-darker);
-}
-
-#upload-profile-picture{
     background-color: var(--color-cta-primary);
 }
 
-#upload-profile-picture:hover{
+#upload-resume:hover{
     background-color: var(--color-cta-secondary);
+}
+
+#upload-profile-picture{
+    background-color: var(--color-cta-secondary);
+}
+
+#upload-profile-picture:hover{
+    background-color: var(--color-cta-secondary-darker);
 }
 
 #download-resume{

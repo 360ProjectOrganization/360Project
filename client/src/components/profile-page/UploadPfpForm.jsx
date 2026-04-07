@@ -51,7 +51,7 @@ function UploadPfpForm(){
         <>
             <div id="upload-pfp-form">
                 <form id="pfp-form" onSubmit={submitPfp}>
-                    <h3>Please Upload Profile Picture Below:</h3>
+                    <h3>Upload Profile Picture Below:</h3>
                     <br />
                     <input 
                         type="file" 
