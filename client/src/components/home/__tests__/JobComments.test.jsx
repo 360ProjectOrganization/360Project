@@ -25,14 +25,16 @@ const sampleComments = [
 ]
 
 describe('JobComments', () => {
+    let setIntervalSpy
+
     beforeEach(() => {
         jest.clearAllMocks()
-        jest.useFakeTimers()
+        setIntervalSpy = jest.spyOn(global, 'setInterval').mockReturnValue(0)
         jobPostingApi.getComments.mockResolvedValue(sampleComments)
     })
 
     afterEach(() => {
-        jest.useRealTimers()
+        setIntervalSpy.mockRestore()
     })
 
     test('loads and lists comments', async () => {
@@ -67,6 +69,7 @@ describe('JobComments', () => {
         await waitFor(() => {
             expect(jobPostingApi.addComment).toHaveBeenCalledWith('j1', { content: 'New text' })
         })
+        await waitFor(() => expect(screen.getByPlaceholderText(/write a comment/i)).toHaveValue(''))
     })
 
     test('hides add-comment row when logged out', async () => {

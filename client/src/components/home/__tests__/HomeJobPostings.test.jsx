@@ -30,7 +30,7 @@ jest.mock('../JobDetailsForm.jsx', () => ({
 const activePosting = (overrides = {}) => ({
     _id: 'p1',
     title: 'Engineer',
-    companyName: 'Acme',
+    companyName: 'test_company',
     companyId: 'c1',
     location: 'Remote',
     description: 'Build',
@@ -73,15 +73,19 @@ describe('HomeJobPostings', () => {
     })
 
     test('shows load error message', async () => {
-        companyApi.getAll.mockRejectedValue(new Error('Network down'))
-
-        renderHomeJobPostings()
-        expect(await screen.findByText('Network down')).toBeInTheDocument()
+        const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+        try {
+            companyApi.getAll.mockRejectedValue(new Error('Network down'))
+            renderHomeJobPostings()
+            expect(await screen.findByText('Network down')).toBeInTheDocument()
+        } finally {
+            consoleError.mockRestore()
+        }
     })
 
     test('renders cards: unauthenticated user sees Details', async () => {
         getToken.mockReturnValue(null)
-        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'Acme' }])
+        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'test_company' }])
         companyApi.getJobPostings.mockResolvedValue([activePosting()])
 
         renderHomeJobPostings()
@@ -93,7 +97,7 @@ describe('HomeJobPostings', () => {
     test('applicant sees Apply and Applied badge', async () => {
         getToken.mockReturnValue('t')
         jwtDecode.mockReturnValue({ role: 'applicant', id: 'u1' })
-        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'Acme' }])
+        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'test_company' }])
         companyApi.getJobPostings.mockResolvedValue([
             activePosting({ applicants: ['u1'] }),
         ])
@@ -108,7 +112,7 @@ describe('HomeJobPostings', () => {
     test('company sees Your Post on own job', async () => {
         getToken.mockReturnValue('t')
         jwtDecode.mockReturnValue({ role: 'company', id: 'c1' })
-        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'Acme' }])
+        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'test_company' }])
         companyApi.getJobPostings.mockResolvedValue([activePosting()])
 
         renderHomeJobPostings()
@@ -117,7 +121,7 @@ describe('HomeJobPostings', () => {
     })
 
     test('no results when filter returns empty', async () => {
-        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'Acme' }])
+        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'test_company' }])
         companyApi.getJobPostings.mockResolvedValue([activePosting()])
         filterJobPostings.mockReturnValue([])
 
@@ -127,12 +131,29 @@ describe('HomeJobPostings', () => {
     })
 
     test('opens modal with job title when Details clicked', async () => {
-        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'Acme' }])
+        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'test_company' }])
         companyApi.getJobPostings.mockResolvedValue([activePosting()])
 
         renderHomeJobPostings()
 
         fireEvent.click(await screen.findByRole('button', { name: 'Details' }))
         expect(screen.getByTestId('job-details')).toHaveTextContent('Engineer')
+    })
+
+    test('sorts postings by date: newest first, then oldest when Posted is Oldest first', async () => {
+        companyApi.getAll.mockResolvedValue([{ _id: 'c1', name: 'test_company' }])
+        companyApi.getJobPostings.mockResolvedValue([
+            activePosting({ _id: 'o', title: 'Older Job', publishedAt: '2025-01-01T00:00:00.000Z' }),
+            activePosting({ _id: 'n', title: 'Newer Job', publishedAt: '2025-01-05T00:00:00.000Z' }),
+        ])
+
+        renderHomeJobPostings()
+
+        await screen.findByText('Older Job')
+        const titles = () => [...document.querySelectorAll('.card-title')].map((el) => el.textContent)
+        expect(titles()).toEqual(['Newer Job', 'Older Job'])
+        const postedSelect = within(screen.getByText('Posted', { exact: true }).closest('section')).getByRole('combobox')
+        fireEvent.change(postedSelect, { target: { value: 'oldest' } })
+        await waitFor(() => expect(titles()).toEqual(['Older Job', 'Newer Job']))
     })
 })
