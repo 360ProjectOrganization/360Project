@@ -12,7 +12,7 @@ function setup(overrides = {}) {
             renderNext={renderNext}
             bottomButton={<span>Bottom</span>}
             footer={(selectAdmin) => (
-                <button type="button" onClick={selectedAdmin}>
+                <button type="button" onClick={selectAdmin}>
                     Admin entry
                 </button>
             )}
@@ -24,7 +24,7 @@ function setup(overrides = {}) {
 
 test('shows title, figures, and bottom; back calls onBack', () => {
     const { onBack } = setup();
-    expect(screen.getByRole('heading', { name: 'Test title' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Test Title' })).toBeInTheDocument()
     expect(screen.getByText('Bottom')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('img', { name: /back button/i }))
@@ -32,17 +32,17 @@ test('shows title, figures, and bottom; back calls onBack', () => {
 })
 
 test('Applicant advances to next screen with type Applicant', () => {
-    setup()
-    const employer_figure = screen.getByText('Applicant').closest('figure')
-    fireEvent.click(within(employer_figure).getByRole('img'))
-    expect(screen.getByTestId('next-screen')).toHaveTextConent('Applicant')
+    const { renderNext } = setup()
+    const applicantFigure = screen.getByText('Applicant').closest('figure')
+    fireEvent.click(within(applicantFigure).getByRole('img'))
+    expect(screen.getByTestId('next-screen')).toHaveTextContent('Applicant')
     expect(renderNext).toHaveBeenCalled()
 })
 
 test('Employer advances to next screen with type Employer', () => {
     setup()
-    const employer_figure = screen.getByText('Employer').closest('figure')
-    fireEvent.click(within(employer_figure).getByRole('img'))
+    const employerFigure = screen.getByText('Employer').closest('figure')
+    fireEvent.click(within(employerFigure).getByRole('img'))
     expect(screen.getByTestId('next-screen')).toHaveTextContent('Employer')
 })
 
