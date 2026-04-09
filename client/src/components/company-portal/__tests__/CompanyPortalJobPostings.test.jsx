@@ -11,13 +11,13 @@ jest.mock('../../../utils/api.js', () => ({
 
 jest.mock('../../common/Card.jsx', () => ({
     __esModule: true,
-    default: ({ title, children, footer }) => {
+    default: ({ title, children, footer }) => (
         <section data-testid="card">
             <h3>{title}</h3>
             <div>{children}</div>
             <div>{footer}</div>
         </section>
-    },
+    ),
 }))
 
 jest.mock('../../common/Modal.jsx', () => ({
@@ -69,7 +69,7 @@ describe('CompanyPortalJobPostings', () => {
         renderView({ companyId: 'c1', companyName: 'Narnia', refreshKey: 0 })
 
         await waitFor(() => {
-            expect(screen.getByText(/no job postings for acme/i)).toBeInTheDocument()
+            expect(screen.getByText(/no job postings for Narnia/i)).toBeInTheDocument()
         })
     })
 
@@ -111,7 +111,7 @@ describe('CompanyPortalJobPostings', () => {
         renderView({ companyId: 'c1', companyName: 'Narnia', refreshKey: 0 })
         await waitFor(() => expect(screen.getByText('Coding')).toBeInTheDocument())
 
-        const card = screen.getByText('Engineer').closest('[data-testid="card"]')
+        const card = screen.getByText('Coding').closest('[data-testid="card"]')
         const statusSelect = within(card).getByRole('combobox')
 
         fireEvent.change(statusSelect, { target: { value: 'UNPUBLISHED' } })
