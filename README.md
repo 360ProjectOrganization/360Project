@@ -30,20 +30,25 @@ calls `applicantService.getApplicantById('123')`. Service receives the request b
    Create a .env file inside `/server/` and paste the reguired text shared with you. 
 
 ## Run the Application 
-1. **Docker Application**
+1. **Start Docker**
    
    Ensure Docker is installed and running on your machine before continuing.
 2. **Build containers**
 
-   From the `/` root directory, run:
+   From the root directory `/`, run:
    ```bash
    docker-compose up --build
    ```
-3. **Regular Docker Startup**
+3. **Subsequent Runs/Regular Docker Startup**
    
-   After build has successfully completed, simply run containers as the default start up for project in root.
+   After initial build, you can start app with
    ```bash
    docker-compose up
+   ```
+
+4. **Stopping the Applicantion**
+   ```bash
+   docker-compose down
    ```
 
 ## Seed the database (no need to do this unless you want to reset the database):

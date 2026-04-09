@@ -8,7 +8,7 @@ export default defineConfig({
     hmr: true,
     proxy: {
       '/api': {
-        target: 'http://server-dev:5000',
+        target: 'http://server:5000',
         changeOrigin: true,
       },
     },
