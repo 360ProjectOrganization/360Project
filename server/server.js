@@ -58,12 +58,14 @@ async function startServer() {
 }
 
 // graceful shutdown
-process.on('SIGINT', async () => {
-  console.log('\nSHUTTING DOWN');
-  await closeDB();
-  process.exit(0);
-});
+if (require.main === module) {
+  process.on('SIGINT', async () => {
+    console.log('\nSHUTTING DOWN');
+    await closeDB();
+    process.exit(0);
+  });
 
-startServer();
+  startServer();
+}
 
 module.exports = app;

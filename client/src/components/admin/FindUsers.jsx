@@ -3,14 +3,19 @@ import { adminApi, applicantApi, authApi, companyApi, getAuthUser } from "../../
 import UserCard from "./UserCard";
 import "../common/Card.css"
 import EditAdmin from "./EditAdmin";
+import DeletePopup from "./DeletePopup";
 
 export default function FindUsers({filterType, filter, loading, setLoading}){
     const [filteredCards, setFilteredCards] = useState([]);
     const [allCards, setAllCards] = useState([]);
     const [xButton, setXButton] = useState(true);
     const [editAccountInfo, setEditAccountInfo] = useState({});
+    const [deletePopup, setDeletePopup] = useState(false);
     const xButtonSwitch = (()=>{
         setXButton((prev)=>!prev);
+    })
+    const deletePopupSwitch = (()=>{
+        setDeletePopup((prev)=>!prev);
     })
     //Load all users into allCards and filteredCards
     useEffect(() => {
@@ -67,6 +72,7 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
     
     }, [filter, filterType, allCards]);
     const deleteUser = async(id, type) => {
+        console.log("Deleting user with id:", id, "and type:", type);
         const updated = allCards.filter((user) => user._id !== id&& allCards.filter((user)=>user._id !==getAuthUser()._id));
         setAllCards(updated);
         setFilteredCards(updated);
@@ -81,6 +87,7 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
             else if(type === 'company'){
                 await companyApi.deleteAccount(id);
             }
+            deletePopupSwitch();
         }catch(e){
             console.log("Error",e);
         }
@@ -91,12 +98,13 @@ export default function FindUsers({filterType, filter, loading, setLoading}){
             {!loading&& (<section className="job-postings-layout">
                 {filteredCards.map((card)=>(
                     <UserCard key ={card._id} id = {card._id}email={card.email} name = {card.name} type= 
-                    {card.type} status = {card.status} deleteUser={deleteUser} xButtonSwitch ={xButtonSwitch} setEditAccountInfo = {setEditAccountInfo}
+                    {card.type} status = {card.status} deletePopupSwitch={deletePopupSwitch} xButtonSwitch ={xButtonSwitch} setEditAccountInfo = {setEditAccountInfo}
                     updateStatus = {updateStatus}
                     />
                     ))}
             </section>)}
             {!xButton &&editAccountInfo&&(<EditAdmin setXButton={xButtonSwitch}  userDetails={editAccountInfo} allCards={allCards} setAllCards={setAllCards} setFilteredCards={setFilteredCards}/>)}
+            {deletePopup && (<DeletePopup deletePopupSwitch={deletePopupSwitch} deleteFunction={()=>deleteUser(editAccountInfo.id, editAccountInfo.type)}/>)}
             {filteredCards.length === 0 && (<p>No Users match your search. </p>)}
             {loading &&(<p>Loading....</p>)}
         </>
