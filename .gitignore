@@ -3,5 +3,5 @@ node_modules/
 .eslintcache
 .stylelintcache
 .env
-.env.*
+!.env.example
 .cache  
