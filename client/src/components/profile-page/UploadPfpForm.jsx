@@ -3,8 +3,10 @@ import { jwtDecode } from "jwt-decode";
 import { applicantApi, companyApi, adminApi, getToken } from "../../utils/api.js";
 import "./UploadPfpForm.css";
 import { usePfp } from "../../context/ProfilePictureContext.jsx";
+import { successEvent } from "../../utils/toast/successEvent.js";
 
 function UploadPfpForm(){
+    const success = successEvent("Successfully Uploaded Image");
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [role, setRole] = useState("");
@@ -44,6 +46,7 @@ function UploadPfpForm(){
             }
             await fetch(url);
             refreshPfp();
+            success();
         } catch(err) {
             console.log(err);
         }

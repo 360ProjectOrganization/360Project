@@ -4,9 +4,12 @@ import { authApi, clearToken } from "../../utils/api";
 import "./EditProfileForm.css";
 import { validateEmailChange } from "../../utils/validation/validateEmailChange";
 import { validatePasswordChange } from "../../utils/validation/validatePasswordChange";
+import { successEvent } from "../../utils/toast/successEvent";
 
 function EditProfileForm(){
     const navigate = useNavigate();
+    const emailChangeSuccess = successEvent("Successfully Changed Email");
+    const passwordChangeSuccess = successEvent("Successfully Changed Password");
     const [newEmail, setNewEmail] = useState("");
     const [password, setPassword] = useState("");
     
@@ -33,7 +36,7 @@ function EditProfileForm(){
             await authApi.changeEmail(payload);
             navigate("/");
             clearToken();
-            window.location.reload();
+            emailChangeSuccess();
         } catch (error) {
             setTextErrorEmail("Incorrect Password");
         }
@@ -54,7 +57,7 @@ function EditProfileForm(){
             await authApi.changePassword(payload);
             navigate("/");
             clearToken();
-            window.location.reload();
+            passwordChangeSuccess();
         } catch (error) {
             setTextErrorPassword("Incorrect Old Password");
         }
