@@ -53,12 +53,19 @@ calls `applicantService.getApplicantById('123')`. Service receives the request b
 
 ## Seed the database (no need to do this unless you want to reset the database):
 
-From the `server` directory:
+1. **Start Up Containers**
+   
+   In a terminal, activate the containers from `/`, as we will need server running to execute seed.
+   ```bash
+   docker-compose up
+   ```
 
-```bash
-cd server
-npm run seed
-```
+2. **Seed Database**
+   
+   In a seperate terminal, from `/` as well, execute this command
+   ```bash
+   docker-compose exec server node scripts/seed.js 
+   ```
 
 ## Run Tests
 
