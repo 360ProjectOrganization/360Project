@@ -31,15 +31,9 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password, role } = req.body;
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('[auth] login attempt', { email: email || '(missing)', role: role || '(missing)', hasPassword: !!password });
-    }
     const result = await authService.login(email, password, role);
     res.json(result);
   } catch (err) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('[auth] login failed:', err.message);
-    }
     const msg = err.message || 'Login failed';
     if (msg.includes('Invalid email or password')) {
       return sendError(res, 401, msg);
