@@ -2,6 +2,14 @@
     text-align: center;
 }
 
+.upload-resume-error {
+    margin: 12px auto 0;
+    max-width: 22rem;
+    font-size: 0.95rem;
+    color: #c0392b;
+    text-align: center;
+}
+
 ::file-selector-button {
     padding: 1em 3em 1em 3em;
     border-radius: 10px;

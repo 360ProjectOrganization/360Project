@@ -137,6 +137,27 @@ button {
     margin-bottom: 0px;
 }
 
+.registerCard .pfp-post-register-notice {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.registerCard .continue-after-pfp-issue {
+    margin-top: 12px;
+    width: 60%;
+    height: 48px;
+    background: var(--color-cta-secondary-darker);
+    color: white;
+    font-size: 15px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+}
+
+.registerCard .continue-after-pfp-issue:hover {
+    background: var(--color-cta-secondary);
+}
+
 .passwordWrapper {
     position: relative;
     width: 100%;

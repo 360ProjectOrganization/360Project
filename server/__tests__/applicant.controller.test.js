@@ -182,6 +182,30 @@ describe('applicant.controller', () => {
       );
     });
 
+    it('returns 400 when file is not an image', async () => {
+      const res = await request(app)
+        .put('/api/applicants/id1/pfp')
+        .attach('file', Buffer.from('not an image'), {
+          filename: 'notes.pdf',
+          contentType: 'application/pdf',
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toMatch(/image/i);
+      expect(userService.updatePfp).not.toHaveBeenCalled();
+    });
+
+    it('returns 400 when file exceeds size limit', async () => {
+      const big = Buffer.alloc(6 * 1024 * 1024, 0);
+      const res = await request(app)
+        .put('/api/applicants/id1/pfp')
+        .attach('file', big, 'huge.jpg');
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toMatch(/large|5 MB/i);
+      expect(userService.updatePfp).not.toHaveBeenCalled();
+    });
+
     it('returns 404 when user not found', async () => {
       userService.updatePfp.mockRejectedValue(new Error('User not found'));
 
@@ -226,6 +250,30 @@ describe('applicant.controller', () => {
         .attach('file', Buffer.from('x'), 'cv.pdf');
 
       expect(res.status).toBe(404);
+    });
+
+    it('returns 400 when file is not a PDF', async () => {
+      const res = await request(app)
+        .post('/api/applicants/id1/resume')
+        .attach('file', Buffer.from('hello'), {
+          filename: 'notes.txt',
+          contentType: 'text/plain',
+        });
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toMatch(/pdf/i);
+      expect(applicantService.uploadApplicantResume).not.toHaveBeenCalled();
+    });
+
+    it('returns 400 when file exceeds size limit', async () => {
+      const big = Buffer.alloc(6 * 1024 * 1024, 0);
+      const res = await request(app)
+        .post('/api/applicants/id1/resume')
+        .attach('file', big, 'huge.pdf');
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toMatch(/large|5 MB/i);
+      expect(applicantService.uploadApplicantResume).not.toHaveBeenCalled();
     });
   });
 

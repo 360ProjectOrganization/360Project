@@ -79,7 +79,6 @@ class AdminService {
     return analytics;
   }
   async updateAdmin(id, data){
-    console.log(data);
     const r = validateRole(data.role);
     if (!id) throw new Error('User id is required.');
     const emailNorm = validateEmail(data.email);

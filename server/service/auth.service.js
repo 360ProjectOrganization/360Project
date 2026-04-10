@@ -98,16 +98,13 @@ class AuthService {
 
     const doc = await authRepository.findDocumentByEmailAndRole(emailNorm, r);
     if (!doc) {
-      if (process.env.NODE_ENV !== 'production') console.log('[auth] user not found:', emailNorm, 'role:', r);
       throw new Error('Invalid email or password.');
     }
 
     const match = await doc.comparePassword(password);
     if (!match) {
-      if (process.env.NODE_ENV !== 'production') console.log('[auth] password mismatch for:', emailNorm);
       throw new Error('Invalid email or password.');
     }
-    console.log(doc.status);
     const hasActiveStatus = doc.status === undefined || doc.status === "active";
     if (!hasActiveStatus) {
       throw new Error('Account is inactive. Please contact support.');

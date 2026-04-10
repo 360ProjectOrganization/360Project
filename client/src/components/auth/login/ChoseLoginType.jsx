@@ -17,7 +17,7 @@ export default function ChoseLoginType(){
                 </Link>
             }
             footer={(selectAdmin) => (
-                <footer>
+                <footer style={{ marginTop: "1.5rem" }}>
                     Admin Login{" "}
                     <u style={{ cursor: "pointer" }} onClick={selectAdmin}>Here</u>
                 </footer>

@@ -172,16 +172,20 @@ function ProfilePage() {
                     <section id="applied-to-container">
                         <h2 id="applied-to-text">My Recent Job Applications</h2>
                         <div id="job-cards">
-                            {jobInfo.map((p) => {
-                                return (
-                                    <Card key={p._id} title={p.title} footer={""}>
-                                        <p><strong>Company: </strong>{p.company || "—"}</p>
-                                        <p><strong>Location: </strong>{p.location || "—"}</p>
-                                        <p><strong>Description: </strong>{p.description || "—"}</p>
-                                        <p><strong>Status: </strong>{p.status}</p>
-                                    </Card>
-                                )
-                            })}
+                            {jobInfo.length === 0 ? (
+                                <p id="no-applications-message">You haven't applied to any jobs.</p>
+                            ) : (
+                                jobInfo.map((p) => {
+                                    return (
+                                        <Card key={p._id} title={p.title} footer={""}>
+                                            <p><strong>Company: </strong>{p.company || "—"}</p>
+                                            <p><strong>Location: </strong>{p.location || "—"}</p>
+                                            <p><strong>Description: </strong>{p.description || "—"}</p>
+                                            <p><strong>Status: </strong>{p.status}</p>
+                                        </Card>
+                                    )
+                                })
+                            )}
                         </div>
                     </section> 
                 )}
