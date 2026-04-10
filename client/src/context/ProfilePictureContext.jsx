@@ -15,7 +15,7 @@ export function ProfilePictureGlobal({children}){
         const available_token = getToken();
         if(available_token){
             setToken(available_token);
-        };
+        }
     }, [refresh]);
     
     useEffect(() => {
@@ -52,7 +52,7 @@ export function ProfilePictureGlobal({children}){
     const refreshPfp = () => setRefresh(i => i + 1);
 
     return (
-        <ProfilePictureContext.Provider value={{image, refreshPfp}}>
+        <ProfilePictureContext.Provider value={{ image, refreshPfp }}>
             {children}
         </ProfilePictureContext.Provider>
     );

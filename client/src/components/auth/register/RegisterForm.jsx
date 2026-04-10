@@ -118,19 +118,19 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
 
                     <form onSubmit={handleSubmit}>
                         <section className="nameInputSection">
-                            <label>{isEmployer ? "Company Name" : "Full Name"}</label>
+                            <label>{isEmployer ? "Company Name" : "Full Name"}<span className="register-required"> *</span></label>
                             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={isEmployer ? "Carson versus The Computer" : "Alice Chains"} />
                             {errors.name && <p className="error">{errors.name}</p>}
                         </section>
 
                         <section className="emailInputSection">
-                            <label>Email</label>
+                            <label>Email<span className="register-required"> *</span></label>
                             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="carson@thecomputer.com" />
                             {errors.email && <p className="error">{errors.email}</p>}
                         </section>
 
                         <section className="passwordInputSection">
-                            <label>Password</label>
+                            <label>Password<span className="register-required"> *</span></label>
                             <div className="passwordWrapper">
                                 <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} />
                                 <button type="button" className="togglePassword" onClick={() => setShowPassword(previousSelection => !previousSelection)} aria-label={showPassword ? "Hide password" : "Show password"}>
@@ -141,7 +141,7 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                         </section>
 
                         <section className="confirmPasswordInputSection">
-                            <label>Confirm Password</label>
+                            <label>Confirm Password<span className="register-required"> *</span></label>
                             <div className="passwordWrapper">
                                 <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                                 <button type="button" className="togglePassword" onClick={() => setShowConfirmPassword(prev => !prev)} aria-label={showConfirmPassword ? "Hide password" : "Show password"}>
