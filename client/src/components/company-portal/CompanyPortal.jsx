@@ -33,9 +33,13 @@ export default function CompanyPortal() {
         navigate("/profile");
     };
 
+    // Which subnav button should look selected (create modal counts as "create" tab)
+    const activeSubnavTab = openModal === "open-modal" ? "create" : "postings";
+
     return (
         <>
             <CompanyPortalSubNav
+                activeTab={activeSubnavTab}
                 onPostingsClick={handlePostingsClick}
                 onCreateClick={handleCreateJobPostingClick}
                 onProfileClick={handleProfileClick}

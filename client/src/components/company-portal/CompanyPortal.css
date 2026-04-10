@@ -19,6 +19,11 @@
     background-color: var(--color-card-bg-alt);
 }
 
+.company-portal-btn.active {
+    border: 2px solid var(--color-cta-secondary);
+    box-shadow: 0 0 0 1px var(--color-cta-secondary);
+}
+
 .job-postings-container h2 {
     margin-left: 25px;
 }
