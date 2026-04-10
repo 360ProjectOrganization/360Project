@@ -7,6 +7,15 @@ const adminService = require('../service/admin.service');
 const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } });
 const ROLE = 'administrator';
 
+function sendError(res, status, message) {
+  res.status(status).json({ error: message });
+}
+
+function sendGenericError(res, err) {
+  console.error('Admin error:', err.message || err);
+  res.status(500).json({ error: 'Something went wrong. Please try again.' });
+}
+
 // GET: api/admin
 router.get('/', async (req, res) => {
   try {
