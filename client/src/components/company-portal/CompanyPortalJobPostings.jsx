@@ -62,18 +62,9 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
             (posting) => String(posting._id) === String(editPostingId)
         );
 
-        const postingToView = jobPostings.find(
-            (posting) => String(posting._id) === String(editPostingId)
-        );
-
         if (postingToEdit) {
             openEdit(postingToEdit);
             navigate(location.pathname, { replace: true, state: {} });
-        }
-
-        if(postingToView){
-            openApplicantsView(postingToView);
-            navigate(location.pathname, {replace: true, state: {} });
         }
     }, [editPostingId, jobPostings]);
 

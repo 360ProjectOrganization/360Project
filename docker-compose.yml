@@ -1,0 +1,39 @@
+# Docker aid/reference: https://www.youtube.com/watch?v=LvOz_NfmJzc&t=1723s
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile.server
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://db:27017/mern-dev
+    depends_on:
+      - db
+    env_file:
+      - ./server/.env
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile.client
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mern_db:/data/db
+
+volumes:
+  mern_db:

@@ -29,38 +29,43 @@ calls `applicantService.getApplicantById('123')`. Service receives the request b
    
    Create a .env file inside `/server/` and paste the reguired text shared with you. 
 
-2. **Set up the server**
-   ```bash
-   cd server
-   npm install
-   ```
-
-3. **Set up the client**
-   ```bash
-   cd client
-   npm install
-   ```
-
 ## Run the Application 
+1. **Start Docker**
+   
+   Ensure Docker is installed and running on your machine before continuing.
+2. **Build containers**
 
-```bash
-# Terminal 1 - Start the backend
-cd server
-npm run dev
+   From the root directory `/`, run:
+   ```bash
+   docker-compose up --build
+   ```
+3. **Subsequent Runs/Regular Docker Startup**
+   
+   After initial build, you can start app with
+   ```bash
+   docker-compose up
+   ```
 
-# Terminal 2 - Start the frontend
-cd client
-npm run dev
-```
+4. **Stopping the Applicantion**
+   ```bash
+   docker-compose down
+   ```
 
 ## Seed the database (no need to do this unless you want to reset the database):
 
-From the `server` directory:
+1. **Start Up Containers**
+   
+   In a terminal, activate the containers from `/`, as we will need server running to execute seed.
+   ```bash
+   docker-compose up
+   ```
 
-```bash
-cd server
-npm run seed
-```
+2. **Seed Database**
+   
+   In a seperate terminal, from `/` as well, execute this command
+   ```bash
+   docker-compose exec server node scripts/seed.js 
+   ```
 
 ## Run Tests
 
