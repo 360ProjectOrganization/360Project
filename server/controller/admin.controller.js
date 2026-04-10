@@ -31,7 +31,6 @@ router.get('/allJobPostingAnalytics', async (req, res) => {
       const analytics = await adminService.findAllAnalytics();
       res.json(analytics);
     } catch (error) {
-      console.log(error);
       res.status(500).json({ error: 'Failed to fetch job posting analytics' });
     }
   });
@@ -49,7 +48,6 @@ router.patch('/:role/:id/status', async (req, res) => {
     const result = await userService.changeStatus(role, id, status);
     res.json(result);
   } catch (err) {
-    console.log(err);
     const msg = err.message || 'Status change failed';
     if (msg.includes('User not found')) {
       return sendError(res, 404, msg);
@@ -102,7 +100,6 @@ router.post('/:id/edit', async (req, res) => {
   } catch (error) {
     if (error.message === 'User not found') return res.status(404).json({ error: error.message });
     res.status(500).json({ error: 'Failed to update administrator' });
-    console.log(error);
   }
 });
 
