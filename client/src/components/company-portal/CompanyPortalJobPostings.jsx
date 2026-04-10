@@ -5,6 +5,7 @@ import Card from "../common/Card.jsx";
 import Modal from "../common/Modal.jsx";
 import EditJobForm from "./EditJobForm.jsx";
 import CloseStatus from "./CloseStatus.jsx";
+import ViewApplicantsForm from "./ViewApplicantsForm.jsx";
 
 export default function CompanyPostalJobPostings({ companyId, companyName, refreshKey, editPostingId, onEditPosting }) {
     const location = useLocation();
@@ -14,6 +15,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
     const [loadError, setLoadError] = useState(null);
 
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isViewApplicantsOpen, setIsViewApplicantsOpen] = useState(false);
     const [selectedPosting, setSelectedPosting] = useState(null);
 
     const openEdit = (posting) => {
@@ -24,6 +26,16 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
         setIsEditOpen(false);
         setSelectedPosting(null);
     };
+
+    const openApplicantsView = (posting) => {
+        setSelectedPosting(posting);
+        setIsViewApplicantsOpen(true);
+    }
+
+    const closeApplicantsView = () => {
+        setSelectedPosting(null);
+        setIsViewApplicantsOpen(false);
+    }
 
     const [postingToClose, setPostingToClose] = useState(null);
 
@@ -50,9 +62,18 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
             (posting) => String(posting._id) === String(editPostingId)
         );
 
+        const postingToView = jobPostings.find(
+            (posting) => String(posting._id) === String(editPostingId)
+        );
+
         if (postingToEdit) {
             openEdit(postingToEdit);
             navigate(location.pathname, { replace: true, state: {} });
+        }
+
+        if(postingToView){
+            openApplicantsView(postingToView);
+            navigate(location.pathname, {replace: true, state: {} });
         }
     }, [editPostingId, jobPostings]);
 
@@ -101,6 +122,7 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                     <Card key={p._id} title={p.title} footer={
                         <div className="card-actions">
                             <button className="job-card-edit-btn" onClick={() => openEdit(p)}>Edit</button>
+                            <button className="job-card-applicant-btn" onClick={() => openApplicantsView(p)}>Applicants</button>
                         </div>
                     }>
                         <p><strong>Location: </strong>{p.location || "—"}</p>
@@ -143,6 +165,11 @@ export default function CompanyPostalJobPostings({ companyId, companyName, refre
                         );
                     }}
                 />
+            </Modal>
+
+            {/* View Applicants Modal */}
+            <Modal isOpen={isViewApplicantsOpen} onClose={closeApplicantsView} title={"View Applicants"}>
+                <ViewApplicantsForm posting={selectedPosting}/>
             </Modal>
 
             {/* close posting modal */}

@@ -8,8 +8,11 @@ import UploadResumeForm from "./UploadResumeForm.jsx";
 import EditProfileForm from "./EditProfileForm.jsx";
 import UploadPfpForm from "./UploadPfpForm.jsx";
 import ResumeOptionsForm from "./ResumeOptionsForm.jsx";
+import UserComments from "./Comments/UserComments.jsx";
 
-function ProfilePage () {
+function ProfilePage() {
+    const [activeSection, setActiveSection] = useState("profile");
+
     const [token, setToken] = useState("");
     const [enrolledName, setEnrolledName] = useState("");
     const [id, setId] = useState("");
@@ -48,7 +51,12 @@ function ProfilePage () {
                     const fetchApplicanInfo = await applicantApi.getById(id);
                     setEnrolledName(fetchApplicanInfo.name);
                     setEmail(fetchApplicanInfo.email);
-                    setJobsAppliedTo(fetchApplicanInfo.jobsAppliedTo);
+                    let applicationIds = [];
+                    const jobApplications = fetchApplicanInfo.jobsAppliedTo;
+                    for(let i = 0; i < jobApplications.length; i++){
+                        applicationIds.push(jobApplications[i].job);
+                    }
+                    setJobsAppliedTo(applicationIds);
                     break;
                 case "company":
                     const fetchCompanyInfo = await companyApi.getById(id);
@@ -144,66 +152,88 @@ function ProfilePage () {
     }, [companyId])
     
     return (
-        <>
-            <section id="profile-container">
-                <section id="profile-picture-section">
-                    <img src={image} alt="pfp"/>
-                </section>
-                <section id="profile-details">
-                    <h1>{enrolledName}</h1>
-                    {
-                        role != "administrator" ? <p><strong>Email: </strong>{email}</p> : ""
-                    }
-                    <span id="profile-button-layout">
-                        <button id="edit-profile" onClick={() => setEditProfile(true)}>
-                            Edit Profile
-                        </button>
-                        {role === "applicant" ?
-                            <>
-                                <button id="upload-resume" onClick={() => setUploadResume(true)}>
-                                    Upload Resume
+        <section id="profile-page-layout">
+            <aside id="profile-sidebar">
+                <button id="profile-btn" className={activeSection === "profile" ? "active" : ""} onClick={() => setActiveSection("profile")}>Profile</button>
+                {role === "applicant" && (
+                    <>
+                        <button id="profile-btn" className={activeSection === "applications" ? "active" : ""} onClick={() => setActiveSection("applications")}>My Job Applications</button>
+                        <button id="profile-btn" className={activeSection === "comments" ? "active" : ""} onClick={() => setActiveSection("comments")}>My Comments</button>
+                    </>
+                )}
+            </aside>
+            
+            <section id="profile-main-content">
+                {activeSection === "profile" && (
+                    <section id="profile-container">
+                        <section id="profile-picture-section">
+                            <img src={image} alt="pfp"/>
+                        </section>
+                        <section id="profile-details">
+                            <h1>{enrolledName}</h1>
+                            {
+                                role != "administrator" ? <p><strong>Email: </strong>{email}</p> : ""
+                            }
+                            <span id="profile-button-layout">
+                                <button id="edit-profile" onClick={() => setEditProfile(true)}>
+                                    Edit Profile
                                 </button>
                                 <button id="upload-profile-picture" onClick={() => setUploadPfp(true)}>
                                     Upload Profile Picture
                                 </button>
-                                <button id="download-resume" onClick={() => setResumeOptions(true)}>
-                                    View Resume
-                                </button>
-                            </> :""}
-                    </span>
-                </section>
-            </section>
-            {role === "applicant" ? 
-                <section id="applied-to-container">
-                    <h2 id="applied-to-text">My Recent Job Applications</h2>
-                    <div id="job-cards">
-                        {jobInfo.map((p) => {
-                            return (
-                                <Card key={p._id} title={p.title} footer={""}>
-                                    <p><strong>Company: </strong>{p.company || "—"}</p>
-                                    <p><strong>Location: </strong>{p.location || "—"}</p>
-                                    <p><strong>Description: </strong>{p.description || "—"}</p>
-                                    <p><strong>Status: </strong>{p.status}</p>
-                                </Card>
-                            )
-                        })}
-                    </div>
-                </section> 
-            : "" }
+                                {role === "applicant" ?
+                                    <>
+                                        <button id="upload-resume" onClick={() => setUploadResume(true)}>
+                                            Upload Resume
+                                        </button>
+                                        <button id="download-resume" onClick={() => setResumeOptions(true)}>
+                                            View Resume
+                                        </button>
+                                    </>
+                                : ""}
+                            </span>
+                        </section>
+                    </section>
+                )}
 
-            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Upload Resume"} size={"small"}>
-                <UploadResumeForm successfulUpload={() => setUploadResume(false)}/>
+                {activeSection === "applications" && role === "applicant" && (
+                    <section id="applied-to-container">
+                        <h2 id="applied-to-text">My Recent Job Applications</h2>
+                        <div id="job-cards">
+                            {jobInfo.map((p) => {
+                                return (
+                                    <Card key={p._id} title={p.title} footer={""}>
+                                        <p><strong>Company: </strong>{p.company || "—"}</p>
+                                        <p><strong>Location: </strong>{p.location || "—"}</p>
+                                        <p><strong>Description: </strong>{p.description || "—"}</p>
+                                        <p><strong>Status: </strong>{p.status}</p>
+                                    </Card>
+                                )
+                            })}
+                        </div>
+                    </section> 
+                )}
+
+                {activeSection === "comments" && (
+                    <section id="comments-container">
+                        <UserComments />
+                    </section>
+                )}
+            </section>
+
+            <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Resume"} size={"small"}>
+                <UploadResumeForm />
             </Modal>
-            <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit Profile"}>
+            <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit"}>
                 <EditProfileForm />
             </Modal>
-            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Upload Picture"} size={"small"}>
+            <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Picture"} size={"small"}>
                 <UploadPfpForm />
             </Modal>
-            <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Viewing Options"} size={"small"}>
+            <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Viewing"} size={"small"}>
                 <ResumeOptionsForm />
             </Modal>
-        </>
+        </section>
     )
 };
 

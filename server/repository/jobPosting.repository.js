@@ -73,12 +73,13 @@ const jobPostingRepository = {
   },
 
   async addApplicantToJob(jobId, applicantId) {
+    const date = new Date();
     const job = await JobPosting.findById(jobId).lean();
     if (!job) return null;
     const alreadyApplied = (job.applicants || []).some((id) => id.toString() === String(applicantId));
     if (alreadyApplied) return { job, alreadyApplied: true };
     await JobPosting.findByIdAndUpdate(jobId, { $addToSet: { applicants: applicantId } });
-    await Applicant.findByIdAndUpdate(applicantId, { $addToSet: { jobsAppliedTo: jobId } });
+    await Applicant.findByIdAndUpdate(applicantId, { $addToSet: { jobsAppliedTo: { job: jobId, appliedAt: date } } });
     return { job: await JobPosting.findById(jobId).lean(), alreadyApplied: false };
   },
 
@@ -126,6 +127,31 @@ const jobPostingRepository = {
     const job = await JobPosting.findById(jobId).select('comments').lean();
     if (!job || !job.comments?.length) return [];
     return job.comments;
+  },
+  
+  async findCommentsByUserId(userId) {
+    const jobs = await JobPosting.find(
+      { 'comments.authorId': userId },
+      { comments: 1, title: 1 }
+    ).lean();
+
+    if (!jobs) return null;
+
+    const comments = jobs.flatMap((job) =>
+      (job.comments || [])
+        .filter((comment) => comment.authorId?.toString() === String(userId))
+        .map((comment) => ({
+          ...comment,
+          jobId: job._id,
+          jobTitle: job.title,
+        }))
+    );
+
+    return comments.sort((a, b) => {
+      const aTime = new Date(a.editedAt || a.createdAt);
+      const bTime = new Date(b.editedAt || b.createdAt);
+      return bTime - aTime;
+    });
   },
 };
 

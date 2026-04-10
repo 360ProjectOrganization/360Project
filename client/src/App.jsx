@@ -18,7 +18,7 @@ function App() {
                 <Route path="/Login" element={<LoginPage/>} />
                 <Route path='/profile' element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                 <Route path='/company-portal' element={<ProtectedRoute requiredRole="company"><CompanyPortalPage /></ProtectedRoute>} />
-                <Route path='/Admin' element={<ProtectedRoute requiredRole="admin"><AdminPage /></ProtectedRoute>} />
+                <Route path='/Admin' element={<ProtectedRoute requiredRole="administrator"><AdminPage /></ProtectedRoute>} />
 
                 <Route path="*" element={<NotFound />} /> {/* !!! MUST BE LAST or it will catch everything */}
             </Routes>

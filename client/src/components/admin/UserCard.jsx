@@ -1,6 +1,6 @@
 import { adminApi } from "../../utils/api"
 
-export default function UserCard({id,name,type,status, email, deleteUser, xButtonSwitch, setEditAccountInfo, updateStatus}){
+export default function UserCard({id,name,type,status, email, xButtonSwitch, setEditAccountInfo, updateStatus,deletePopupSwitch }){
     return(
         <section className="card-container">
             <h1 className="card-title">{name}</h1>
@@ -14,7 +14,10 @@ export default function UserCard({id,name,type,status, email, deleteUser, xButto
                 setEditAccountInfo({id, name, type, email});
                 xButtonSwitch();
             }}>Edit</button>
-            <button className="card-actions card-admin-button" onClick={() => deleteUser(id, type)}>Delete</button>
+            <button className="card-actions card-admin-button" onClick={() => {
+                setEditAccountInfo({id, name, type, email})
+                deletePopupSwitch();
+                }}>Delete</button>
         </section>
     )
 }
