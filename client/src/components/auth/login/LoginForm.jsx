@@ -4,6 +4,7 @@ import BackButton from "../BackButton";
 import { authApi, setToken, setAuthUser } from "../../../utils/api.js";
 import { useState } from "react";
 import { successEvent } from "../../../utils/toast/successEvent.js";
+import { usePfp } from "../../../context/ProfilePictureContext.jsx";
 
 export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }) {
     const success = successEvent("Successfully Logged In")
@@ -12,6 +13,7 @@ export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }
     const location = useLocation();
     const returnTo = location.state?.returnTo || "/";
     const openPostingId = location.state?.openPostingId || null;
+    const { refreshPfp } = usePfp();
 
     const back = ()=>{
         setOnLoginScreen(false)
@@ -33,6 +35,7 @@ export default function LoginForm({ typeOfUser, setOnLoginScreen, setLoginType }
             const response = await authApi.login(payload);
             setToken(response.token);
             setAuthUser(response.user);
+            refreshPfp();
             navigate(returnTo, {
                 state: openPostingId ? { openPostingId } : undefined,
             });

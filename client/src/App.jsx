@@ -9,22 +9,26 @@ import ProfilePage from './pages/ProfilePage.jsx';
 import CompanyPortalPage from './pages/CompanyPortalPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import { ToastContainer } from "react-toastify";
+import { ProfilePictureGlobal } from './context/ProfilePictureContext.jsx';
+
 function App() {
     return (
         <div className="app">
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/Login" element={<LoginPage/>} />
-                <Route path='/profile' element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-                <Route path='/company-portal' element={<ProtectedRoute requiredRole="company"><CompanyPortalPage /></ProtectedRoute>} />
-                <Route path='/Admin' element={<ProtectedRoute requiredRole="administrator"><AdminPage /></ProtectedRoute>} />
+            <ProfilePictureGlobal>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/Login" element={<LoginPage/>} />
+                    <Route path='/profile' element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                    <Route path='/company-portal' element={<ProtectedRoute requiredRole="company"><CompanyPortalPage /></ProtectedRoute>} />
+                    <Route path='/Admin' element={<ProtectedRoute requiredRole="administrator"><AdminPage /></ProtectedRoute>} />
 
-                <Route path="*" element={<NotFound />} /> {/* !!! MUST BE LAST or it will catch everything */}
-            </Routes>
-            <div>
-                <ToastContainer position='top-right' />
-            </div>
+                    <Route path="*" element={<NotFound />} /> {/* !!! MUST BE LAST or it will catch everything */}
+                </Routes>
+                <div>
+                    <ToastContainer position='top-right' />
+                </div>
+            </ProfilePictureGlobal>
         </div>
     );
 }

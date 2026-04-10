@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { applicantApi, companyApi, adminApi, getToken } from "../../utils/api.js";
 import "./UploadPfpForm.css";
+import { usePfp } from "../../context/ProfilePictureContext.jsx";
 
 function UploadPfpForm(){
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [role, setRole] = useState("");
     const [file, setFile] = useState("");
+    const { refreshPfp } = usePfp();
 
     useEffect(() => {
         const available_token = getToken();
@@ -41,7 +43,7 @@ function UploadPfpForm(){
                     break;
             }
             await fetch(url);
-            window.location.reload();
+            refreshPfp();
         } catch(err) {
             console.log(err);
         }
