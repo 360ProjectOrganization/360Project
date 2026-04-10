@@ -143,3 +143,9 @@ button {
     color: var(--color-title);
     padding-left: 10px;
 }
+
+#no-applications-message {
+    color: var(--color-title);
+    padding-left: 10px;
+    margin: 0;
+}

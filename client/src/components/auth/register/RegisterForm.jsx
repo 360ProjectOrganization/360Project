@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackButton from "../BackButton";
 import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
+import { validatePfpFile } from "../../../utils/validation/validatePfpFile";
 import { authApi, setToken, setAuthUser, applicantApi, companyApi } from "../../../utils/api.js";
 
 export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
@@ -14,6 +15,8 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
 
     const [errors, setErrors] = useState({});
     const [submitError, setSubmitError] = useState("");
+    const [pfpError, setPfpError] = useState("");
+    const [pfpPostRegisterError, setPfpPostRegisterError] = useState("");
     const [loading, setLoading] = useState(false);
 
     const [name, setName] = useState("");
@@ -38,8 +41,30 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
     }, [pfpFile]);
 
     function onPfpChange(e) {
-        const file = e.target.files?.[0];
-        setPfpFile(file ?? null);
+        const input = e.target;
+        const file = input.files?.[0];
+        setPfpError("");
+        setPfpPostRegisterError("");
+        if (!file) {
+            setPfpFile(null);
+            return;
+        }
+        const check = validatePfpFile(file);
+        if (!check.ok) {
+            setPfpError(check.message);
+            input.value = "";
+            setPfpFile(null);
+            return;
+        }
+        setPfpFile(file);
+    }
+
+    function continueAfterPfpIssue() {
+        navigate(returnTo, {
+            state: {
+                ...(openPostingId ? { openPostingId } : {}),
+            },
+        });
     }
     
     const back = () => {
@@ -50,6 +75,7 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
     async function handleSubmit(e) {
         e.preventDefault();
         setSubmitError("");
+        setPfpPostRegisterError("");
 
         const inputErrors = validateRegisterForm({ name, email, password, confirmPassword }, typeOfUser?.toLowerCase() ?? "applicant");
         setErrors(inputErrors);
@@ -57,6 +83,14 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
         //if errors is empty then input is valid
         if (Object.keys(inputErrors).length > 0) {
             return;
+        }
+
+        if (pfpFile) {
+            const pfpCheck = validatePfpFile(pfpFile);
+            if (!pfpCheck.ok) {
+                setPfpError(pfpCheck.message);
+                return;
+            }
         }
 
         setLoading(true); // in case user presses Reguster button multiple times, this should prevent multiple requests
@@ -73,7 +107,6 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
             setAuthUser(response.user);
 
             const userId = response.user?._id;
-            let pfpUploadFailed = false;
             if (pfpFile && userId) {
                 try {
                     if (isEmployer) {
@@ -84,15 +117,16 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                     }
                 }
                 catch (uploadError) {
-                    console.error(uploadError);
-                    pfpUploadFailed = true;
+                    const msg = uploadError?.message || "Could not upload profile photo.";
+                    setPfpPostRegisterError(`Account created, but your profile photo could not be uploaded: ${msg}`);
+                    setLoading(false);
+                    return;
                 }
             }
 
             navigate(returnTo, {
                 state: {
                     ...(openPostingId ? { openPostingId } : {}),
-                    ...(pfpUploadFailed ? { pfpUploadFailed: true } : {}),
                 },
             });
         }
@@ -153,11 +187,20 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                             {pfpPreviewUrl && (
                                 <img src={pfpPreviewUrl} alt="Profile preview" width={140} height={140}/>
                             )}
+                            {pfpError && <p className="error" role="alert">{pfpError}</p>}
+                            {pfpPostRegisterError && (
+                                <div className="pfp-post-register-notice">
+                                    <p className="error" role="alert">{pfpPostRegisterError} You can add one from your profile later.</p>
+                                    <button type="button" className="continue-after-pfp-issue" onClick={continueAfterPfpIssue}>
+                                        Continue to site
+                                    </button>
+                                </div>
+                            )}
                         </section>
 
                         {submitError && <p className="error">{submitError}</p>}
                         
-                        <button type="submit" disabled={loading}>{loading ? "Registering…" : "Register"}</button>
+                        <button type="submit" disabled={loading || !!pfpPostRegisterError}>{loading ? "Registering…" : "Register"}</button>
                     </form>
 
                     <p style={{ cursor: "pointer"}} onClick={() => {
