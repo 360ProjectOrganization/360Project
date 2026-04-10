@@ -3,9 +3,8 @@ const express = require('express');
 const router = express.Router();
 const companyService = require('../service/company.service');
 const userService = require('../service/user.service');
-const multer = require('multer');
+const { multerPfpSingle } = require('../middleware/pfpUpload');
 
-const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } });
 const ROLE = 'company';
 
 // GET: api/companies
@@ -59,7 +58,7 @@ router.get('/:id/pfp', async (req, res) => {
 });
 
 // PUT: api/companies/:id/pfp
-router.put('/:id/pfp', upload.single('file'), async (req, res) => {
+router.put('/:id/pfp', multerPfpSingle('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const result = await userService.updatePfp(ROLE, req.params.id, req.file.buffer, req.file.mimetype);

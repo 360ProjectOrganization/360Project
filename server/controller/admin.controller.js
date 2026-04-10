@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const userService = require('../service/user.service');
-const multer = require('multer');
 const adminService = require('../service/admin.service');
+const { multerPfpSingle } = require('../middleware/pfpUpload');
 
-const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } });
 const ROLE = 'administrator';
 
 // GET: api/admin
@@ -64,7 +63,7 @@ router.get('/:id/pfp', async (req, res) => {
 });
 
 // PUT: api/admin/:id/pfp
-router.put('/:id/pfp', upload.single('file'), async (req, res) => {
+router.put('/:id/pfp', multerPfpSingle('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const result = await userService.updatePfp(ROLE, req.params.id, req.file.buffer, req.file.mimetype);

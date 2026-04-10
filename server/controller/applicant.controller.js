@@ -4,8 +4,9 @@ const router = express.Router();
 const applicantService = require('../service/applicant.service');
 const userService = require('../service/user.service');
 const multer = require('multer');
+const { multerPfpSingle } = require('../middleware/pfpUpload');
 
-const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } });
+const resumeUpload = multer({ limits: { fileSize: 5 * 1024 * 1024 } });
 const ROLE = 'applicant';
 
 // GET: api/applicants/:id/pfp
@@ -60,7 +61,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // PUT: api/applicants/:id/pfp
-router.put('/:id/pfp', upload.single('file'), async (req, res) => {
+router.put('/:id/pfp', multerPfpSingle('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const result = await userService.updatePfp(ROLE, req.params.id, req.file.buffer, req.file.mimetype);
@@ -72,7 +73,7 @@ router.put('/:id/pfp', upload.single('file'), async (req, res) => {
 });
 
 // POST: api/applicants/:id/resume
-router.post('/:id/resume', upload.single('file'), async (req, res) => {
+router.post('/:id/resume', resumeUpload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const result = await applicantService.uploadApplicantResume(
