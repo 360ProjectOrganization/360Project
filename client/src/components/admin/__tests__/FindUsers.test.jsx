@@ -85,6 +85,12 @@ describe('FindUsers', () => {
         fireEvent.click(delete_btn)
 
         await waitFor(() => {
+            expect(screen.getByRole('heading', { name: /are you sure you want to delete/i })).toBeInTheDocument()
+        })
+        
+        fireEvent.click(screen.getByRole('button', { name: /^yes$/i }))
+
+        await waitFor(() => {
             expect(companyApi.deleteAccount).toHaveBeenCalledWith('c1')
         })
     })

@@ -10,6 +10,7 @@ function setup(overrides = {}) {
         status: 'active',
         email: 'katniss@example.com',
         deleteUser: jest.fn(),
+        deletePopupSwitch: jest.fn(),
         xButtonSwitch: jest.fn(),
         setEditAccountInfo: jest.fn(),
         updateStatus: jest.fn(),
@@ -51,9 +52,15 @@ describe('UserCard', () => {
         expect(s.xButtonSwitch).toHaveBeenCalledTimes(1)
     })
 
-    test('clicking Delete calls deleteUser', () => {
+    test('clicking Delete sets edit info and opens delete confirmation', () => {
         const s = setup()
         fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
-        expect(s.deleteUser).toHaveBeenCalledWith('u1', 'applicant')
+        expect(s.setEditAccountInfo).toHaveBeenCalledWith({
+            id: 'u1',
+            name: 'Katniss Everdeen',
+            type: 'applicant',
+            email: 'katniss@example.com',
+        })
+        expect(s.deletePopupSwitch).toHaveBeenCalledTimes(1)
     })
 })
