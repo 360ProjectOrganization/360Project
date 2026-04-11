@@ -9,6 +9,7 @@ import EditProfileForm from "./EditProfileForm.jsx";
 import UploadPfpForm from "./UploadPfpForm.jsx";
 import ResumeOptionsForm from "./ResumeOptionsForm.jsx";
 import UserComments from "./Comments/UserComments.jsx";
+import { usePfp } from "../../context/ProfilePictureContext.jsx";
 
 function ProfilePage() {
     const [activeSection, setActiveSection] = useState("profile");
@@ -18,7 +19,7 @@ function ProfilePage() {
     const [id, setId] = useState("");
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
-    const [image, setImage] = useState("");
+    const { image } = usePfp();
 
     const [companyId, setCompanyId] = useState([]);
     const [companyName, setCompanyName] = useState([]);
@@ -70,39 +71,9 @@ function ProfilePage() {
                     return;
             }
         };
-        async function getUserPfp(){
-            if(id){
-                let url = ""
-                switch(role){
-                    case "applicant":
-                        url = applicantApi.getPfpUrl(id);
-                        break;
-                    case "company":
-                        url = companyApi.getPfpUrl(id);
-                        break;
-                    case "administrator":
-                        url = adminApi.getPfpUrl(id);
-                        break;
-                    default:
-                        return;
-                }
-
-                let response = await fetch(url, {
-                    method: "GET"
-                });
-
-                if(response.status === 200){
-                    const imageBlob = await response.blob();
-                    const imageObjectURL = URL.createObjectURL(imageBlob);
-                    setImage(imageObjectURL);
-                }
-            }
-        }
         getUserName();
-        getUserPfp();
     }, [id])
 
-    // Narrow down application to related company
     useEffect(() => {
         if(!jobsAppliedTo) return;
         const id_arr = [];
@@ -124,7 +95,6 @@ function ProfilePage() {
         getCompanyIDs();
     }, [jobsAppliedTo])
 
-    // Match applicant ids with logged in id
     useEffect(() => {
         const jobs_arr = [];
         async function getJobInfo(){
@@ -226,13 +196,13 @@ function ProfilePage() {
             </section>
 
             <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Resume"} size={"small"}>
-                <UploadResumeForm />
+                <UploadResumeForm onClose={() => setUploadResume(false)}/>
             </Modal>
             <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit"}>
                 <EditProfileForm />
             </Modal>
             <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Picture"} size={"small"}>
-                <UploadPfpForm />
+                <UploadPfpForm onClose={() => setUploadPfp(false)}/>
             </Modal>
             <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Viewing"} size={"small"}>
                 <ResumeOptionsForm />

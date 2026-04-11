@@ -22,7 +22,6 @@ function Header() {
 
     useEffect(() => {
         if(!token) return;
-    
         const decoded = jwtDecode(token);
         setRole(decoded.role);
     }, [token, role])

@@ -128,7 +128,7 @@ button {
 #applied-to-container{
     padding: 0 5em 0 12em;
     .card-container {
-        width: 100%
+        width: 60%
     }
     padding-left: 50px;
 }

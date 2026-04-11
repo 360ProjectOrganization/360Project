@@ -12,3 +12,11 @@
     height: 70%;
     cursor: pointer;
 }
+
+.backButton:hover {
+    cursor: pointer;
+}
+
+.register-required{
+    color: red;
+}

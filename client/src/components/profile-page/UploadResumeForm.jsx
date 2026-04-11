@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import "./UploadResumeForm.css";
 import { applicantApi, getToken } from "../../utils/api.js";
+import { successEvent } from "../../utils/toast/successEvent.js";
 import { validateResumeFile } from "../../utils/validation/validateResumeFile.js";
 
-function UploadResumeForm(){
+function UploadResumeForm({ onClose }){
+    const success = successEvent("Successfully Uploaded Resume");
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [file, setFile] = useState(null);
@@ -16,7 +18,7 @@ function UploadResumeForm(){
         if(available_token){
             setToken(available_token);
         };
-    }, [])
+    }, []);
     
     useEffect(() => {
         if(!token) return;
@@ -57,7 +59,8 @@ function UploadResumeForm(){
         setSubmitting(true);
         try {
             await applicantApi.uploadResume(id, file);
-            window.location.reload();
+            success();
+            onClose();
         } catch (err) {
             setError(err.message || "Could not upload resume.");
         } finally {

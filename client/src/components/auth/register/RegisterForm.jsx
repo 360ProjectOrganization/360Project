@@ -4,8 +4,10 @@ import BackButton from "../BackButton";
 import { validateRegisterForm } from "../../../utils/validation/validateRegisterForm";
 import { validatePfpFile } from "../../../utils/validation/validatePfpFile";
 import { authApi, setToken, setAuthUser, applicantApi, companyApi } from "../../../utils/api.js";
+import { successEvent } from "../../../utils/toast/successEvent.js";
 
 export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegisterType }) {
+    const success = successEvent("Successfully Registered");
     const navigate = useNavigate();
     const location = useLocation();
     const returnTo = location.state?.returnTo || "/";
@@ -129,9 +131,11 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                     ...(openPostingId ? { openPostingId } : {}),
                 },
             });
+            success();
         }
         catch (err) {
             setSubmitError(err.message || "Registration failed");
+
         }
         finally { // doesnt matter if request fails or not
             setLoading(false);
@@ -148,19 +152,19 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
 
                     <form onSubmit={handleSubmit}>
                         <section className="nameInputSection">
-                            <label>{isEmployer ? "Company Name" : "Full Name"}</label>
+                            <label>{isEmployer ? "Company Name" : "Full Name"}<span className="register-required"> *</span></label>
                             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={isEmployer ? "Carson versus The Computer" : "Alice Chains"} />
                             {errors.name && <p className="error">{errors.name}</p>}
                         </section>
 
                         <section className="emailInputSection">
-                            <label>Email</label>
+                            <label>Email<span className="register-required"> *</span></label>
                             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="carson@thecomputer.com" />
                             {errors.email && <p className="error">{errors.email}</p>}
                         </section>
 
                         <section className="passwordInputSection">
-                            <label>Password</label>
+                            <label>Password<span className="register-required"> *</span></label>
                             <div className="passwordWrapper">
                                 <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} />
                                 <button type="button" className="togglePassword" onClick={() => setShowPassword(previousSelection => !previousSelection)} aria-label={showPassword ? "Hide password" : "Show password"}>
@@ -171,7 +175,7 @@ export default function RegisterForm({ typeOfUser, setOnRegisterScreen, setRegis
                         </section>
 
                         <section className="confirmPasswordInputSection">
-                            <label>Confirm Password</label>
+                            <label>Confirm Password<span className="register-required"> *</span></label>
                             <div className="passwordWrapper">
                                 <input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                                 <button type="button" className="togglePassword" onClick={() => setShowConfirmPassword(prev => !prev)} aria-label={showConfirmPassword ? "Hide password" : "Show password"}>

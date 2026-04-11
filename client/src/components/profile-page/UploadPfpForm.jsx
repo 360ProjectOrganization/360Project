@@ -3,11 +3,15 @@ import { jwtDecode } from "jwt-decode";
 import { applicantApi, companyApi, adminApi, getToken } from "../../utils/api.js";
 import { validatePfpFile } from "../../utils/validation/validatePfpFile.js";
 import "./UploadPfpForm.css";
+import { usePfp } from "../../context/ProfilePictureContext.jsx";
+import { successEvent } from "../../utils/toast/successEvent.js";
 
-function UploadPfpForm(){
+function UploadPfpForm({ onClose }){
+    const success = successEvent("Successfully Uploaded Image");
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
     const [role, setRole] = useState("");
+    const { refreshPfp } = usePfp();
     const [file, setFile] = useState(null);
     const [pfpError, setPfpError] = useState("");
     const [submitting, setSubmitting] = useState(false);
@@ -17,7 +21,7 @@ function UploadPfpForm(){
         if(available_token){
             setToken(available_token);
         };
-    }, [])
+    }, []);
     
     useEffect(() => {
         if(!token) return;
@@ -73,7 +77,9 @@ function UploadPfpForm(){
                     setSubmitting(false);
                     return;
             }
-            window.location.reload();
+            refreshPfp();
+            success();
+            onClose();
         } catch(err) {
             setPfpError(err.message || "Could not update profile picture.");
         } finally {
