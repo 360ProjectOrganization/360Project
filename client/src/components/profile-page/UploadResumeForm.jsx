@@ -5,7 +5,7 @@ import { applicantApi, getToken } from "../../utils/api.js";
 import { successEvent } from "../../utils/toast/successEvent.js";
 import { validateResumeFile } from "../../utils/validation/validateResumeFile.js";
 
-function UploadResumeForm(){
+function UploadResumeForm({ onClose }){
     const success = successEvent("Successfully Uploaded Resume");
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
@@ -60,6 +60,7 @@ function UploadResumeForm(){
         try {
             await applicantApi.uploadResume(id, file);
             success();
+            onClose();
         } catch (err) {
             setError(err.message || "Could not upload resume.");
         } finally {

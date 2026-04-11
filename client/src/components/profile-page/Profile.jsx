@@ -74,7 +74,6 @@ function ProfilePage() {
         getUserName();
     }, [id])
 
-    // Narrow down application to related company
     useEffect(() => {
         if(!jobsAppliedTo) return;
         const id_arr = [];
@@ -96,7 +95,6 @@ function ProfilePage() {
         getCompanyIDs();
     }, [jobsAppliedTo])
 
-    // Match applicant ids with logged in id
     useEffect(() => {
         const jobs_arr = [];
         async function getJobInfo(){
@@ -198,13 +196,13 @@ function ProfilePage() {
             </section>
 
             <Modal isOpen={uploadResume} onClose={() => setUploadResume(false)} title={"Resume"} size={"small"}>
-                <UploadResumeForm />
+                <UploadResumeForm onClose={() => setUploadResume(false)}/>
             </Modal>
             <Modal isOpen={editProfile} onClose={() => setEditProfile(false)} title={"Edit"}>
                 <EditProfileForm />
             </Modal>
             <Modal isOpen={uploadPfp} onClose={() => setUploadPfp(false)} title={"Picture"} size={"small"}>
-                <UploadPfpForm />
+                <UploadPfpForm onClose={() => setUploadPfp(false)}/>
             </Modal>
             <Modal isOpen={resumeOptions} onClose={() => setResumeOptions(false)} title={"Viewing"} size={"small"}>
                 <ResumeOptionsForm />

@@ -6,7 +6,7 @@ import "./UploadPfpForm.css";
 import { usePfp } from "../../context/ProfilePictureContext.jsx";
 import { successEvent } from "../../utils/toast/successEvent.js";
 
-function UploadPfpForm(){
+function UploadPfpForm({ onClose }){
     const success = successEvent("Successfully Uploaded Image");
     const [token, setToken] = useState("");
     const [id, setId] = useState("");
@@ -77,10 +77,9 @@ function UploadPfpForm(){
                     setSubmitting(false);
                     return;
             }
-            await fetch(url);
             refreshPfp();
             success();
-            // window.location.reload();
+            onClose();
         } catch(err) {
             setPfpError(err.message || "Could not update profile picture.");
         } finally {
