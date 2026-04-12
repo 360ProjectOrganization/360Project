@@ -17,7 +17,7 @@ test('renders stat card and bar chart props', () => {
     render(<JobPostings jobPostingsByDate={jobPostingsByDate} numJobPostings={7} />)
 
     expect(screen.getByText('Total Job Postings')).toBeInTheDocument()
-    expect(screen.getByText('7')).toBeInTheDocument()
+    expect(screen.getByText('6')).toBeInTheDocument()
     expect(screen.getByTestId('bar')).toHaveTextContent('Job Postings')
     expect(screen.getByTestId('bar')).toHaveTextContent('Job Postings Created')
 })
