@@ -7,8 +7,8 @@ jest.mock("../../../utils/api", () => ({ jobPostingApi: { update: jest.fn() } })
 jest.mock("../../../utils/validation/validateCreateJobForm", () => ({
   validateCreateJobForm: jest.fn(),
 }));
-const jobDetails = { id: "j1", title: "Frontend Dev", location: "Remote", description: "UI work", tags: [], author: "TechCorp", status: "ACTIVE" };
-const makeProps = () => ({ setXButton: jest.fn(), jobDetails, allCards: [{ _id: "j1", ...jobDetails }], setAllCards: jest.fn(), setFilteredCards: jest.fn() });
+const jobDetails = { _id: "j1", title: "Frontend Dev", location: "Remote", description: "UI work", tags: [], author: "TechCorp", status: "ACTIVE" };
+const makeProps = () => ({ setXButton: jest.fn(), jobDetails, allCards: [{ ...jobDetails }], setAllCards: jest.fn(), setFilteredCards: jest.fn() });
 beforeEach(() => {
   validation.validateCreateJobForm.mockReturnValue({});
   jobPostingApi.update.mockResolvedValue({});
