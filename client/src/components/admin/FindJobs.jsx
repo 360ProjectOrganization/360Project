@@ -5,7 +5,8 @@ import DeletePopup from "./DeletePopup";
 import JobPostingCard from "./JobPostingCard";
 import EditJobs from "./EditJobs";
 import CloseStatus from "../company-portal/CloseStatus";
-export default function FindJobs({filterType, filter, loading, setLoading}){
+import { useNavigate } from "react-router-dom";
+export default function FindJobs({filterType, filter, loading, setLoading, editPostingId}){
         const [filteredCards, setFilteredCards] = useState([]);
         const [allCards, setAllCards] = useState([]);
         const [xButton, setXButton] = useState(true);
@@ -14,6 +15,7 @@ export default function FindJobs({filterType, filter, loading, setLoading}){
         const [deletePopup, setDeletePopup] = useState(false);
         const [eventForClousre, setEventForClousre] = useState(false);
         const [postingToClose, setPostingToClose] = useState(null);
+        const navigate = useNavigate();
         const xButtonSwitch = (()=>{
             setXButton((prev)=>!prev);
         })
@@ -38,6 +40,22 @@ export default function FindJobs({filterType, filter, loading, setLoading}){
             })
             loadData();
         }, []);
+        useEffect(() => {
+            console.log("I ran")
+            if (!editPostingId || !allCards.length) return;
+
+            const postingToEdit = allCards.find(
+                (posting) => String(posting._id) === String(editPostingId)
+            );
+
+            if (postingToEdit) {
+                console.log(postingToEdit);
+                setEditJobsInfo(postingToEdit);
+                xButtonSwitch();
+                navigate(location.pathname, { replace: true, state: {} });
+            }
+        }, [editPostingId, allCards]);
+
     
     
     
@@ -75,7 +93,6 @@ export default function FindJobs({filterType, filter, loading, setLoading}){
             const newCards = allCards.map((prev) =>
                 (prev._id === jobId ? { ...prev, status: newStatus, ...(newStatus === "CLOSED" && closureReason ? { closureReason } : {}) } : prev)
             );
-            console.log(newCards)
             setAllCards(newCards);
             setFilteredCards(newCards);
         }

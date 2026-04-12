@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminDropDown from "./AdminDropDown";
 import CreateNewAdminForm from "./CreateNewAdminForm"
 import FindUserSearch from "./FindUserSearch";
@@ -7,8 +7,12 @@ import Analytics from "./Analytics/Analytics"
 import "./admin.css"
 import "../home/Home.css"
 import FindJobs from "./FindJobs";
+import { useLocation } from "react-router-dom";
 
 export default function AdminHandler(){
+    const location = useLocation();
+    const editPostingId = location.state?.editPostingId;
+    const pageToView = location.state?.pageToView;
     const[page, setPage] = useState("Find Users");
     const[filterType, setFilterType] = useState("name")
     const[filter, setFilter] = useState("");
@@ -18,12 +22,18 @@ export default function AdminHandler(){
     const handleAnalyticsChange = (e) => {
         setWhichAnalyticsData(e.target.value);
     }
+    useEffect(()=>{
+        if(pageToView){
+            console.log(pageToView)
+            setPage(pageToView);
+        }
+    },[])
     return(
         <section>
             
             <section className="subnav-container-admin">
                 <h2 className="master-text-admin">Admin Portal</h2>
-                <AdminDropDown setPage={setPage} setWhichAnalyticsData ={setWhichAnalyticsData} setFilterType = {setFilterType}/>
+                <AdminDropDown setPage={setPage} setWhichAnalyticsData ={setWhichAnalyticsData} setFilterType = {setFilterType} pageToView = {pageToView}/>
                 {page === "Find Users" && loading === false && (<FindUserSearch setFilter = {setFilter} setFilterType={setFilterType}
                 fields = {[
                     {name: "Username", value:"name"},
@@ -55,7 +65,14 @@ export default function AdminHandler(){
                 {page === "Find Users"&& (<FindUsers filter = {filter} filterType={filterType}  setFilter = {setFilter} setFilterType={setFilterType} loading={loading} setLoading={setLoading}/>)}
                 {page === "New Admin"&& (<CreateNewAdminForm/>)}
                 {page === "Analytics"&& (<Analytics whichAnalyticsData={whichAnalyticsData}/>)}
-                {page === "Job Postings"&& (<FindJobs filter={filter} filterType={filterType} setFilter = {setFilter} useFilterType = {setFilterType} loading = {loading} setLoading={setLoading}/>)}
+                {page === "Job Postings"&& (<FindJobs 
+                filter={filter} 
+                filterType={filterType} 
+                setFilter = {setFilter} 
+                useFilterType = {setFilterType} 
+                loading = {loading} 
+                setLoading={setLoading}
+                editPostingId={editPostingId}/>)}
             </section>
             
         </section>
