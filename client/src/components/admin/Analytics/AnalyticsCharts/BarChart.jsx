@@ -33,11 +33,9 @@ export default function BarChart({barTitle, data, xAxisLabels, dataNames}) {
                 x++;
                 i++;
             } else if(x < dataArray.length && (dataArray[x].date < dates[i])){
-                console.log("added a 0")
-                result.push(0);
-                i++;
+                x++;
             }
-            if(x >= dataArray.length || (dataArray[x].date > dates[i])){
+            else{
                 result.push(0);
                 i++
             }
