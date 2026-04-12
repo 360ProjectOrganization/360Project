@@ -14,6 +14,7 @@ const jobPostingSchema = new mongoose.Schema({
     enum: JOB_STATUSES,
     default: 'ACTIVE',
   },
+  author: { type:String},
   closureReason: { type: String, enum: JOB_CLOSURE_REASONS },
   publishedAt: { type: Date },
   closedAt: { type: Date },

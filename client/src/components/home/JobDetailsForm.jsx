@@ -56,7 +56,12 @@ export default function JobDetailsForm({ posting, role, userId, isAuthenticated,
         }
 
         if (role === "administrator") {
-            // TODO: take the user to the admin portal, and highlight the specific job they are looking at OR open the modal (whatever is implemented)
+            navigate('/admin', {
+                state: {
+                    editPostingId: posting._id,
+                    pageToView: "Job Postings",
+                },
+            });
             return;
         }
     }

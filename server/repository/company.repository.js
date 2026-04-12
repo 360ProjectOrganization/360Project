@@ -80,6 +80,7 @@ const companyRepository = {
       tags: jobData.tags ?? [],
       status: 'ACTIVE',
       publishedAt: new Date(),
+      author: companyId
     });
 
     company.jobPostings.push(job._id);

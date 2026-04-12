@@ -65,10 +65,14 @@ const jobPostingRepository = {
   },
 
   async delete(id) {
+    console.log("start delete")
     await Company.updateOne({ jobPostings: id }, { $pull: { jobPostings: id } });
+    console.log("Upaded company")
     const deleted = await JobPosting.findByIdAndDelete(id);
     if (!deleted) return null;
-    await Applicant.updateMany({ jobsAppliedTo: id }, { $pull: { jobsAppliedTo: id } });
+    console.log("deleted")
+    await Applicant.updateMany({ jobsAppliedTo: { job: id } }, { $pull: { jobsAppliedTo: { job: id } } });
+    console.log("Updated many")
     return deleted;
   },
 
