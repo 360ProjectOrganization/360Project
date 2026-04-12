@@ -10,7 +10,7 @@ function getDatesBetween(start, end) {
     const dates = [];
     const current = new Date(start + "T00:00:00");
     const last = new Date(end + "T00:00:00");
-    while (current <= last) {
+    while (current < last) {
         dates.push(current.toISOString().split("T")[0]);
         current.setDate(current.getDate() + 1);
     }
@@ -59,7 +59,7 @@ export default function SetDateForAnalytics({setDatesRange}){
 
     },[])
     return(
-        <div>
+        <div className="padding-for-time">
         <div className="date-range-picker-presets">
             {presets.map(({ label, days }) => (
             <button

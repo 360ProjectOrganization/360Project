@@ -327,7 +327,9 @@
   gap: 1rem;
   align-items: center;
 }
-
+.padding-for-time{
+    padding-left: 12%;
+}
 .date-range-picker__label {
   display: flex;
   flex-direction: column;
@@ -349,7 +351,7 @@
 
 .date-range-picker__input:focus {
   outline: none;
-  border-color: #6366f1;
+  border-color: var(--color-cta-secondary-darker);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
@@ -377,7 +379,7 @@
 }
 
 .date-range-picker__preset-btn:hover {
-  background: #6366f1;
-  border-color: #6366f1;
+  background: var(--color-title);
+  border-color: var(--color-title);
   color: #fff;
 }
