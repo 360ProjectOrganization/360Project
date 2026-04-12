@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Profile from '../Profile.jsx'
+import { ProfilePictureGlobal } from '../../../context/ProfilePictureContext.jsx'
 import { jwtDecode } from 'jwt-decode'
 import { getToken, applicantApi, companyApi, adminApi } from '../../../utils/api.js'
 
@@ -9,6 +10,7 @@ jest.mock('jwt-decode', () => ({ jwtDecode: jest.fn() }))
 
 jest.mock('../../../utils/api.js', () => ({
     getToken: jest.fn(),
+    clearToken: jest.fn(),
     applicantApi: {
         getById: jest.fn(),
         getPfpUrl: jest.fn(),
@@ -51,11 +53,24 @@ jest.mock('../UploadPfpForm.jsx', () => ({ __esModule: true, default: () => <div
 jest.mock('../ResumeOptionsForm.jsx', () => ({ __esModule: true, default: () => <div>ResumeOptionsForm</div> }))
 jest.mock('../Comments/UserComments.jsx', () => ({ __esModule: true, default: () => <div>UserComments</div> }))
 
+function renderProfile() {
+    return render(
+        <MemoryRouter>
+            <ProfilePictureGlobal>
+                <Profile />
+            </ProfilePictureGlobal>
+        </MemoryRouter>
+    )
+}
 
 describe('Profile', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        global.fetch = jest.fn().mockResolvedValue({ status: 404 })
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            blob: () => Promise.resolve(new Blob(['x'], { type: 'image/png' })),
+        })
+        URL.createObjectURL = jest.fn(() => 'blob:mock')
         getToken.mockReturnValue('t')
         jwtDecode.mockReturnValue({ role: 'applicant', id: 'a1' })
         applicantApi.getById.mockResolvedValue({
@@ -68,11 +83,7 @@ describe('Profile', () => {
     })
 
     test('renders applicant sidebar buttons', async () => {
-        render(
-            <MemoryRouter>
-                <Profile />
-            </MemoryRouter>
-        )
+        renderProfile()
         await waitFor(() => {
             expect(screen.getByText('Jane Doe')).toBeInTheDocument()
         })
@@ -82,11 +93,7 @@ describe('Profile', () => {
     })
 
     test('opens modals when profile action buttons clicked', async () => {
-        render(
-            <MemoryRouter>
-                <Profile />
-            </MemoryRouter>
-        )
+        renderProfile()
         await waitFor(() => expect(screen.getByText('Jane Doe')).toBeInTheDocument())
 
         fireEvent.click(screen.getByRole('button', { name: /edit profile/i }))
@@ -99,11 +106,7 @@ describe('Profile', () => {
     })
 
     test('switching to comments section renders UserComments', async () => {
-        render(
-            <MemoryRouter>
-                <Profile />
-            </MemoryRouter>
-        )
+        renderProfile()
         await waitFor(() => expect(screen.getByText('Jane Doe')).toBeInTheDocument())
         fireEvent.click(screen.getByRole('button', { name: 'My Comments' }))
         expect(screen.getByText('UserComments')).toBeInTheDocument()
