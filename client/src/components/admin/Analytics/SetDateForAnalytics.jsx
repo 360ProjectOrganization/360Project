@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./DateRangePicker.css";
 
 const presets = [
   { label: "Last 7 days", days: 7 },
@@ -7,20 +6,25 @@ const presets = [
   { label: "Last 90 days", days: 90 },
 ];
 function getDatesBetween(start, end) {
-  const dates = [];
-  const current = new Date(start + "T00:00:00");
-  const last = new Date(end + "T00:00:00");
-  while (current <= last) {
-    dates.push(current.toISOString().split("T")[0]);
-    current.setDate(current.getDate() + 1);
-  }
-  return dates;
+    
+    const dates = [];
+    const current = new Date(start + "T00:00:00");
+    const last = new Date(end + "T00:00:00");
+    while (current <= last) {
+        dates.push(current.toISOString().split("T")[0]);
+        current.setDate(current.getDate() + 1);
+    }
+    return dates;
 }
 export default function SetDateForAnalytics({setDatesRange}){
     //https://stackoverflow.com/questions/69523284/can-we-create-start-date-and-end-date-using-react-date-picker
     // Didnt copy it but was very useful
-    const [beginingDate, setBeginingDate ] = useState("");
-    const [endDate, setEndDate] =useState("");
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    const fmt = (d) => d.toISOString().split("T")[0];
+    const [beginingDate, setBeginingDate ] = useState(fmt(sevenDaysAgo));
+    const [endDate, setEndDate] =useState(fmt(today));
     const handleStartChange = (e) => {
         const val = e.target.value;
         setBeginingDate(val);
@@ -42,10 +46,18 @@ export default function SetDateForAnalytics({setDatesRange}){
     };
     useEffect(()=>{
         if (beginingDate && endDate) {
-            setDatesRange(getDatesBetween(range.start, range.end));
+            setDatesRange(getDatesBetween(beginingDate,endDate));
         }
 
-    },[beginingDate, endDate])
+    },[beginingDate, endDate]);
+    useEffect(()=>{
+        if (beginingDate && endDate) {
+            setDatesRange(getDatesBetween(range.start, range.end));
+        }else{
+            console.log("FAIL")
+        }
+
+    },[])
     return(
         <div>
         <div className="date-range-picker-presets">
@@ -65,7 +77,7 @@ export default function SetDateForAnalytics({setDatesRange}){
             <input
                 type="date"
                 className="date-range-picker__input"
-                value={startDate}
+                value={beginingDate}
                 max={endDate || undefined}
                 onChange={handleStartChange}
             />
@@ -77,7 +89,7 @@ export default function SetDateForAnalytics({setDatesRange}){
                 type="date"
                 className="date-range-picker__input"
                 value={endDate}
-                min={startDate || undefined}
+                min={beginingDate || undefined}
                 onChange={handleEndChange}
             />
             </label>
