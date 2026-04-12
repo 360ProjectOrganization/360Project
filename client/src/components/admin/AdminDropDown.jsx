@@ -8,6 +8,9 @@ export default function AdminDropDown({setPage, setWhichAnalyticsData, setFilter
         }else if(e.target.value === "Analytics"){
             setPage("Analytics");
             setWhichAnalyticsData("jobPostings");
+        }else if (e.target.value === "Job Postings"){
+            setPage("Job Postings");
+            setFilterType("title");
         }
     });
     return(
@@ -16,6 +19,7 @@ export default function AdminDropDown({setPage, setWhichAnalyticsData, setFilter
                 <option value="Find Users">Find Users</option>
                 <option value="New Admin">New Admin</option>
                 <option value="Analytics">Analytics</option>
+                <option value="Job Postings">Job Postings</option>
             </select>
         </section>
     )
