@@ -52,7 +52,7 @@ export default function SetDateForAnalytics({setDatesRange}){
     },[beginingDate, endDate]);
     useEffect(()=>{
         if (beginingDate && endDate) {
-            setDatesRange(getDatesBetween(range.start, range.end));
+            setDatesRange(getDatesBetween(beginingDate, endDate));
         }else{
             console.log("FAIL")
         }
