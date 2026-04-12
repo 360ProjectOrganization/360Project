@@ -337,3 +337,64 @@
     color: var(--color-title-alt);
     font-weight: 700;
 }
+.date-range-picker {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.padding-for-time{
+    padding-left: 12%;
+}
+.date-range-picker__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.date-range-picker__input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #111827;
+  background: #fff;
+  cursor: pointer;
+}
+
+.date-range-picker__input:focus {
+  outline: none;
+  border-color: var(--color-cta-secondary-darker);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.date-range-picker__separator {
+  color: #9ca3af;
+  font-size: 1.1rem;
+  margin-top: 1.1rem;
+}
+
+.date-range-picker__presets {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.date-range-picker__preset-btn {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #f9fafb;
+  font-size: 0.8rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.date-range-picker__preset-btn:hover {
+  background: var(--color-title);
+  border-color: var(--color-title);
+  color: #fff;
+}
