@@ -5,8 +5,9 @@ import FindUserSearch from '../FindUserSearch.jsx'
 function setup() {
     const setFilter = jest.fn()
     const setFilterType = jest.fn()
-    render(<FindUserSearch setFilter={setFilter} setFilterType={setFilterType} filters={[
-        {name:"Name", value:"name"}
+    render(<FindUserSearch setFilter={setFilter} setFilterType={setFilterType} fields={[
+        {name:"Name", value:"name"},
+        {name:"Type", value:"type"}
     ]}/>)
     return { setFilter, setFilterType }
 }
