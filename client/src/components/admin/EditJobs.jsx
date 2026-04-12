@@ -24,10 +24,10 @@ export default function EditJobs({setXButton, jobDetails, allCards, setAllCards,
                     description: updatedAdminInfo.description,
                     tags: updatedAdminInfo.tags?updatedAdminInfo.tags.split(", "): []
                 };
-                await jobPostingApi.update(jobDetails.id, payload);
+                await jobPostingApi.update(jobDetails._id, payload);
                 console.log(allCards);
                 const newEntry = {
-                    _id: jobDetails.id,
+                    _id: jobDetails._id,
                     title: updatedAdminInfo.title,
                     location: updatedAdminInfo.location,
                     author: jobDetails.author,
@@ -38,7 +38,7 @@ export default function EditJobs({setXButton, jobDetails, allCards, setAllCards,
                 };
                 setThisTitle(updatedAdminInfo.title);
                 const updatedList = [
-                ...allCards.filter((job) => job._id !== jobDetails.id),
+                ...allCards.filter((job) => job._id !== jobDetails._id),
                 newEntry];
                 setAllCards(updatedList);
                 setFilteredCards(updatedList);
