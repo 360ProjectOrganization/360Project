@@ -60,7 +60,7 @@ async function seed() {
   // create job postings
   const jobPostings = await JobPosting.insertMany([
     // TechCorp
-    { title: 'Senior Frontend Developer', tags: ['React', 'JavaScript'], location: 'Remote', description: 'Build great UIs.', status: 'ACTIVE', publishedAt: daysAgo(14) },
+    { title: 'Senior Frontend Developer', tags: ['React', 'JavaScript'], location: 'Remote', description: 'Build great UIs.', status: 'ACTIVE', publishedAt: daysAgo(14)},
     { title: 'Backend Engineer', tags: ['Node.js', 'MongoDB'], location: 'Vancouver', description: 'APIs and databases.', status: 'CLOSED', closureReason: 'FILLED', publishedAt: daysAgo(45), closedAt: daysAgo(10) },
     { title: 'DevOps Engineer', tags: ['AWS', 'Docker', 'Kubernetes'], location: 'Remote', description: 'Infrastructure and CI/CD.', status: 'ACTIVE', publishedAt: daysAgo(7) },
     // StartupXYZ
@@ -83,6 +83,24 @@ async function seed() {
   await Company.findByIdAndUpdate(companies[2]._id, { jobPostings: [jobPostings[6]._id, jobPostings[7]._id, jobPostings[8]._id] });
   await Company.findByIdAndUpdate(companies[3]._id, { jobPostings: [jobPostings[9]._id, jobPostings[10]._id, jobPostings[11]._id] });
 
+  //link companies to job postings
+  //Tech Corp
+  await JobPosting.findByIdAndUpdate(jobPostings[0]._id, {author: companies[0].name})
+  await JobPosting.findByIdAndUpdate(jobPostings[1]._id, {author: companies[0].name})
+  await JobPosting.findByIdAndUpdate(jobPostings[2]._id, {author: companies[0].name})
+
+  //StartUpXYZ
+  await JobPosting.findByIdAndUpdate(jobPostings[3]._id, {author: companies[1].name});
+  await JobPosting.findByIdAndUpdate(jobPostings[4]._id, {author: companies[1].name});
+  await JobPosting.findByIdAndUpdate(jobPostings[5]._id, {author: companies[1].name});
+  // DataFlow Inc
+  await JobPosting.findByIdAndUpdate(jobPostings[6]._id, {author: companies[2].name});
+  await JobPosting.findByIdAndUpdate(jobPostings[7]._id, {author: companies[2].name});
+  await JobPosting.findByIdAndUpdate(jobPostings[8]._id, {author: companies[2].name});
+  // CloudNine
+  await JobPosting.findByIdAndUpdate(jobPostings[9]._id, {author: companies[3].name});
+  await JobPosting.findByIdAndUpdate(jobPostings[10]._id, {author: companies[3].name});
+  await JobPosting.findByIdAndUpdate(jobPostings[11]._id, {author: companies[3].name});
   // link applicants to job postings
   await JobPosting.findByIdAndUpdate(jobPostings[0]._id, { applicants: [applicants[0]._id, applicants[1]._id, applicants[2]._id, applicants[3]._id] });
   await JobPosting.findByIdAndUpdate(jobPostings[1]._id, { applicants: [applicants[0]._id, applicants[1]._id, applicants[2]._id] });
