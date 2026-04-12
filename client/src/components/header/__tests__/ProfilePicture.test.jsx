@@ -3,9 +3,11 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { getToken, applicantApi, companyApi, adminApi } from '../../../utils/api.js'
 import { jwtDecode } from 'jwt-decode'
 import ProfilePicture from '../ProfilePicture.jsx'
+import { ProfilePictureGlobal } from '../../../context/ProfilePictureContext.jsx'
 
 jest.mock('../../../utils/api.js', () => ({
     getToken: jest.fn(),
+    clearToken: jest.fn(),
     applicantApi: {
         getPfpUrl: jest.fn((id) => `/api/applicants/${id}/pfp`),
     },
@@ -20,6 +22,14 @@ jest.mock('../../../utils/api.js', () => ({
 jest.mock('jwt-decode', () => ({
     jwtDecode: jest.fn(),
 }))
+
+function renderWithPfp() {
+    return render(
+        <ProfilePictureGlobal>
+            <ProfilePicture />
+        </ProfilePictureGlobal>
+    )
+}
 
 describe('ProfilePicture', () => {
     const originalFetch = global.fetch
@@ -44,7 +54,7 @@ describe('ProfilePicture', () => {
     })
 
     test('loads applicant pfp and sets img src', async () => {
-        render(<ProfilePicture />)
+        renderWithPfp()
 
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalled()
@@ -58,7 +68,7 @@ describe('ProfilePicture', () => {
 
     test('uses company pfp url when role is company', async () => {
         jwtDecode.mockReturnValue({ role: 'company', id: 'c1' })
-        render(<ProfilePicture />)
+        renderWithPfp()
         await waitFor(() => {
             expect(companyApi.getPfpUrl).toHaveBeenCalledWith('c1')
         })
@@ -66,7 +76,7 @@ describe('ProfilePicture', () => {
 
     test('uses admin pfp url when role is administrator', async () => {
         jwtDecode.mockReturnValue({ role: 'administrator', id: 'a1' })
-        render(<ProfilePicture />)
+        renderWithPfp()
         await waitFor(() => {
             expect(adminApi.getPfpUrl).toHaveBeenCalledWith('a1')
         })
@@ -74,7 +84,7 @@ describe('ProfilePicture', () => {
 
     test('does not fetch when there is no token', async () => {
         getToken.mockReturnValue(null)
-        render(<ProfilePicture />)
+        renderWithPfp()
         await waitFor(() => {
             expect(screen.getByRole('img', { name: 'pfp' })).toBeInTheDocument()
         })
@@ -86,7 +96,7 @@ describe('ProfilePicture', () => {
 
     test('does not fetch for an unknown role', async () => {
         jwtDecode.mockReturnValue({ role: 'guest', id: 'g1' })
-        render(<ProfilePicture />)
+        renderWithPfp()
         await waitFor(() => {
             expect(screen.getByRole('img', { name: 'pfp' })).toBeInTheDocument()
         })

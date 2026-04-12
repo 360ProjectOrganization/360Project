@@ -14,14 +14,14 @@ jest.mock('../../../utils/api.js', () => ({
 describe('UploadResumeForm', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        global.fetch = jest.fn().mockResolvedValue({ ok: true })
         getToken.mockReturnValue('t')
         jwtDecode.mockReturnValue({ id: 'a1' })
-        applicantApi.uploadResume.mockReturnValue('http://resume-upload')
+        applicantApi.uploadResume.mockResolvedValue(undefined)
     })
 
-    test('uploads resume via url and fetches returned url', async () => {
-        render(<UploadResumeForm />)
+    test('uploads resume and calls onClose on success', async () => {
+        const onClose = jest.fn()
+        render(<UploadResumeForm onClose={onClose} />)
 
         await waitFor(() => expect(jwtDecode).toHaveBeenCalled())
 
@@ -37,7 +37,7 @@ describe('UploadResumeForm', () => {
 
         await waitFor(() => {
             expect(applicantApi.uploadResume).toHaveBeenCalledWith('a1', file)
-            expect(fetch).toHaveBeenCalledWith('http://resume-upload')
+            expect(onClose).toHaveBeenCalled()
         })
     })
 })

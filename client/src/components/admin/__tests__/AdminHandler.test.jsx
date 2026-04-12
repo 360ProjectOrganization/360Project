@@ -1,6 +1,15 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import AdminHandler from '../AdminHandler.jsx'
+
+function renderAdminHandler(initialEntry = '/Admin') {
+    return render(
+        <MemoryRouter initialEntries={[initialEntry]}>
+            <AdminHandler />
+        </MemoryRouter>
+    )
+}
 
 jest.mock('../FindUsers', () => ({
     __esModule: true,
@@ -31,7 +40,7 @@ function getMainPageSelect() {
 
 describe('AdminHandler', () => {
     test('starts on Find Users, after load it shows FindUserSearch and FindUsers', async () => {
-        render(<AdminHandler />)
+        renderAdminHandler()
         expect(screen.getByRole('heading', { name: 'Admin Portal' })).toBeInTheDocument()
         expect(screen.getByTestId('mock-find-users')).toBeInTheDocument()
 
@@ -41,7 +50,7 @@ describe('AdminHandler', () => {
     })
 
     test('switching to New Admin shows CreateNewAdminForm and hides FindUsers', async () => {
-        render(<AdminHandler />)
+        renderAdminHandler()
         await waitFor(() => expect(screen.getByText('Search By:')).toBeInTheDocument()) // in FindUserSearch
 
         fireEvent.change(getMainPageSelect(), { target: { value: 'New Admin' } })
@@ -51,7 +60,7 @@ describe('AdminHandler', () => {
     })
 
     test('Analytics page shows data selector and Analytics with default jobPostings state', async () => {
-        render(<AdminHandler />)
+        renderAdminHandler()
         await waitFor(() => expect(screen.getByText('Search By:')).toBeInTheDocument())
 
         fireEvent.change(getMainPageSelect(), { target: { value: 'Analytics' } })
@@ -61,7 +70,7 @@ describe('AdminHandler', () => {
     })
 
     test('Analytics sleect updated whichAnalyticsData is passed to Analytics', async () => {
-        render(<AdminHandler />)
+        renderAdminHandler()
         await waitFor(() => expect(screen.getByText('Search By:')).toBeInTheDocument())
 
         fireEvent.change(getMainPageSelect(), { target: { value: 'Analytics' } }) // setting to Analytics page
