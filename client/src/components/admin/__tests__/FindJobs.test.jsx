@@ -1,7 +1,16 @@
 import React from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import FindJobs from "../FindJobs";
 import { jobPostingApi } from "../../../utils/api";
+
+function renderFindJobs(props) {
+  return render(
+    <MemoryRouter>
+      <FindJobs {...props} />
+    </MemoryRouter>
+  );
+}
 
 jest.mock("../../../utils/api", () => ({
   jobPostingApi: { getAll: jest.fn(), delete: jest.fn(), updateStatus: jest.fn() },
@@ -27,19 +36,21 @@ beforeEach(() => {
 });
 
 it("render all job card after fetch", async () => {
-  render(<FindJobs filter="" filterType="title" loading={false} setLoading={jest.fn()} />);
+  renderFindJobs({ filter: "", filterType: "title", loading: false, setLoading: jest.fn() });
   await waitFor(() => expect(screen.getByTestId("card-j1")).toBeInTheDocument());
   expect(screen.getByTestId("card-j2")).toBeInTheDocument();
 });
 
 it("filter card by the filter", async () => {
-  render(<FindJobs filter="Frontend" filterType="title" loading={false} setLoading={jest.fn()} />);
-  await waitFor(() => expect(screen.getByTestId("card-j1")).toBeInTheDocument());
-  expect(screen.queryByTestId("card-j2")).not.toBeInTheDocument();
+  renderFindJobs({ filter: "Frontend", filterType: "title", loading: false, setLoading: jest.fn() });
+  await waitFor(() => {
+    expect(screen.getByTestId("card-j1")).toBeInTheDocument();
+    expect(screen.queryByTestId("card-j2")).not.toBeInTheDocument();
+  });
 });
 
 it("delete job and remove it from the list", async () => {
-  render(<FindJobs filter="" filterType="title" loading={false} setLoading={jest.fn()} />);
+  renderFindJobs({ filter: "", filterType: "title", loading: false, setLoading: jest.fn() });
   await waitFor(() => expect(screen.getByTestId("card-j1")).toBeInTheDocument());
   act(() => screen.getAllByText("Delete")[0].click());
   act(() => screen.getByText("Confirm Delete").click());

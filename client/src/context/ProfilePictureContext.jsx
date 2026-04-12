@@ -1,6 +1,6 @@
 import { useEffect, useState, createContext, useContext  } from "react";
 import { jwtDecode } from "jwt-decode";
-import { getToken, applicantApi, companyApi, adminApi } from "../utils/api";
+import { getToken, clearToken, applicantApi, companyApi, adminApi } from "../utils/api";
 
 const ProfilePictureContext = createContext(null);
 
@@ -19,10 +19,18 @@ export function ProfilePictureGlobal({children}){
     }, [refresh]);
     
     useEffect(() => {
-        if(!token) return;
-        const decoded = jwtDecode(token);
-        setRole(decoded.role);
-        setId(decoded.id);
+        if (!token) return;
+        try {
+            const decoded = jwtDecode(token);
+            setRole(decoded.role);
+            setId(decoded.id);
+        }
+        catch {
+            clearToken();
+            setToken("");
+            setRole("");
+            setId("");
+        }
     }, [token, role]);
 
     useEffect(() => {

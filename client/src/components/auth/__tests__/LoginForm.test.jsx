@@ -2,12 +2,18 @@ import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom'
 import LoginForm from '../login/LoginForm.jsx'
+import { ProfilePictureGlobal } from '../../../context/ProfilePictureContext.jsx'
 import { authApi, setToken, setAuthUser } from '../../../utils/api.js'
 
 jest.mock('../../../utils/api.js', () => ({
     authApi: { login: jest.fn() },
     setToken: jest.fn(),
     setAuthUser: jest.fn(),
+    getToken: jest.fn(() => null),
+    clearToken: jest.fn(),
+    applicantApi: { getPfpUrl: jest.fn() },
+    companyApi: { getPfpUrl: jest.fn() },
+    adminApi: { getPfpUrl: jest.fn() },
 }))
 
 function PathnameProbe() {
@@ -23,15 +29,17 @@ function renderLoginForm(typeOfUser = 'Applicant', initialEntry = '/') {
     
     render(
         <MemoryRouter initialEntries={[entry]}>
-            <Routes>
-                <Route path="*" element={
-                    <>
-                        <LoginForm typeOfUser={typeOfUser} setOnLoginScreen={setOnLoginScreen} setLoginType={setLoginType} />
-                        <PathnameProbe />
-                    </>
-                }
-                />
-            </Routes>
+            <ProfilePictureGlobal>
+                <Routes>
+                    <Route path="*" element={
+                        <>
+                            <LoginForm typeOfUser={typeOfUser} setOnLoginScreen={setOnLoginScreen} setLoginType={setLoginType} />
+                            <PathnameProbe />
+                        </>
+                    }
+                    />
+                </Routes>
+            </ProfilePictureGlobal>
         </MemoryRouter>
     )
 
