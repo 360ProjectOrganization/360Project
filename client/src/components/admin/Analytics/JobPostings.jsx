@@ -4,6 +4,7 @@ export default function JobPostings({jobPostingsByDate, numJobPostings}){
     return(
         <>
             <StatCard label="Total Job Postings" value={numJobPostings}/>
+            {/* Date choice here */}
             <BarChart barTitle="Job Postings" data={jobPostingsByDate} xAxisLabels ={jobPostingsByDate.jobPostingsByDate} dataNames={["Job Postings Created"]} />
         </>
     )
